@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jose.carpool.activity_signup"
+    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="@color/background" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="56dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+            <EditText
+                android:id="@+id/name_signupet"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="Nombre"
+                android:inputType="textPersonName|textCapWords"
+                android:textColorHint="@color/secondary_text"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/appat_signupet"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="Apellido Paterno"
+                android:inputType="textPersonName|textCapWords"
+                android:textColorHint="@color/secondary_text"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/apmat_signupet"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="Apellido Materno"
+                android:inputType="textPersonName|textCapWords"
+                android:textColorHint="@color/secondary_text"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/codepucp_signupet"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="Codigo PUCP"
+                android:inputType="number"
+                android:textColorHint="@color/secondary_text"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/email_signupet"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="Correo PUCP"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/secondary_text"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/pass_signupet"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:textColorHint="@color/secondary_text"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/pass2_signupet"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="Verificar contraseña"
+                android:inputType="textPassword"
+                android:textColorHint="@color/secondary_text"
+                android:textAlignment="center"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_emailver"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:padding="12dp"
+                android:backgroundTint="@color/accent"
+                android:textColor="#FFFFFF"
+                android:text="Verificar Correo"/>
+
+
+        </LinearLayout>
+
+
+
+
+
+
+    </ScrollView>
+
+</RelativeLayout>
