@@ -65,7 +65,7 @@
                 android:padding="12dp"
                 android:backgroundTint="@color/accent"
                 android:textColor="#FFFFFF"
-                android:text="Registrarse"/>
+                android:text="Verificar correo"/>
 
 
         </LinearLayout>

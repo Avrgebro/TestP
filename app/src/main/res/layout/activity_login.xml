@@ -44,7 +44,8 @@
                 android:textColorHint="@color/secondary_text"
                 android:drawableLeft="@drawable/mail"
                 android:textAlignment="center"
-                android:hint="Correo PUCP" />
+                android:hint="Correo PUCP"
+                android:backgroundTint="@color/accent"/>
 
             <EditText android:id="@+id/input_password"
                 android:layout_width="match_parent"
@@ -55,7 +56,8 @@
                 android:textColorHint="@color/secondary_text"
                 android:drawableLeft="@drawable/padlock"
                 android:textAlignment="center"
-                android:hint="Contraseña"/>
+                android:hint="Contraseña"
+                android:backgroundTint="@color/accent"/>
 
 
             <android.support.v7.widget.AppCompatButton
@@ -66,7 +68,7 @@
                 android:layout_marginBottom="24dp"
                 android:padding="12dp"
                 android:backgroundTint="@color/accent"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/primary_text"
                 android:text="Login"/>
 
             <LinearLayout
