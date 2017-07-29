@@ -1,9 +1,11 @@
 package com.example.jose.carpool;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +18,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Intent loginintent = new Intent(this, activity_login.class);
-        startActivity(loginintent);
+        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
+        int SessionState = prefs.getInt("SessionState", 0);
+        if(SessionState == 0){
+            Log.d(TAG, "No session active");
+            Intent loginintent = new Intent(this, activity_login.class);
+            startActivity(loginintent);
+        }
+
+        //TODO:AsyncTask para descargar los datos de los carpool y popular la ventana principal
     }
 
     @Override

@@ -31,9 +31,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enviamos un codigo de verificacion a tu correo"
+                android:text="Enviamos un codigo de verificacion a:"
                 android:textColor="@color/primary_text"
                 android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/email_veriTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="correo@pucp.pe"
+                android:textColor="@color/primary_text"
+                android:layout_gravity="center_horizontal" />
 
             <EditText
                 android:id="@+id/ver_code"

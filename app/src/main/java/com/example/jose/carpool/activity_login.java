@@ -1,6 +1,7 @@
 package com.example.jose.carpool;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -92,7 +93,15 @@ public class activity_login extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
+        Log.d(TAG, "login success");
+
         _loginButton.setEnabled(true);
+        String email = _emailText.getText().toString();
+
+        SharedPreferences.Editor editor = getSharedPreferences("SessionToken", MODE_PRIVATE).edit();
+        editor.putString("SessionUser", "email");
+        editor.putInt("SessionState", 1);
+        editor.apply();
         finish();
     }
 

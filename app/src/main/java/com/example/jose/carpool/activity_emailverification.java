@@ -1,11 +1,15 @@
 package com.example.jose.carpool;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -14,10 +18,9 @@ public class activity_emailverification extends AppCompatActivity {
 
     @Bind(R.id.btn_signup) Button _signupbutton;
     @Bind(R.id.ver_code) EditText _vercode;
+    @Bind(R.id.email_veriTV) TextView _emailveri;
 
     private final int _covv = 123456;
-
-
 
 
 
@@ -27,6 +30,10 @@ public class activity_emailverification extends AppCompatActivity {
         setContentView(R.layout.activity_emailverification);
         ButterKnife.bind(this);
 
+        Gson gson = new Gson();
+        User user = gson.fromJson(getIntent().getStringExtra("newUser"), User.class);
+
+        _emailveri.setText(user.getCorreo());
 
         _signupbutton.setOnClickListener(new View.OnClickListener() {
 
@@ -35,7 +42,6 @@ public class activity_emailverification extends AppCompatActivity {
                 verify();
             }
         });
-
 
     }
 
@@ -63,8 +69,7 @@ public class activity_emailverification extends AppCompatActivity {
         if(_covv == codeinput){
 
             //TODO: se envia el registro a la base de datos,
-            //TODO: se quita infode shared preferences;
-            //TODO: se guarda info de la sesion actual;
+            SaveSession();
             setResult(RESULT_OK, null);
             finish();
         }
@@ -72,5 +77,16 @@ public class activity_emailverification extends AppCompatActivity {
             _vercode.setError("Codigo invalido");
             return;
         }
+    }
+
+    public void SaveSession(){
+
+        Gson gson = new Gson();
+        User user = gson.fromJson(getIntent().getStringExtra("newUser"), User.class);
+
+        SharedPreferences.Editor editor = getSharedPreferences("SessionToken", MODE_PRIVATE).edit();
+        editor.putString("SessionUser", user.getCorreo());
+        editor.putInt("SessionState", 1);
+        editor.apply();
     }
 }

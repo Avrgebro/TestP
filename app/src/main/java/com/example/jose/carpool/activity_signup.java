@@ -68,19 +68,16 @@ public class activity_signup extends AppCompatActivity {
         }
 
         //populate new user
-
         User usuarioRegistro = new User(nombre, appat, apmat, email, codigo, passw);
 
-        SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        //create Json from new user
         Gson gson = new Gson();
         String json = gson.toJson(usuarioRegistro);
-        prefsEditor.putString("userReg", json);
-        prefsEditor.commit();
 
 
-        //send new user to other activity
+        //send new user to emailverification activity
         Intent intent = new Intent(getApplicationContext(), activity_emailverification.class);
+        intent.putExtra("newUser", json);
         startActivityForResult(intent, FINISH_SIGNAL);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
@@ -89,7 +86,6 @@ public class activity_signup extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FINISH_SIGNAL) {
             if (resultCode == RESULT_OK) {
-
                 this.finish();
             }
         }
