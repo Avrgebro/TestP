@@ -70,7 +70,7 @@
                 android:id="@+id/pass2_signupet"
                 android:hint="Confirmar contraseña"
                 android:inputType="textPassword"
-                style="@style/SignupEditText"/>
+                style="@style/SignupEditText" />
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_emailver"
@@ -80,7 +80,7 @@
                 android:layout_marginBottom="24dp"
                 android:padding="12dp"
                 android:backgroundTint="@color/accent"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/btn"
                 android:text="Registrar" />
 
 

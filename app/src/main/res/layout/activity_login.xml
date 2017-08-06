@@ -35,29 +35,45 @@
                 android:layout_marginBottom="70dp"
                 android:layout_gravity="center_horizontal" />
 
-            <EditText android:id="@+id/input_email"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/primary_text"
-                android:textStyle="italic"
-                android:textColorHint="@color/secondary_text"
-                android:drawableLeft="@drawable/mail"
-                android:textAlignment="center"
-                android:hint="Correo PUCP"
-                android:backgroundTint="@color/accent"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColorHint="@color/secondary_text">
 
-            <EditText android:id="@+id/input_password"
+                <EditText android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="italic"
+                    android:textColorHint="@color/secondary_text"
+                    android:hint="Correo PUCP"
+                    android:backgroundTint="@color/accent" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textColor="@color/primary_text"
-                android:textStyle="italic"
-                android:textColorHint="@color/secondary_text"
-                android:drawableLeft="@drawable/padlock"
-                android:textAlignment="center"
-                android:hint="Contraseña"
-                android:backgroundTint="@color/accent"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColorHint="@color/secondary_text">
+
+                <EditText android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="italic"
+
+                    android:hint="Contraseña"
+                    android:backgroundTint="@color/accent" />
+
+            </android.support.design.widget.TextInputLayout>
+
 
 
             <android.support.v7.widget.AppCompatButton
@@ -68,7 +84,7 @@
                 android:layout_marginBottom="24dp"
                 android:padding="12dp"
                 android:backgroundTint="@color/accent"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/btn"
                 android:text="Login"/>
 
             <LinearLayout
