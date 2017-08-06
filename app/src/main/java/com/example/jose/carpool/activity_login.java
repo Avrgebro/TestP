@@ -2,6 +2,7 @@ package com.example.jose.carpool;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.net.URL;
+
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
@@ -18,6 +24,9 @@ public class activity_login extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private static final String BaseURL = "placeholder";
+    private String userEmail;
+    private String userPass;
 
     @Bind(R.id.input_email) EditText _emailText;
     @Bind(R.id.input_password) EditText _passwordText;
@@ -49,6 +58,8 @@ public class activity_login extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+
+
     }
 
 
@@ -64,11 +75,12 @@ public class activity_login extends AppCompatActivity {
         _signupLink.setEnabled(false);
 
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        userEmail = _emailText.getText().toString();
+        userPass = _passwordText.getText().toString();
 
         //progress bar aqui mientras busca en la bd
         //buscar en base de datos
+
 
         onLoginSuccess();
 
@@ -133,6 +145,53 @@ public class activity_login extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+
+    //##################################################################
+    //Asynctask para validacion
+
+    public String formUrl(){
+        String ret = BaseURL;
+
+        ret = ret+"?email="+userEmail+"&pass="+userPass;
+
+        Log.d(TAG, ret);
+
+        return ret;
+
+    }
+
+    private class ValidationAT extends AsyncTask<URL, Void, User>{
+
+        @Override
+        protected User doInBackground(URL... urls){
+            String formedurl = formUrl();
+
+            URL url = UrlUtils.createUrl(formedurl);
+
+            String jsonResponse = "";
+            try {
+                jsonResponse = UrlUtils.makeHttpRequest(url);
+            } catch (IOException e) {
+                Log.e(TAG, "Problem making the HTTP request.", e);
+            }
+
+            // Extract relevant fields from the JSON response and create an {@link Event} object
+
+            //TODO:PARSEAR RESPUESTA JSON A OBJETO USANDO GSON;
+            // Return the {@link Event} object as the result fo the {@link TsunamiAsyncTask}
+            Gson gson = new Gson();
+            User user = gson.fromJson(jsonResponse, User.class);
+
+            return user;
+        }
+
+        @Override
+        protected void onPostExecute(User nana){
+
+        }
+
     }
 
 }
