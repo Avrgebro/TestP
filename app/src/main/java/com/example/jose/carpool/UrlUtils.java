@@ -25,9 +25,6 @@ public final class UrlUtils {
     private static final String LOG_TAG = UrlUtils.class.getSimpleName();
 
 
-    /**
-     * Returns new URL object from the given string URL.
-     */
     public static URL createUrl(String stringUrl) {
         URL url = null;
         try {
@@ -38,10 +35,7 @@ public final class UrlUtils {
         return url;
     }
 
-    /**
-     * Make an HTTP request to the given URL and return a String as the response.
-     */
-    public static String makeHttpRequest(URL url) throws IOException {
+    public static String makeHttpRequestGet(URL url) throws IOException {
         String jsonResponse = "";
 
         // If the URL is null, then return early.
@@ -79,10 +73,44 @@ public final class UrlUtils {
         return jsonResponse;
     }
 
-    /**
-     * Convert the {@link InputStream} into a String which contains the
-     * whole JSON response from the server.
-     */
+    public static String makeHttpRequestPost(URL url) throws IOException {
+        String jsonResponse = "";
+
+        // If the URL is null, then return early.
+        if (url == null) {
+            return jsonResponse;
+        }
+
+        HttpURLConnection urlConnection = null;
+        InputStream inputStream = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(10000 /* milliseconds */);
+            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.connect();
+
+
+            if (urlConnection.getResponseCode() == 200) {
+                inputStream = urlConnection.getInputStream();
+                jsonResponse = readFromStream(inputStream);
+            } else {
+                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
+            }
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem retrieving the JSON results.", e);
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        }
+        return jsonResponse;
+    }
+
+
     public static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {

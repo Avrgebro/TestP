@@ -6,46 +6,31 @@ package com.example.jose.carpool;
 
 public class User {
 
-    private String mNombre;
-    private String mApPat;
-    private String mApMat;
+    private String mID;
     private String mCorreo;
-    private String mCodigo;
-    private String mPass;
+    private String mNombre;
+    private String mApellido;
+    private String mTelefono;
+    private String mPass;//solo usado en el envio de nuevo ususrio a base de datos
 
 
-    public User(String nom, String appat, String apmat, String cor, String cod, String pass){
-        setNombre(nom);
-        setApPat(appat);
-        setApMat(apmat);
-        setCorreo(cor);
-        setCodigo(cod);
-        setPass(pass);
+    public User(String _id, String _correo, String _nombre, String _apellido, String _telefono, String _pass){
+        this.mID = _id;
+        this.mCorreo = _correo;
+        this.mNombre = _nombre;
+        this.mApellido = _apellido;
+        this.mTelefono = _telefono;
+        this.mPass = _pass;
 
     }
 
-    public String getNombre() {
-        return mNombre;
+
+    public String getID() {
+        return mID;
     }
 
-    public void setNombre(String mNombre) {
-        this.mNombre = mNombre;
-    }
-
-    public String getApPat() {
-        return mApPat;
-    }
-
-    public void setApPat(String mApPat) {
-        this.mApPat = mApPat;
-    }
-
-    public String getApMat() {
-        return mApMat;
-    }
-
-    public void setApMat(String mApMat) {
-        this.mApMat = mApMat;
+    public void setID(String mID) {
+        this.mID = mID;
     }
 
     public String getCorreo() {
@@ -56,19 +41,32 @@ public class User {
         this.mCorreo = mCorreo;
     }
 
-    public String getCodigo() {
-        return mCodigo;
+    public String getNombre() {
+        return mNombre;
     }
 
-    public void setCodigo(String mCodigo) {
-        this.mCodigo = mCodigo;
+    public void setNombre(String mNombre) {
+        this.mNombre = mNombre;
     }
 
-    public String getPass() {
+    public String getApellido() {
+        return mApellido;
+    }
+
+    public void setApellido(String mApellido) {
+        this.mApellido = mApellido;
+    }
+
+    public String getTelefono() {
+        return mTelefono;
+    }
+
+    public void setTelefono(String mTelefono) {
+        this.mTelefono = mTelefono;
+    }
+
+    public String getPassword(){
         return mPass;
     }
 
-    public void setPass(String mPass) {
-        this.mPass = mPass;
-    }
 }

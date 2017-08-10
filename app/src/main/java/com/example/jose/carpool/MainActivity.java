@@ -15,11 +15,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+    private View header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -38,6 +47,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        header=navigationView.getHeaderView(0);
+
+        TextView _logout = (TextView) findViewById(R.id.logout);
+        _logout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+
         SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
         int SessionState = prefs.getInt("SessionState", 0);
         if(SessionState == 0){
@@ -46,7 +66,33 @@ public class MainActivity extends AppCompatActivity
             startActivity(loginintent);
         }
 
-        //TODO:AsyncTask para descargar los datos de los carpool y popular la ventana principal
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
+        String userJSON = prefs.getString("SessionUser", "");
+
+        if(!userJSON.isEmpty()) {
+            Gson gson = new Gson();
+            User user = gson.fromJson(userJSON, User.class);
+            Log.d(TAG, user.getNombre()+" "+user.getCorreo());
+            TextView _nomnavbar = (TextView) header.findViewById(R.id.nombre_navbar);
+            TextView _cornavbar = (TextView) header.findViewById(R.id.correo_navbar);
+
+            if(_nomnavbar!=null && _cornavbar!=null){
+                _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
+                _cornavbar.setText(user.getCorreo());
+            }
+
+
+        }else{
+            Log.e(TAG, "No se recibio el usuario");
+        }
+
     }
 
     @Override
@@ -63,6 +109,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -95,10 +142,27 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
+        } else if (id == R.id.logout){
+
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void logout(){
+        SharedPreferences.Editor editor = getSharedPreferences("SessionToken", MODE_PRIVATE).edit();
+        editor.remove("SessionUser");
+        editor.putInt("SessionState", 0);
+        editor.apply();
+
+        Intent i = getBaseContext().getPackageManager()
+                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        finish();
+        startActivity(i);
+    }
+
 }

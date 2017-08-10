@@ -24,9 +24,10 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="56dp"
+            android:paddingTop="30dp"
             android:paddingLeft="24dp"
-            android:paddingRight="24dp">
+            android:paddingRight="24dp"
+            android:id="@+id/loginview">
 
 
             <ImageView android:src="@drawable/pucp_logo"
@@ -81,11 +82,25 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
+
                 android:padding="12dp"
                 android:backgroundTint="@color/accent"
                 android:textColor="@color/btn"
                 android:text="Login"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Olvide mi contrasena"
+                android:textColor="@color/primary_text"
+                android:layout_gravity="center_horizontal"/>
+
+            <ProgressBar
+                android:id="@+id/logPB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
