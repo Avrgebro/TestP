@@ -81,11 +81,13 @@ public class activity_emailverification extends AppCompatActivity {
 
     public void SaveSession(){
 
-        Gson gson = new Gson();
-        User user = gson.fromJson(getIntent().getStringExtra("newUser"), User.class);
+        //Gson gson = new Gson();
+        //User user = gson.fromJson(getIntent().getStringExtra("newUser"), User.class);
+
+        String userinfo = getIntent().getStringExtra("newUser");
 
         SharedPreferences.Editor editor = getSharedPreferences("SessionToken", MODE_PRIVATE).edit();
-        editor.putString("SessionUser", user.getCorreo());
+        editor.putString("SessionUser", userinfo);
         editor.putInt("SessionState", 1);
         editor.apply();
     }

@@ -41,7 +41,7 @@ public final class UrlUtils {
     /**
      * Make an HTTP request to the given URL and return a String as the response.
      */
-    public static String makeHttpRequest(URL url) throws IOException {
+    public static String makeHttpRequestGet(URL url) throws IOException {
         String jsonResponse = "";
 
         // If the URL is null, then return early.

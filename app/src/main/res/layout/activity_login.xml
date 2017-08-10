@@ -26,7 +26,8 @@
             android:layout_height="match_parent"
             android:paddingTop="56dp"
             android:paddingLeft="24dp"
-            android:paddingRight="24dp">
+            android:paddingRight="24dp"
+            android:id="@+id/loginview">
 
 
             <ImageView android:src="@drawable/pucp_logo"

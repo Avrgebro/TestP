@@ -19,9 +19,8 @@ public class activity_signup extends AppCompatActivity {
     private static final int FINISH_SIGNAL = 0;
 
     @Bind(R.id.name_signupet) EditText _nombreET;
-    @Bind(R.id.appat_signupet) EditText _appatET;
-    @Bind(R.id.apmat_signupet) EditText _apmatET;
-    @Bind(R.id.codepucp_signupet) EditText _codeET;
+    @Bind(R.id.ap_signupet) EditText _apET;
+    @Bind(R.id.telf_signupet) EditText _telET;
     @Bind(R.id.email_signupet) EditText _emailET;
     @Bind(R.id.pass_signupet) EditText _passET;
     @Bind(R.id.pass2_signupet) EditText _pass2ET;
@@ -56,9 +55,8 @@ public class activity_signup extends AppCompatActivity {
 
     public void verification(){//verificar los campos y crear el usuario
         String nombre = _nombreET.getText().toString();
-        String appat = _appatET.getText().toString();
-        String apmat = _apmatET.getText().toString();
-        String codigo = _codeET.getText().toString();
+        String ap = _apET.getText().toString();
+        String telf = _telET.getText().toString();
         String email = _emailET.getText().toString();
         String passw = _passET.getText().toString();
         String passw2 = _pass2ET.getText().toString();
@@ -68,7 +66,7 @@ public class activity_signup extends AppCompatActivity {
         }
 
         //populate new user
-        User usuarioRegistro = new User(nombre, appat, apmat, email, codigo, passw);
+        User usuarioRegistro = new User("-1", email, nombre, ap, telf, passw);
 
         //create Json from new user
         Gson gson = new Gson();
@@ -96,9 +94,8 @@ public class activity_signup extends AppCompatActivity {
         boolean valid = true;
 
         String nombre = _nombreET.getText().toString();
-        String appat = _appatET.getText().toString();
-        String apmat = _apmatET.getText().toString();
-        String codigo = _codeET.getText().toString();
+        String ap = _apET.getText().toString();
+        String telf = _telET.getText().toString();
         String email = _emailET.getText().toString();
         String passw = _passET.getText().toString();
         String passw2 = _pass2ET.getText().toString();
@@ -107,16 +104,12 @@ public class activity_signup extends AppCompatActivity {
             _nombreET.setError("Campo Vacio");
             emptyfield = true;
         }
-        if(appat.isEmpty()){
-            _appatET.setError("Campo Vacio");
+        if(ap.isEmpty()){
+            _apET.setError("Campo Vacio");
             emptyfield = true;
         }
-        if(apmat.isEmpty()){
-            _apmatET.setError("Campo Vacio");
-            emptyfield = true;
-        }
-        if(codigo.isEmpty()){
-            _codeET.setError("Campo Vacio");
+        if(telf.isEmpty()){
+            _telET.setError("Campo Vacio");
             emptyfield = true;
         }
         if(email.isEmpty()){
