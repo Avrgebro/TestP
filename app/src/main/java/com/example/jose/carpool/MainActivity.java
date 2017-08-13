@@ -25,9 +25,10 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+        public User usuario;
+        User user;
     private static final String TAG = "MainActivity";
-
+    private static final int Editar_ACTIVITY_RESULT_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,12 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        //Setear o recibir usuario
+        usuario = new User();
+        usuario.setNombre("Flash");
+        usuario.setApellido("Campos");
+        usuario.setCorreo("flash@pucp.pe");
+        usuario.setTelefono("978461250");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -61,27 +67,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-
-        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
-        String userJSON = prefs.getString("SessionUser", "");
-
-        if(!userJSON.isEmpty()) {
-            Gson gson = new Gson();
-            User user = gson.fromJson(userJSON, User.class);
-            Log.d(TAG, user.getNombre()+" "+user.getCorreo());
-            TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
-            TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
-
-            if(_nomnavbar!=null && _cornavbar!=null){
-                _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
-                _cornavbar.setText(user.getCorreo());
-            }
-
-
-        }else{
-            Log.e(TAG, "No se recibio el usuario");
-        }
-
     }
 
     @Override
@@ -99,7 +84,36 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
+        TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
+        TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
+
+        _nomnavbar.setText(usuario.getNombre() + " " + usuario.getApellido());
+        _cornavbar.setText(usuario.getCorreo());
+
+
+ /*
+        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
+        String userJSON = prefs.getString("SessionUser", "");
+
+        if(!userJSON.isEmpty()) {
+            Gson gson = new Gson();
+            user = gson.fromJson(userJSON, User.class);
+            Log.d(TAG, user.getNombre()+" "+user.getCorreo());
+            TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
+            TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
+
+            if(_nomnavbar!=null && _cornavbar!=null){
+                _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
+                _cornavbar.setText(user.getCorreo());
+            }
+
+
+        }else{
+            Log.e(TAG, "No se recibio el usuario");
+        }
+*/
         return true;
+
     }
 
     @Override
@@ -123,19 +137,56 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.idPedir_pool) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.idVer_pendiente) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.idVer_historial) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.idConfiguraciones) {
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void Ver_Perfil(View view){
+        Intent intent = new Intent(this, frmEditarPerfil.class);
+        //intent.putExtra("sampleObject", user);
+        intent.putExtra("sampleObject", usuario);
+        setResult(frmEditarPerfil.RESULT_OK, intent);
+        startActivityForResult(intent, Editar_ACTIVITY_RESULT_CODE); //suppose resultCode == 2;
+        //finish();
+
+    }
+
+    // Call Back method  to get the Message form other Activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == Editar_ACTIVITY_RESULT_CODE) {
+                if (resultCode == RESULT_OK) {
+                    User usuarioAux = (User)data.getSerializableExtra("UsuarioRet");
+
+                    usuario.setNombre(usuarioAux.getNombre());
+                    usuario.setApellido(usuarioAux.getApellido());
+                    usuario.setTelefono(usuarioAux.getTelefono());
+                    TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
+                    TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
+
+                    _nomnavbar.setText(usuario.getNombre() + " " + usuario.getApellido());
+                    _cornavbar.setText(usuario.getCorreo());
+
+                }
+            }
+
+
+
+
+
     }
 
 }

@@ -99,7 +99,7 @@ public class activity_login extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
+                // By default we just finish the Activity and log them in automaticall
                 this.finish();
             }
         }

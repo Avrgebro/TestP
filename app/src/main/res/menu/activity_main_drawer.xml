@@ -3,27 +3,28 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="OP1" />
+            android:id="@+id/idPedir_pool"
+            android:icon="@drawable/ic_pool"
+            android:title="Pedir pool" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="OP2" />
+            android:id="@+id/idVer_pendiente"
+            android:icon="@drawable/ic_pendiente"
+            android:title="Viaje pendiente" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="OP3" />
+            android:id="@+id/idVer_historial"
+            android:icon="@drawable/ic_historial"
+            android:title="Ver historial" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/idConfiguraciones"
             android:icon="@drawable/ic_menu_manage"
-            android:title="OP4" />
+            android:title="Configuraciones" />
     </group>
 
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_logout"
+            android:id="@+id/idLogout"
+            android:icon="@drawable/ic_logout"
             android:title="Log out" />
     </group>
 </menu>
