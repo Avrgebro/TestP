@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/idPedir_pool"
@@ -15,9 +16,9 @@
             android:icon="@drawable/ic_historial"
             android:title="Ver historial" />
         <item
-            android:id="@+id/idConfiguraciones"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Configuraciones" />
+            android:id="@+id/idEditarPerfil"
+            android:icon="@drawable/ic_edit"
+            android:title="Editar Perfil" />
     </group>
 
 

@@ -1,10 +1,14 @@
 package com.example.jose.carpool;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -25,10 +30,13 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-        public User usuario;
-        User user;
+    public User usuario;
+    User user;
+
     private static final String TAG = "MainActivity";
     private static final int Editar_ACTIVITY_RESULT_CODE = 0;
+    ImageView img;
+    final Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,10 @@ public class MainActivity extends AppCompatActivity
             Intent loginintent = new Intent(this, activity_login.class);
             startActivity(loginintent);
         }
+
+        //displaySelectedScreen(R.id.idPedir_pool);
+
+
 
 
     }
@@ -94,20 +106,16 @@ public class MainActivity extends AppCompatActivity
  /*
         SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
         String userJSON = prefs.getString("SessionUser", "");
-
         if(!userJSON.isEmpty()) {
             Gson gson = new Gson();
             user = gson.fromJson(userJSON, User.class);
             Log.d(TAG, user.getNombre()+" "+user.getCorreo());
             TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
             TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
-
             if(_nomnavbar!=null && _cornavbar!=null){
                 _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
                 _cornavbar.setText(user.getCorreo());
             }
-
-
         }else{
             Log.e(TAG, "No se recibio el usuario");
         }
@@ -134,31 +142,61 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        displaySelectedScreen(item.getItemId());
+        return true;
+    }
 
-        if (id == R.id.idPedir_pool) {
-            // Handle the camera action
-        } else if (id == R.id.idVer_pendiente) {
+    private void displaySelectedScreen(int itemId) {
 
-        } else if (id == R.id.idVer_historial) {
+        //creating fragment object
+        Fragment fragment = null;
 
-        } else if (id == R.id.idConfiguraciones) {
+        //initializing the fragment object which is selected
+        switch (itemId) {
+            case R.id.idPedir_pool:
 
+                break;
+            case R.id.idVer_pendiente:
+                //fragment = new Menu2();
+                break;
+            case R.id.idVer_historial:
+                //fragment = new Menu3();
+                break;
+            case R.id.idEditarPerfil:
+                fragment = new editar_Perfil();
+                break;
+            case R.id.idLogout:
+                //fragment = new Menu3();
+                break;
+        }
+
+        //replacing the fragment
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.MainFrameLayout, fragment);
+            ft.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     public void Ver_Perfil(View view){
-        Intent intent = new Intent(this, frmEditarPerfil.class);
-        //intent.putExtra("sampleObject", user);
-        intent.putExtra("sampleObject", usuario);
-        setResult(frmEditarPerfil.RESULT_OK, intent);
-        startActivityForResult(intent, Editar_ACTIVITY_RESULT_CODE); //suppose resultCode == 2;
-        //finish();
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_verperfil);
+        dialog.setTitle("Perfil");
+                /*
+
+                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                // if button is clicked, close the custom dialog
+                dialogButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                */
+        dialog.show();
 
     }
 
@@ -167,26 +205,23 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == Editar_ACTIVITY_RESULT_CODE) {
-                if (resultCode == RESULT_OK) {
-                    User usuarioAux = (User)data.getSerializableExtra("UsuarioRet");
+        if (requestCode == Editar_ACTIVITY_RESULT_CODE) {
+            if (resultCode == RESULT_OK) {
+                User usuarioAux = (User)data.getSerializableExtra("UsuarioRet");
 
-                    usuario.setNombre(usuarioAux.getNombre());
-                    usuario.setApellido(usuarioAux.getApellido());
-                    usuario.setTelefono(usuarioAux.getTelefono());
-                    TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
-                    TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
+                usuario.setNombre(usuarioAux.getNombre());
+                usuario.setApellido(usuarioAux.getApellido());
+                usuario.setTelefono(usuarioAux.getTelefono());
+                TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
+                TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
 
-                    _nomnavbar.setText(usuario.getNombre() + " " + usuario.getApellido());
-                    _cornavbar.setText(usuario.getCorreo());
+                _nomnavbar.setText(usuario.getNombre() + " " + usuario.getApellido());
+                _cornavbar.setText(usuario.getCorreo());
 
-                }
             }
-
-
-
-
+        }
 
     }
+
 
 }

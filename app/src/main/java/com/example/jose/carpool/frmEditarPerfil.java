@@ -6,8 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
-public class frmEditarPerfil extends AppCompatActivity {
+public class frmEditarPerfil extends MainActivity {
 
     User usuario;
     EditText txtNombre;
@@ -18,10 +19,16 @@ public class frmEditarPerfil extends AppCompatActivity {
     String apellido;
     String telefono;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frm_editar_perfil);
         Intent intent = getIntent();
+
+        FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.drawer_layout); //Remember this is the FrameLayout area within your activity_main.xml
+        getLayoutInflater().inflate(R.layout.activity_main, contentFrameLayout);
+
+
         usuario = (User)intent.getSerializableExtra("sampleObject");
         txtNombre = (EditText) findViewById(R.id.txtNombre);
         txtApellido = (EditText) findViewById(R.id.txtApellido);

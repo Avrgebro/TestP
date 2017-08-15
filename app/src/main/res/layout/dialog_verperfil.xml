@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout"
+        android:background="@color/transparente">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre Usuario"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:visibility="invisible"
+            />
+        <ImageView
+            android:id="@+id/lblFoto"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:srcCompat="@android:drawable/sym_def_app_icon"
+            android:layout_marginRight="5dp" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre Usuario"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:visibility="invisible"
+            />
+        <TextView
+            android:id="@+id/txtNombre"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre Usuario"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre Usuario"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:visibility="invisible"
+            />
+
+        <TextView
+            android:id="@+id/txtApellido"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Apellido Usuario"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre Usuario"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:visibility="invisible"
+            />
+
+        <TextView
+            android:id="@+id/txtTelefono"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Telefono Usuario"
+            android:textAlignment="center"
+            android:textSize="20dp"
+             />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre Usuario"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:visibility="invisible"
+            />
+
+        <TextView
+            android:id="@+id/txtCorreo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Correo Usuario"
+            android:textAlignment="center"
+            android:textSize="20dp"
+        />
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
