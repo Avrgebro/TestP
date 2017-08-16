@@ -30,13 +30,17 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public User usuario;
+    public static User usuario;
     User user;
 
     private static final String TAG = "MainActivity";
     private static final int Editar_ACTIVITY_RESULT_CODE = 0;
     ImageView img;
     final Context context = this;
+
+    public static TextView _nomNavbar;
+    public static TextView _corNavbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +65,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
+       /* SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
         int SessionState = prefs.getInt("SessionState", 0);
         if(SessionState == 0){
             Log.d(TAG, "No session active");
             Intent loginintent = new Intent(this, activity_login.class);
             startActivity(loginintent);
-        }
+        }*/
 
         //displaySelectedScreen(R.id.idPedir_pool);
 
@@ -96,11 +100,11 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
-        TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
+        _nomNavbar = (TextView) findViewById(R.id.nombre_navbar);
+        _corNavbar = (TextView) findViewById(R.id.correo_navbar);
 
-        _nomnavbar.setText(usuario.getNombre() + " " + usuario.getApellido());
-        _cornavbar.setText(usuario.getCorreo());
+        _nomNavbar.setText(usuario.getNombre() + " " + usuario.getApellido());
+        _corNavbar.setText(usuario.getCorreo());
 
 
  /*
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                 //fragment = new Menu3();
                 break;
             case R.id.idEditarPerfil:
-                fragment = new editar_Perfil();
+                fragment = new editar_Perfil(usuario);
                 break;
             case R.id.idLogout:
                 //fragment = new Menu3();
@@ -175,6 +179,7 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.MainFrameLayout, fragment);
             ft.commit();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -185,21 +190,22 @@ public class MainActivity extends AppCompatActivity
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_verperfil);
         dialog.setTitle("Perfil");
-                /*
 
-                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                // if button is clicked, close the custom dialog
-                dialogButton.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                */
+        cargarVerPerfil(dialog);
+
         dialog.show();
 
     }
 
+    public static void cargarVerPerfil(Dialog dialog){
+        TextView nombre = (TextView) dialog.findViewById(R.id.txtNombre);
+        TextView telefono = (TextView) dialog.findViewById(R.id.txtTelefono);
+        TextView correo = (TextView) dialog.findViewById(R.id.txtCorreo);
+
+        nombre.setText(usuario.getNombre().toString() + usuario.getApellido().toString());
+        telefono.setText(usuario.getTelefono());
+        correo.setText(usuario.getCorreo().toString());
+    }
     // Call Back method  to get the Message form other Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)

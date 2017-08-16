@@ -30,9 +30,9 @@ public class frmEditarPerfil extends MainActivity {
 
 
         usuario = (User)intent.getSerializableExtra("sampleObject");
-        txtNombre = (EditText) findViewById(R.id.txtNombre);
-        txtApellido = (EditText) findViewById(R.id.txtApellido);
-        txtTelefono = (EditText) findViewById(R.id.txtTelefono);
+        txtNombre = (EditText) findViewById(R.id.txtEditNombre);
+        txtApellido = (EditText) findViewById(R.id.txtEditApellido);
+        txtTelefono = (EditText) findViewById(R.id.txtEditTelefono);
 
         nombre= usuario.getNombre();
         apellido = usuario.getApellido();
