@@ -30,7 +30,7 @@ public class activity_login extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-    private static final String BaseURL = "http://181.66.113.54/carpuke_rest/public/api/users/login/";//solo se agrega "correo/pass"
+    private static final String BaseURL = "http://http://10.100.184.45/carpuke_rest/public/api/users/login/"; //solo se agrega "correo/pass"
     private String userEmail;
     private String userPass;
 
