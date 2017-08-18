@@ -65,13 +65,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        /*SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
         int SessionState = prefs.getInt("SessionState", 0);
         if(SessionState == 0){
             Log.d(TAG, "No session active");
             Intent loginintent = new Intent(this, activity_login.class);
             startActivity(loginintent);
-        }*/
+        }
 
         //displaySelectedScreen(R.id.idPedir_pool);
 
