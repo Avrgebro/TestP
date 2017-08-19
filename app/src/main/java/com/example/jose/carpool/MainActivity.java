@@ -25,13 +25,28 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public static User usuario;
-    User user;
+   // public static User usuario;
+    public static User user;
 
     private static final String TAG = "MainActivity";
     private static final int Editar_ACTIVITY_RESULT_CODE = 0;
@@ -48,13 +63,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //Setear o recibir usuario
-        usuario = new User();
-        usuario.setNombre("Flash");
-        usuario.setApellido("Campos");
-        usuario.setCorreo("flash@pucp.pe");
-        usuario.setTelefono("978461250");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,14 +83,30 @@ public class MainActivity extends AppCompatActivity
 
         //displaySelectedScreen(R.id.idPedir_pool);
 
-
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
+        String userJSON = prefs.getString("SessionUser", "");
+
+        if(!userJSON.isEmpty()) {
+            Gson gson = new Gson();
+            user = gson.fromJson(userJSON, User.class);
+            Log.d(TAG, user.getNombre()+" "+user.getCorreo());
+            _nomNavbar = (TextView) findViewById(R.id.nombre_navbar);
+            _corNavbar = (TextView) findViewById(R.id.correo_navbar);
+            if(_nomNavbar!=null && _corNavbar!=null){
+                _nomNavbar.setText(user.getNombre() + " " + user.getApellido());
+                _corNavbar.setText(user.getCorreo());
+            }
+
+
+        }else{
+            Log.e(TAG, "No se recibio el usuario");
+        }
     }
 
     @Override
@@ -100,30 +124,7 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        _nomNavbar = (TextView) findViewById(R.id.nombre_navbar);
-        _corNavbar = (TextView) findViewById(R.id.correo_navbar);
 
-        _nomNavbar.setText(usuario.getNombre() + " " + usuario.getApellido());
-        _corNavbar.setText(usuario.getCorreo());
-
-
- /*
-        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
-        String userJSON = prefs.getString("SessionUser", "");
-        if(!userJSON.isEmpty()) {
-            Gson gson = new Gson();
-            user = gson.fromJson(userJSON, User.class);
-            Log.d(TAG, user.getNombre()+" "+user.getCorreo());
-            TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
-            TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
-            if(_nomnavbar!=null && _cornavbar!=null){
-                _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
-                _cornavbar.setText(user.getCorreo());
-            }
-        }else{
-            Log.e(TAG, "No se recibio el usuario");
-        }
-*/
         return true;
 
     }
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity
                 //fragment = new Menu3();
                 break;
             case R.id.idEditarPerfil:
-                fragment = new editar_Perfil(usuario);
+                fragment = new editar_Perfil(user);
                 break;
             case R.id.idLogout:
                 //fragment = new Menu3();
@@ -202,10 +203,11 @@ public class MainActivity extends AppCompatActivity
         TextView telefono = (TextView) dialog.findViewById(R.id.txtTelefono);
         TextView correo = (TextView) dialog.findViewById(R.id.txtCorreo);
 
-        nombre.setText(usuario.getNombre().toString() + usuario.getApellido().toString());
-        telefono.setText(usuario.getTelefono());
-        correo.setText(usuario.getCorreo().toString());
+        nombre.setText(user.getNombre().toString() + user.getApellido().toString());
+        telefono.setText(user.getTelefono());
+        correo.setText(user.getCorreo().toString());
     }
+
     // Call Back method  to get the Message form other Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -215,19 +217,141 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 User usuarioAux = (User)data.getSerializableExtra("UsuarioRet");
 
-                usuario.setNombre(usuarioAux.getNombre());
-                usuario.setApellido(usuarioAux.getApellido());
-                usuario.setTelefono(usuarioAux.getTelefono());
+                user.setNombre(usuarioAux.getNombre());
+                user.setApellido(usuarioAux.getApellido());
+                user.setTelefono(usuarioAux.getTelefono());
                 TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
                 TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
 
-                _nomnavbar.setText(usuario.getNombre() + " " + usuario.getApellido());
-                _cornavbar.setText(usuario.getCorreo());
+                _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
+                _cornavbar.setText(user.getCorreo());
 
             }
         }
 
     }
 
+    public static void actualizarUsuario(){
+        //subir user
+        //String rspt = postJSONObject(BaseURL, jsonObject);
 
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonObject= new JSONObject();
+                try {
+                    jsonObject.put("idUsuario", user.getID());
+                    jsonObject.put("nombre", user.getNombre());
+                    jsonObject.put("apellido", user.getApellido());
+                    jsonObject.put("telefono", user.getTelefono());
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                String BaseURL = "http://10.100.184.45/carpuke_rest/public/api/users/actualizar_perfil";//solo se agrega "correo/pass"
+                OutputStream os = null;
+                InputStream is = null;
+                HttpURLConnection conn = null;
+                try {
+                    //constants
+                    URL url = new URL(BaseURL);
+                    String message = jsonObject.toString();
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setReadTimeout( 10000 /*milliseconds*/ );
+                    conn.setConnectTimeout( 15000 /* milliseconds */ );
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.setFixedLengthStreamingMode(message.getBytes().length);
+
+                    //make some HTTP header nicety
+                    conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+                    conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+
+                    //open
+                    conn.connect();
+
+                    //setup send
+                    os = new BufferedOutputStream(conn.getOutputStream());
+                    os.write(message.getBytes());
+                    //clean up
+                    os.flush();
+
+                    //do somehting with response
+                    is = conn.getInputStream();
+                    //String contentAsString = readIt(is,len);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    //clean up
+                    try {
+                        os.close();
+                        is.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    conn.disconnect();
+                }
+            }
+        }).start();
+
+
+
+
+
+
+
+
+
+
+
+    }
+/*
+    public static String postJSONObject(String myurl, JSONObject parameters) {
+        HttpURLConnection conn = null;
+        try {
+            StringBuffer response = null;
+            URL url = new URL(myurl);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            OutputStream out = new BufferedOutputStream(conn.getOutputStream());
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+            writer.write(parameters.toString());
+            writer.close();
+            out.close();
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode" + responseCode);
+            switch (responseCode) {
+                case 200:
+                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    String inputLine;
+                    response = new StringBuffer();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+                    return response.toString();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.disconnect();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+*/
 }

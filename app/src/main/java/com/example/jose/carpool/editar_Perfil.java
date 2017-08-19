@@ -86,30 +86,34 @@ public class editar_Perfil extends Fragment {
                 String nombreR="";
                 if(txtNombre.length() == 0) {
                     nombreR = txtNombre.getHint().toString();
-                    MainActivity.usuario.setNombre(txtNombre.getHint().toString());
+                    MainActivity.user.setNombre(txtNombre.getHint().toString());
                 }else {
-                    MainActivity.usuario.setNombre(txtNombre.getText().toString());
+                    MainActivity.user.setNombre(txtNombre.getText().toString());
                     nombreR = txtNombre.getText().toString();
                 }
 
                 if(txtApellido.length() == 0) {
                     nombreR = nombreR + (txtApellido.getHint().toString());
-                    MainActivity.usuario.setApellido(txtApellido.getHint().toString());
+                    MainActivity.user.setApellido(txtApellido.getHint().toString());
                 }else {
                     nombreR = nombreR + (txtApellido.getText().toString());
-                    MainActivity.usuario.setApellido(txtApellido.getText().toString());
+                    MainActivity.user.setApellido(txtApellido.getText().toString());
                 }
 
                 if(txtTelefono.length() == 0) {
-                    MainActivity.usuario.setTelefono(txtTelefono.getHint().toString());
+                    MainActivity.user.setTelefono(txtTelefono.getHint().toString());
                 }else{
-                    MainActivity.usuario.setTelefono(txtTelefono.getText().toString());
+                    MainActivity.user.setTelefono(txtTelefono.getText().toString());
                 }
 
                 TextView nombreMain = (TextView) MainActivity._nomNavbar;
                 nombreMain.setText(nombreR);
 
+
                 cargarInicio();
+
+                //LLamar a la funcion actualizar BD
+                MainActivity.actualizarUsuario();
             }
         });
 
