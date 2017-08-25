@@ -18,6 +18,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 
 public class editar_Perfil extends Fragment {
 
@@ -113,11 +122,80 @@ public class editar_Perfil extends Fragment {
                 cargarInicio();
 
                 //LLamar a la funcion actualizar BD
-                MainActivity.actualizarUsuario();
+                actualizarUsuario();
             }
         });
 
     }
+
+
+    public static void actualizarUsuario(){
+        //subir user
+        //String rspt = postJSONObject(BaseURL, jsonObject);
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonObject= new JSONObject();
+                try {
+                    jsonObject.put("idUsuario", MainActivity.user.getID());
+                    jsonObject.put("nombre", MainActivity.user.getNombre());
+                    jsonObject.put("apellido", MainActivity.user.getApellido());
+                    jsonObject.put("telefono", MainActivity.user.getTelefono());
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                String BaseURL = "http://10.100.184.45/carpuke_rest/public/api/users/actualizar_perfil";//solo se agrega "correo/pass"
+                OutputStream os = null;
+                InputStream is = null;
+                HttpURLConnection conn = null;
+                try {
+                    //constants
+                    URL url = new URL(BaseURL);
+                    String message = jsonObject.toString();
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setReadTimeout( 10000 /*milliseconds*/ );
+                    conn.setConnectTimeout( 15000 /* milliseconds */ );
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.setFixedLengthStreamingMode(message.getBytes().length);
+
+                    //make some HTTP header nicety
+                    conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+                    conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+
+                    //open
+                    conn.connect();
+
+                    //setup send
+                    os = new BufferedOutputStream(conn.getOutputStream());
+                    os.write(message.getBytes());
+                    //clean up
+                    os.flush();
+
+                    //do somehting with response
+                    is = conn.getInputStream();
+                    //String contentAsString = readIt(is,len);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    //clean up
+                    try {
+                        os.close();
+                        is.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    conn.disconnect();
+                }
+            }
+        }).start();
 
 
     void cargarInicio(){
