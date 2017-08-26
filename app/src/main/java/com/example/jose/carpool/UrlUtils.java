@@ -11,10 +11,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -73,40 +75,56 @@ public final class UrlUtils {
         return jsonResponse;
     }
 
-    public static String makeHttpRequestPost(URL url) throws IOException {
+    public static String makeHttpRequestPost(String _url, JSONObject jsonObject) throws IOException {
+        OutputStream os = null;
+        InputStream is = null;
+        HttpURLConnection conn = null;
         String jsonResponse = "";
-
-        // If the URL is null, then return early.
-        if (url == null) {
-            return jsonResponse;
-        }
-
-        HttpURLConnection urlConnection = null;
-        InputStream inputStream = null;
         try {
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
-            urlConnection.setRequestMethod("POST");
-            urlConnection.connect();
+            URL url = new URL(_url);
+            String message = jsonObject.toString();
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setFixedLengthStreamingMode(message.getBytes().length);
+
+            //make some HTTP header nicety
+            conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+            conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+
+            //open
+            conn.connect();
+
+            //setup send
+            os = new BufferedOutputStream(conn.getOutputStream());
+            os.write(message.getBytes());
+            //clean up
+            os.flush();
+
+            //do somehting with response
+            is = conn.getInputStream();
+            jsonResponse = UrlUtils.readFromStream(is);
 
 
-            if (urlConnection.getResponseCode() == 200) {
-                inputStream = urlConnection.getInputStream();
-                jsonResponse = readFromStream(inputStream);
-            } else {
-                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
-            }
+
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the JSON results.", e);
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (inputStream != null) {
-                inputStream.close();
-            }
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
+        finally {
+            //clean up
+            try {
+                os.close();
+                is.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            conn.disconnect();
+        }
+
         return jsonResponse;
     }
 

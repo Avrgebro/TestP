@@ -108,65 +108,22 @@ public class activity_emailverification extends AppCompatActivity {
                 }
 
 
-                //conexion con bd
-                OutputStream os = null;
-                InputStream is = null;
-                HttpURLConnection conn = null;
                 String jsonResponse = "";
                 try {
-                    URL url = new URL(_baseVCurl);
-                    String message = jsonObject.toString();
-                    conn = (HttpURLConnection) url.openConnection();
-                    conn.setReadTimeout( 10000 /*milliseconds*/ );
-                    conn.setConnectTimeout( 15000 /* milliseconds */ );
-                    conn.setRequestMethod("POST");
-                    conn.setDoInput(true);
-                    conn.setDoOutput(true);
-                    conn.setFixedLengthStreamingMode(message.getBytes().length);
-
-                    //make some HTTP header nicety
-                    conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-                    conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-
-                    //open
-                    conn.connect();
-
-                    //setup send
-                    os = new BufferedOutputStream(conn.getOutputStream());
-                    os.write(message.getBytes());
-                    //clean up
-                    os.flush();
-
-                    //do somehting with response
-                    is = conn.getInputStream();
-                    jsonResponse = UrlUtils.readFromStream(is);
-
-
-                    try {
-                        JSONObject baseJsonResponse = new JSONObject(jsonResponse);
-                        int codigo = baseJsonResponse.getInt("codigo");
-
-                        if (codigo == 1) {//enviocorrecto
-                            Log.d(TAG, "envio de email correcto");
-                        }
-                    } catch (JSONException e) {
-                        Log.e(TAG, "Problem parsing the JSON code results", e);
-                    }
-
-
+                    jsonResponse = UrlUtils.makeHttpRequestPost(_baseVCurl, jsonObject);
                 } catch (IOException e) {
-                    Log.e(TAG, "Problem retrieving the JSON results.", e);
+                    Log.e(TAG, "Problem making the HTTP request.", e);
                 }
-                finally {
-                    //clean up
-                    try {
-                        os.close();
-                        is.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
-                    conn.disconnect();
+                try {
+                    JSONObject baseJsonResponse = new JSONObject(jsonResponse);
+                    int codigo = baseJsonResponse.getInt("codigo");
+
+                    if (codigo == 1) {//enviocorrecto
+                        Log.d(TAG, "envio de email correcto");
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "Problem parsing the JSON code results", e);
                 }
             }
         };
@@ -249,50 +206,12 @@ public class activity_emailverification extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            OutputStream os = null;
-            InputStream is = null;
-            HttpURLConnection conn = null;
             String jsonResponse = "";
             try {
-                URL url = new URL(_baseREurl);
-                String message = jsonObject.toString();
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout( 10000 /*milliseconds*/ );
-                conn.setConnectTimeout( 15000 /* milliseconds */ );
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setFixedLengthStreamingMode(message.getBytes().length);
-
-                //make some HTTP header nicety
-                conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-                conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-
-                //open
-                conn.connect();
-
-                //setup send
-                os = new BufferedOutputStream(conn.getOutputStream());
-                os.write(message.getBytes());
-                //clean up
-                os.flush();
-
-                //do somehting with response
-                is = conn.getInputStream();
-                jsonResponse = UrlUtils.readFromStream(is);
-
-
-
+                jsonResponse = UrlUtils.makeHttpRequestPost(_baseREurl, jsonObject);
             } catch (IOException e) {
                 Log.e(TAG, "Problem making the HTTP request.", e);
             }
-
-            // Extract relevant fields from the JSON response and create an {@link Event} object
-
-            //TODO:PARSEAR RESPUESTA JSON A OBJETO USANDO GSON;
-            // Return the {@link Event} object as the result fo the {@link TsunamiAsyncTask}
-            //Gson gson = new Gson();
-            //User user = gson.fromJson(jsonResponse, User.class);
 
             return jsonResponse;
         }

@@ -27,7 +27,8 @@
             android:orientation="vertical"
             android:paddingTop="56dp"
             android:paddingLeft="24dp"
-            android:paddingRight="24dp">
+            android:paddingRight="24dp"
+            android:id="@+id/signupview">
 
             <EditText
                 android:id="@+id/name_signupet"
