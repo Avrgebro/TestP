@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -47,7 +49,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        navigationView.setCheckedItem(R.id.nav_camera);
+
         header=navigationView.getHeaderView(0);
+
+
 
         TextView _logout = (TextView) findViewById(R.id.logout);
         _logout.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +71,13 @@ public class MainActivity extends AppCompatActivity
             Intent loginintent = new Intent(this, activity_login.class);
             startActivity(loginintent);
         }
+
+        //inflate first fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        pool_fragment cpF = new pool_fragment();
+        fragmentTransaction.replace(R.id.MainFrameLayout, cpF);
+        fragmentTransaction.commit();
 
 
     }
@@ -136,7 +149,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            pool_fragment cpF = new pool_fragment();
+            fragmentTransaction.replace(R.id.MainFrameLayout, cpF);
+            fragmentTransaction.commit();
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
