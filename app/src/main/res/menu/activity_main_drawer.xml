@@ -4,9 +4,13 @@
     
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/idPedir_pool"
+            android:id="@+id/idCrearPool"
             android:icon="@drawable/ic_pool"
             android:title="Pedir pool" />
+        <item
+            android:id="@+id/idVehiculos"
+            android:icon="@drawable/ic_tusvehiculos"
+            android:title="Tus vehiculos" />
         <item
             android:id="@+id/idVer_pendiente"
             android:icon="@drawable/ic_pendiente"
@@ -19,13 +23,11 @@
             android:id="@+id/idEditarPerfil"
             android:icon="@drawable/ic_edit"
             android:title="Editar Perfil" />
-    </group>
-
-
-    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/idLogout"
-            android:icon="@drawable/ic_logout"
-            android:title="Log out" />
+            android:id="@+id/idAgregarVehiculo"
+            android:icon="@drawable/ic_edit"
+            android:title="Editar Perfil"
+            android:visible="false"/>
     </group>
+
 </menu>

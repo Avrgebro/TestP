@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity
     ImageView img;
     final Context context = this;
 
-    public static TextView _nomNavbar;
-    public static TextView _corNavbar;
-
+    public static TextView _nomnavbar;
+    public static TextView _cornavbar;
+    private View header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        header=navigationView.getHeaderView(0);
+
+        TextView _logout = (TextView) findViewById(R.id.logout);
+        _logout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+
 
         SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
         int SessionState = prefs.getInt("SessionState", 0);
@@ -96,17 +108,18 @@ public class MainActivity extends AppCompatActivity
             Gson gson = new Gson();
             user = gson.fromJson(userJSON, User.class);
             Log.d(TAG, user.getNombre()+" "+user.getCorreo());
-            _nomNavbar = (TextView) findViewById(R.id.nombre_navbar);
-            _corNavbar = (TextView) findViewById(R.id.correo_navbar);
-            if(_nomNavbar!=null && _corNavbar!=null){
-                _nomNavbar.setText(user.getNombre() + " " + user.getApellido());
-                _corNavbar.setText(user.getCorreo());
+            _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
+            _cornavbar = (TextView) findViewById(R.id.correo_navbar);
+            if(_nomnavbar!=null && _cornavbar!=null){
+                _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
+                _cornavbar.setText(user.getCorreo());
             }
 
 
         }else{
             Log.e(TAG, "No se recibio el usuario");
         }
+
     }
 
     @Override
@@ -123,7 +136,24 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
+        String userJSON = prefs.getString("SessionUser", "");
 
+        if(!userJSON.isEmpty()) {
+            Gson gson = new Gson();
+            user = gson.fromJson(userJSON, User.class);
+            Log.d(TAG, user.getNombre()+" "+user.getCorreo());
+            _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
+            _cornavbar = (TextView) findViewById(R.id.correo_navbar);
+            if(_nomnavbar!=null && _cornavbar!=null){
+                _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
+                _cornavbar.setText(user.getCorreo());
+            }
+
+
+        }else{
+            Log.e(TAG, "No se recibio el usuario");
+        }
 
         return true;
 
@@ -158,8 +188,11 @@ public class MainActivity extends AppCompatActivity
 
         //initializing the fragment object which is selected
         switch (itemId) {
-            case R.id.idPedir_pool:
+            case R.id.idCrearPool:
 
+                break;
+            case R.id.idVehiculos:
+                fragment = new tus_vehiculos();
                 break;
             case R.id.idVer_pendiente:
                 //fragment = new Menu2();
@@ -170,8 +203,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.idEditarPerfil:
                 fragment = new editar_Perfil(user);
                 break;
-            case R.id.idLogout:
-                //fragment = new Menu3();
+            case R.id.idAgregarVehiculo:
+
                 break;
         }
 
@@ -186,6 +219,20 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
+
+    public void logout(){
+        SharedPreferences.Editor editor = getSharedPreferences("SessionToken", MODE_PRIVATE).edit();
+        editor.remove("SessionUser");
+        editor.putInt("SessionState", 0);
+        editor.apply();
+
+        Intent i = getBaseContext().getPackageManager()
+                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        finish();
+        startActivity(i);
+    }
+
 
     public void Ver_Perfil(View view){
         final Dialog dialog = new Dialog(context);
@@ -203,88 +250,10 @@ public class MainActivity extends AppCompatActivity
         TextView telefono = (TextView) dialog.findViewById(R.id.txtTelefono);
         TextView correo = (TextView) dialog.findViewById(R.id.txtCorreo);
 
-        nombre.setText(user.getNombre().toString() + user.getApellido().toString());
+        nombre.setText(user.getNombre().toString() +" "+ user.getApellido().toString());
         telefono.setText(user.getTelefono());
         correo.setText(user.getCorreo().toString());
     }
 
-    // Call Back method  to get the Message form other Activity
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Editar_ACTIVITY_RESULT_CODE) {
-            if (resultCode == RESULT_OK) {
-                User usuarioAux = (User)data.getSerializableExtra("UsuarioRet");
 
-                user.setNombre(usuarioAux.getNombre());
-                user.setApellido(usuarioAux.getApellido());
-                user.setTelefono(usuarioAux.getTelefono());
-                TextView _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
-                TextView _cornavbar = (TextView) findViewById(R.id.correo_navbar);
-
-                _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
-                _cornavbar.setText(user.getCorreo());
-
-            }
-        }
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-/*
-    public static String postJSONObject(String myurl, JSONObject parameters) {
-        HttpURLConnection conn = null;
-        try {
-            StringBuffer response = null;
-            URL url = new URL(myurl);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            OutputStream out = new BufferedOutputStream(conn.getOutputStream());
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-            writer.write(parameters.toString());
-            writer.close();
-            out.close();
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode" + responseCode);
-            switch (responseCode) {
-                case 200:
-                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    String inputLine;
-                    response = new StringBuffer();
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-                    in.close();
-                    return response.toString();
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.disconnect();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
-*/
 }

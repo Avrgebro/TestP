@@ -2,33 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="80dp">
 
     <LinearLayout
+
         android:layout_width="wrap_content"
-        android:layout_height="58dp"
+        android:layout_height="70dp"
         android:orientation="vertical"
         android:layout_gravity="center_vertical">
 
         <TextView
+            android:id="@+id/lblPlaca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="VENTANILLA" />
+            android:text="Placa"
+            android:textSize="30dp"/>
 
         <TextView
+            android:id="@+id/lblModelo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Josue Yaque Chucha"/>
+            android:text="Modelo"
+            android:textSize="25dp"/>
 
 
     </LinearLayout>
 
     <TextView
+        android:id="@+id/lblMarca"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="8:15PM"/>
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:text="Marca"
+        android:textSize="20dp"/>
 
 
 

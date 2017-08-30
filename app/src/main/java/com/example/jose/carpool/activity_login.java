@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ public class activity_login extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-    private static final String BaseURL = "http://10.100.184.45/carpuke_rest/public/api/users/login/";//solo se agrega "correo/pass"
+    private static final String BaseURL = "http://200.16.7.170/api/users/login/";//solo se agrega "correo/pass"
     private String userEmail;
     private String userPass;
 
@@ -71,6 +72,9 @@ public class activity_login extends AppCompatActivity {
 
     public void login(){
         Log.d(TAG, "Login");
+
+        ProgressBar PB = (ProgressBar) findViewById(R.id.logPB);
+        PB.setVisibility(View.VISIBLE);
 
         if (!validate()) {
             onLoginFailed(2);
@@ -123,6 +127,10 @@ public class activity_login extends AppCompatActivity {
         editor.putString("SessionUser", json);
         editor.putInt("SessionState", 1);
         editor.apply();
+
+        ProgressBar PB = (ProgressBar) findViewById(R.id.logPB);
+        PB.setVisibility(View.INVISIBLE);
+
         finish();
     }
 
@@ -136,12 +144,18 @@ public class activity_login extends AppCompatActivity {
 
         }
         if(flag == -1){
-            Snackbar.make(findViewById(R.id.loginview), "Problemas con el servidor", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.loginview), "Eror en base de datos", Snackbar.LENGTH_SHORT).show();
 
         }
         if(flag == 2){
             Snackbar.make(findViewById(R.id.loginview), "Campos llenados incorrectamente", Snackbar.LENGTH_SHORT).show();
         }
+        if(flag == 3){
+            Snackbar.make(findViewById(R.id.loginview), "No hay conexion o problemas en servidor", Snackbar.LENGTH_SHORT).show();
+        }
+
+        ProgressBar PB = (ProgressBar) findViewById(R.id.logPB);
+        PB.setVisibility(View.INVISIBLE);
 
         _loginButton.setEnabled(true);
         _signupLink.setEnabled(true);
@@ -216,7 +230,7 @@ public class activity_login extends AppCompatActivity {
             //aca lo convierto a un objeto json y verifico el codigo
 
             if (TextUtils.isEmpty(userinfoJSON)) {
-                onLoginFailed(0);
+                onLoginFailed(3);
                 Log.d(TAG, "Json vacio");
                 return;
             }

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -33,6 +34,9 @@ public class editar_Perfil extends Fragment {
     EditText txtNombre;
     EditText txtApellido;
     EditText txtTelefono;
+    TextInputLayout textinputNombre;
+    TextInputLayout textinputApellido;
+    TextInputLayout textinputTelefono;
     public User usuario;
 
 
@@ -57,69 +61,36 @@ public class editar_Perfil extends Fragment {
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Menu 1");
 
-        txtNombre = (EditText) getView().findViewById(R.id.txtEditNombre);
-        txtApellido = (EditText) getView().findViewById(R.id.txtEditApellido);
-        txtTelefono = (EditText) getView().findViewById(R.id.txtEditTelefono);
+        textinputNombre = (TextInputLayout) getView().findViewById(R.id.textNombre);
+        textinputApellido = (TextInputLayout) getView().findViewById(R.id.textApellido);
+        textinputTelefono = (TextInputLayout) getView().findViewById(R.id.textTelefono);
 
-        txtNombre.setHint(usuario.getNombre().toString());
-        txtApellido.setHint(usuario.getApellido().toString());
-        txtTelefono.setHint(usuario.getTelefono());
 
-        ImageView editNombre = (ImageView) getView().findViewById(R.id.btnEditNombre);
-        editNombre.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                txtNombre.setFocusableInTouchMode(true);
-                txtNombre.setBackgroundColor(Color.WHITE);
-            }
-        });
-
-        ImageView editApellido = (ImageView) getView().findViewById(R.id.btnEditApellido);
-        editApellido.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                txtApellido.setFocusableInTouchMode(true);
-                txtApellido.setBackgroundColor(Color.WHITE);
-            }
-        });
-
-        ImageView editTelefono = (ImageView) getView().findViewById(R.id.btnEditTelefono);
-        editTelefono.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                txtTelefono.setFocusableInTouchMode(true);
-                txtTelefono.setBackgroundColor(Color.WHITE);
-            }
-        });
+        textinputNombre.setHint(usuario.getNombre().toString());
+        textinputApellido.setHint(usuario.getApellido().toString());
+        textinputTelefono.setHint(usuario.getTelefono());
 
         ImageView editarAll = (ImageView) getView().findViewById(R.id.btnEditar);
         editarAll.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String nombreR="";
-                if(txtNombre.length() == 0) {
-                    nombreR = txtNombre.getHint().toString();
-                    MainActivity.user.setNombre(txtNombre.getHint().toString());
-                }else {
+                txtNombre = textinputNombre.getEditText();
+                txtApellido = textinputApellido.getEditText();
+                txtTelefono = textinputTelefono.getEditText();
+                if(txtNombre.length() != 0) {
                     MainActivity.user.setNombre(txtNombre.getText().toString());
-                    nombreR = txtNombre.getText().toString();
                 }
 
-                if(txtApellido.length() == 0) {
-                    nombreR = nombreR + (txtApellido.getHint().toString());
-                    MainActivity.user.setApellido(txtApellido.getHint().toString());
-                }else {
-                    nombreR = nombreR + (txtApellido.getText().toString());
+                if(txtApellido.length() != 0) {
                     MainActivity.user.setApellido(txtApellido.getText().toString());
                 }
 
-                if(txtTelefono.length() == 0) {
-                    MainActivity.user.setTelefono(txtTelefono.getHint().toString());
-                }else{
+                if(txtTelefono.length() != 0) {
                     MainActivity.user.setTelefono(txtTelefono.getText().toString());
                 }
 
-                TextView nombreMain = (TextView) MainActivity._nomNavbar;
-                nombreMain.setText(nombreR);
-
-
-                cargarInicio();
+                TextView nombreMain = (TextView) MainActivity._nomnavbar;
+                nombreMain.setText(MainActivity.user.getNombre() + " " + MainActivity.user.getApellido());
+                //cargarInicio();
 
                 //LLamar a la funcion actualizar BD
                 actualizarUsuario();
@@ -129,7 +100,7 @@ public class editar_Perfil extends Fragment {
     }
 
 
-    public static void actualizarUsuario(){
+    public static void actualizarUsuario() {
         //subir user
         //String rspt = postJSONObject(BaseURL, jsonObject);
 
@@ -137,7 +108,7 @@ public class editar_Perfil extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                JSONObject jsonObject= new JSONObject();
+                JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("idUsuario", MainActivity.user.getID());
                     jsonObject.put("nombre", MainActivity.user.getNombre());
@@ -148,7 +119,7 @@ public class editar_Perfil extends Fragment {
                     e.printStackTrace();
                 }
 
-                String BaseURL = "http://10.100.184.45/carpuke_rest/public/api/users/actualizar_perfil";//solo se agrega "correo/pass"
+                String BaseURL = "http://200.16.7.170/api/users/actualizar_perfil";//solo se agrega "correo/pass"
                 OutputStream os = null;
                 InputStream is = null;
                 HttpURLConnection conn = null;
@@ -157,8 +128,8 @@ public class editar_Perfil extends Fragment {
                     URL url = new URL(BaseURL);
                     String message = jsonObject.toString();
                     conn = (HttpURLConnection) url.openConnection();
-                    conn.setReadTimeout( 10000 /*milliseconds*/ );
-                    conn.setConnectTimeout( 15000 /* milliseconds */ );
+                    conn.setReadTimeout(10000 /*milliseconds*/);
+                    conn.setConnectTimeout(15000 /* milliseconds */);
                     conn.setRequestMethod("POST");
                     conn.setDoInput(true);
                     conn.setDoOutput(true);
@@ -182,8 +153,7 @@ public class editar_Perfil extends Fragment {
                     //String contentAsString = readIt(is,len);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
-                finally {
+                } finally {
                     //clean up
                     try {
                         os.close();
@@ -197,7 +167,7 @@ public class editar_Perfil extends Fragment {
             }
         }).start();
 
-
+    }
     void cargarInicio(){
         txtNombre.setFocusable(false);
         txtNombre.setBackgroundColor(Color.GRAY);

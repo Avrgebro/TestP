@@ -112,6 +112,9 @@ public class activity_signup extends AppCompatActivity {
             _telET.setError("Campo Vacio");
             emptyfield = true;
         }
+        if(telf.length() < 8){
+            _telET.setError("Numero Invalido");
+        }
         if(email.isEmpty()){
             _emailET.setError("Campo Vacio");
             emptyfield = true;
