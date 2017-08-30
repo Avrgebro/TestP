@@ -1,5 +1,6 @@
 package com.example.jose.carpool;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,8 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,11 +33,13 @@ import java.util.List;
  */
 
 public class pool_fragment extends Fragment {
+
     private static final String TAG = "CarPoolFragment";
     private static final String _baseCPurl = "http://200.16.7.170/api/pools/obtener_pools";
     private ListView lv;
     private ArrayList<CarPool> pools;
     private SwipeRefreshLayout swipeView;
+    //private CarPoolAdapter cpAdptr;
 
     @Nullable
     @Override
@@ -62,7 +68,7 @@ public class pool_fragment extends Fragment {
 
 
                     }
-                }, 3000);
+                }, 1000);
             }
         });
 
@@ -74,6 +80,9 @@ public class pool_fragment extends Fragment {
 
         }
         return view;
+
+
+
     }
 
     @Override
@@ -96,10 +105,30 @@ public class pool_fragment extends Fragment {
     }
 
     private void UpdateUI(){
-        CarPoolAdapter cpAdptr = new CarPoolAdapter(getActivity(), pools);
+        final CarPoolAdapter cpAdptr = new CarPoolAdapter(getActivity(), pools);
 
         lv.setAdapter(cpAdptr);
         swipeView.setRefreshing(false);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l){
+                CarPool curCP = cpAdptr.getItem(position);
+
+                Gson gson = new Gson();
+
+                String jsonInString = gson.toJson(curCP);
+
+                //Intent para abrir la ventana de info del carpool
+
+                Intent CPInf = new Intent(getActivity(), PoolInfoScreen.class);
+                CPInf.putExtra("CarPoolInfo", jsonInString);
+                startActivity(CPInf);
+
+
+            }
+        });
 
         return;
     }

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -101,9 +103,8 @@ public class activity_login extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
+                Log.d(TAG, "obtuve rsultado de signup");
+                setResult(RESULT_OK, null);
                 this.finish();
             }
         }
@@ -114,6 +115,7 @@ public class activity_login extends AppCompatActivity {
         // Disable going back to the MainActivity
         moveTaskToBack(true);
     }
+
 
     public void onLoginSuccess(User userinfo) {
         Log.d(TAG, "login success");
@@ -131,7 +133,10 @@ public class activity_login extends AppCompatActivity {
         ProgressBar PB = (ProgressBar) findViewById(R.id.logPB);
         PB.setVisibility(View.INVISIBLE);
 
+
+        setResult(RESULT_OK, null);
         finish();
+
     }
 
     public void onLoginFailed(int flag) {
@@ -218,8 +223,8 @@ public class activity_login extends AppCompatActivity {
 
             //TODO:PARSEAR RESPUESTA JSON A OBJETO USANDO GSON;
             // Return the {@link Event} object as the result fo the {@link TsunamiAsyncTask}
-            Gson gson = new Gson();
-            User user = gson.fromJson(jsonResponse, User.class);
+            //Gson gson = new Gson();
+            //User user = gson.fromJson(jsonResponse, User.class);
 
             return jsonResponse;
         }

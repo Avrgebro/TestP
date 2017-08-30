@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "MainActivity";
     private View header;
-
+    private static final int RESULT_CODE = 0;
+    private boolean mReturningWithResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,18 +70,46 @@ public class MainActivity extends AppCompatActivity
         if(SessionState == 0){
             Log.d(TAG, "No session active");
             Intent loginintent = new Intent(this, activity_login.class);
-            startActivity(loginintent);
-        }
+            startActivityForResult(loginintent, RESULT_CODE);
+        }else{
 
-        //inflate first fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        pool_fragment cpF = new pool_fragment();
-        fragmentTransaction.replace(R.id.MainFrameLayout, cpF);
-        fragmentTransaction.commit();
+            //inflate first fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            pool_fragment cpF = new pool_fragment();
+            fragmentTransaction.replace(R.id.MainFrameLayout, cpF);
+            fragmentTransaction.commit();
+        }
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RESULT_CODE) {
+            if (resultCode == RESULT_OK) {
+                super.onActivityResult(requestCode, resultCode, data);
+                mReturningWithResult = true;
+
+
+            }
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (mReturningWithResult) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            pool_fragment cpF = new pool_fragment();
+            fragmentTransaction.replace(R.id.MainFrameLayout, cpF);
+            fragmentTransaction.commit();
+        }
+        // Reset the boolean flag back to false for next time.
+        mReturningWithResult = false;
+    }
+
 
     @Override
     protected void onStart() {
@@ -103,7 +132,7 @@ public class MainActivity extends AppCompatActivity
 
 
         }else{
-            Log.e(TAG, "No se recibio el usuario");
+            Log.d(TAG, "No se recibio el usuario");
         }
 
     }

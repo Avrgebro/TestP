@@ -3,6 +3,7 @@
     package="com.example.jose.carpool">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD_cCfO3657tosUzJXKaNQMSfILJn9vTCw" />
 
         <activity
             android:name=".MainActivity"
@@ -21,17 +26,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity_login"
-            android:theme="@style/NoActionBar"></activity>
-
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activity_signup"
-            android:theme="@style/NoActionBar"></activity>
-
-        <activity android:name=".activity_emailverification"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".activity_emailverification"
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".PoolInfoScreen"></activity>
     </application>
 
 </manifest>

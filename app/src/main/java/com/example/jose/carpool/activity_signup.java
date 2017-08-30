@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -111,7 +113,11 @@ public class activity_signup extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FINISH_SIGNAL) {
             if (resultCode == RESULT_OK) {
+
+                setResult(RESULT_OK, null);
+                Log.d(TAG, "obtuve resultado de email ver");
                 this.finish();
+                //this.finish();
             }
         }
     }
