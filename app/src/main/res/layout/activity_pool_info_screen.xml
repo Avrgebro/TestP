@@ -1,6 +1,7 @@
 <com.sothree.slidinguppanel.SlidingUpPanelLayout
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,16 +9,159 @@
     sothree:umanoPanelHeight="34dp"
     sothree:umanoShadowHeight="4dp">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/accent">
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp">
 
         <TextView
+            android:layout_width="56dp"
+            android:layout_height="17dp"
+            android:text="Origen"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            sothree:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="39dp"
+            sothree:layout_constraintHorizontal_bias="0.182" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="47dp"
+            android:layout_height="17dp"
+            android:text="Destino"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            sothree:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="39dp"
+            sothree:layout_constraintHorizontal_bias="0.672" />
+
+        <TextView
+            android:id="@+id/nom_org"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PRUEBAlalala"/>
-    </LinearLayout>
+            android:text="TextView"
+            sothree:layout_constraintLeft_toLeftOf="@+id/guideline"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            sothree:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="80dp"
+            sothree:layout_constraintHorizontal_bias="0.127" />
+
+        <TextView
+            android:id="@+id/dist_org"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="@+id/guideline"
+            sothree:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="119dp"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            sothree:layout_constraintHorizontal_bias="0.127" />
+
+        <TextView
+            android:id="@+id/nom_dest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            sothree:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="parent"
+            sothree:layout_constraintHorizontal_bias="0.696" />
+
+        <TextView
+            android:id="@+id/dist_dest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            sothree:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="119dp"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="@+id/guideline"
+            sothree:layout_constraintHorizontal_bias="0.675" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ASIENTOS"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            sothree:layout_constraintHorizontal_bias="0.188"
+            sothree:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="236dp" />
+
+        <TextView
+            android:id="@+id/nasien"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            sothree:layout_constraintHorizontal_bias="0.183"
+            sothree:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="183dp" />
+
+        <TextView
+            android:id="@+id/precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="@+id/guideline"
+            sothree:layout_constraintHorizontal_bias="0.744"
+            sothree:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="219dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="parent"
+            sothree:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="61dp" />
+
+        <TextView
+            android:id="@+id/hsal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_marginRight="8dp"
+            sothree:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            sothree:layout_constraintLeft_toLeftOf="parent"
+            sothree:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="188dp" />
+
+        <android.support.constraint.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline"
+            sothree:layout_constraintGuide_begin="20dp"
+            android:orientation="vertical" />
+    </android.support.constraint.ConstraintLayout>
 
 
 
