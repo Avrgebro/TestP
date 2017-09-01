@@ -295,6 +295,8 @@ public class tus_vehiculos extends Fragment {
                     String Imagen = pool.getString("img");
                     int IDvehiculo = pool.getInt("idVehiculo");
 
+                    Bitmap imagen = decodeBase64(Imagen);
+
                     Vehiculo auxVehiculo = new Vehiculo(Integer.toString(IDvehiculo),Placa,Modelo,Marca,Color,Integer.toString(Numasientos));
                     lstVehi.add(auxVehiculo);
                 }
@@ -382,6 +384,12 @@ public class tus_vehiculos extends Fragment {
         }
     }
 
+
+    public static Bitmap decodeBase64(String input)
+    {
+        byte[] decodedBytes = Base64.decode(input, 0);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
 
     private String bitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
