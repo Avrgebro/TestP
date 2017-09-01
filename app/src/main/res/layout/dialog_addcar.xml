@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.example.jose.carpool.frmEditarPerfil">
-
+>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -13,7 +12,9 @@
         android:paddingTop="30dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:id="@+id/loginview">
+        android:id="@+id/loginview"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
 
         <android.support.design.widget.TextInputLayout
@@ -98,6 +99,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
 
+            <TextView
+                android:id="@+id/stateLoadPhoto"
+                android:layout_width="251dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="TextView" />
+
             <EditText android:id="@+id/txtNasientos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,17 +116,37 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageButton
+                android:id="@+id/btn_addPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.09"
+                app:srcCompat="@drawable/ic_menu_camera" />
+
+        </LinearLayout>
+
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_AddCar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-
             android:padding="12dp"
             android:backgroundTint="@color/accent"
             android:textColor="@color/btn"
             android:text="Agregar" />
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.63"
+            app:srcCompat="@drawable/ic_menu_gallery" />
 
 
     </LinearLayout>
