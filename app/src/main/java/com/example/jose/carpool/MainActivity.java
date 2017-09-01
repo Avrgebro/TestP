@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
@@ -186,9 +188,14 @@ public class MainActivity extends AppCompatActivity
         //creating fragment object
         Fragment fragment = null;
 
+
+
+
         //initializing the fragment object which is selected
         switch (itemId) {
             case R.id.idCrearPool:
+
+                fragment = new fragment_crearpool();
 
                 break;
             case R.id.idVehiculos:
@@ -202,9 +209,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.idEditarPerfil:
                 fragment = new editar_Perfil(user);
-                break;
-            case R.id.idAgregarVehiculo:
-
                 break;
         }
 
