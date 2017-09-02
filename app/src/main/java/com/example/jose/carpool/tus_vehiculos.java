@@ -125,12 +125,11 @@ public class tus_vehiculos extends Fragment {
                         lstVehi.clear();
                         VehiculosAT task = new VehiculosAT();
                         task.execute();
-
-
                     }
                 }, 3000);
             }
         });
+
         if(lstVehi == null || lstVehi.isEmpty()){
             if(lstVehi == null) lstVehi = new ArrayList<Vehiculo>();
             //asyncTask para obtener pools
@@ -142,7 +141,6 @@ public class tus_vehiculos extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final int posicion=i;
                 createAndShowAlertDialog(i);
                 return false;
             }
@@ -175,9 +173,6 @@ public class tus_vehiculos extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
-
 
     private class EliminarVehiculo extends   AsyncTask<URL, Void, String> {
         @Override
@@ -277,17 +272,21 @@ public class tus_vehiculos extends Fragment {
                     String Color = pool.getString("color");
                     int Numasientos = pool.getInt("numAsientos");
                     boolean Estado = pool.getBoolean("estado");
-                    String Imagen = pool.getString("img");
+                    String imageUrl = pool.getString("img");
+                    if (!imageUrl.startsWith("http://")) { // Really hardcoded, should use Uri checks
+                        imageUrl = "http://".concat(imageUrl);
+                    }
                     int IDvehiculo = pool.getInt("idVehiculo");
 
-                    try {
-                        Bitmap imagen = decodeBase64(Imagen);
-                    } catch (IllegalArgumentException e) {
-                        Log.e(TAG, "Error decoding vehicle image: " + Imagen);
-                        e.printStackTrace();
-                    }
-                    Vehiculo auxVehiculo = new Vehiculo(Integer.toString(IDvehiculo),Placa,Modelo,Marca,Color,Integer.toString(Numasientos));
-                    Log.d(TAG, auxVehiculo.getMarca());
+                    Vehiculo auxVehiculo = new Vehiculo(
+                            Integer.toString(IDvehiculo),
+                            Placa,Modelo,
+                            Marca,
+                            Color,
+                            Integer.toString(Numasientos),
+                            imageUrl
+                    );
+                    Log.d(TAG, imageUrl);
                     lstVehi.add(auxVehiculo);
                 }
 
@@ -575,9 +574,11 @@ public class tus_vehiculos extends Fragment {
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
+                                Log.e(TAG, response.body().string());
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        UpdateUI();
                                         Toast.makeText(
                                                 getActivity(),
                                                 "Vehicle added",

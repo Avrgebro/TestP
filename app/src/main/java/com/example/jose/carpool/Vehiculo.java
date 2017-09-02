@@ -11,6 +11,7 @@ public class Vehiculo {
     private String marca;
     private String color;
     private String nasientos;
+    private String imageUrl;
 
     public Vehiculo(String placa, String modelo, String marca, String color, String nasientos){
         this.placa=placa;
@@ -27,6 +28,19 @@ public class Vehiculo {
         this.modelo=modelo;
         this.color=color;
         this.nasientos=nasientos;
+    }
+
+    public Vehiculo(
+            String idVehiculo,
+            String placa,
+            String modelo,
+            String marca,
+            String color,
+            String nasientos,
+            String imageUrl
+    ) {
+        this(idVehiculo, placa, modelo, marca, color, nasientos);
+        setImageUrl(imageUrl);
     }
 
 
@@ -76,5 +90,13 @@ public class Vehiculo {
 
     public void setIdVehiculo(String idVehiculo) {
         this.idVehiculo = idVehiculo;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
