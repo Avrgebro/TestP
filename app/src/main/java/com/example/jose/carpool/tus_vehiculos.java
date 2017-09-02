@@ -1,41 +1,24 @@
 package com.example.jose.carpool;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Instrumentation;
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.icu.util.Output;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.ResultReceiver;
-import android.provider.Contacts;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContentResolverCompat;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
-import android.support.v4.os.EnvironmentCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
@@ -52,6 +35,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -59,19 +43,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -113,6 +101,7 @@ public class tus_vehiculos extends Fragment {
     EditText txtMarca;
     EditText txtColor;
     EditText txtNasientos;
+    private OkHttpClient mHttpClient;
 
     @Nullable
     @Override
@@ -160,8 +149,9 @@ public class tus_vehiculos extends Fragment {
             }
         });
 
-        return view;
+        mHttpClient = new OkHttpClient();
 
+        return view;
     }
 
 
@@ -255,6 +245,7 @@ public class tus_vehiculos extends Fragment {
         protected String doInBackground(URL... urls){
 
             URL CPurl = UrlUtils.createUrl(_baseVehiculo);
+            Log.d(TAG, CPurl.toString());
             String jsonResponse = "";
             try {
                 jsonResponse = UrlUtils.makeHttpRequestGet(CPurl);
@@ -295,9 +286,14 @@ public class tus_vehiculos extends Fragment {
                     String Imagen = pool.getString("img");
                     int IDvehiculo = pool.getInt("idVehiculo");
 
-                    Bitmap imagen = decodeBase64(Imagen);
-
+                    try {
+                        Bitmap imagen = decodeBase64(Imagen);
+                    } catch (IllegalArgumentException e) {
+                        Log.e(TAG, "Error decoding vehicle image: " + Imagen);
+                        e.printStackTrace();
+                    }
                     Vehiculo auxVehiculo = new Vehiculo(Integer.toString(IDvehiculo),Placa,Modelo,Marca,Color,Integer.toString(Numasientos));
+                    Log.d(TAG, auxVehiculo.getMarca());
                     lstVehi.add(auxVehiculo);
                 }
 
@@ -536,69 +532,74 @@ public class tus_vehiculos extends Fragment {
                         txtMarca = textInputmarca.getEditText();
                         txtColor = textInputcolor.getEditText();
                         txtNasientos = textInputnasientos.getEditText();
-                        new Thread(new Runnable() {
+
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("idUsuario", Integer.parseInt(MainActivity.user.getID()));
+                            jsonObject.put("placa", txtPlaca.getText());
+                            jsonObject.put("modelo", txtModelo.getText());
+                            jsonObject.put("marca", txtMarca.getText());
+                            jsonObject.put("color", txtColor.getText());
+                            jsonObject.put("nasientos", Integer.parseInt(txtNasientos.getText().toString()));
+                            jsonObject.put("img", bitmapToBase64(bitmap));
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
+                        String BaseURL = "http://200.16.7.170/api/vehiculos/agregar_vehiculo";
+                        URL url = null;
+                        try {
+                            url = new URL(BaseURL);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        if (url == null) {
+                            return;
+                        }
+
+                        String message = jsonObject.toString();
+                        RequestBody body = RequestBody.create(
+                                MediaType.parse("application/json; charset=utf-8"),
+                                message
+                        );
+                        Request request = new Request.Builder()
+                                .url(url)
+                                .post(body)
+                                .addHeader("X-Requested-With", "XMLHttpRequest")
+                                .build();
+
+                        mHttpClient.newCall(request).enqueue(new Callback() {
                             @Override
-                            public void run() {
-                                JSONObject jsonObject = new JSONObject();
-                                try {
-                                    jsonObject.put("idUsuario", Integer.parseInt(MainActivity.user.getID()));
-                                    jsonObject.put("placa", txtPlaca.getText());
-                                    jsonObject.put("modelo", txtModelo.getText());
-                                    jsonObject.put("marca", txtMarca.getText());
-                                    jsonObject.put("color", txtColor.getText());
-                                    jsonObject.put("nasientos", Integer.parseInt(txtNasientos.getText().toString()));
-                                    jsonObject.put("img", bitmapToBase64(bitmap));
-                                    System.err.println(jsonObject);
-                                } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-                                String BaseURL = "http://200.16.7.170/api/vehiculos/agregar_vehiculo";//solo se agrega "correo/pass"
-                                OutputStream os = null;
-                                InputStream is = null;
-                                HttpURLConnection conn = null;
-                                try {
-                                    //constants
-                                    URL url = new URL(BaseURL);
-                                    String message = jsonObject.toString();
-                                    conn = (HttpURLConnection) url.openConnection();
-                                    conn.setReadTimeout(10000 /*milliseconds*/);
-                                    conn.setConnectTimeout(15000 /* milliseconds */);
-                                    conn.setRequestMethod("POST");
-                                    conn.setDoInput(true);
-                                    conn.setDoOutput(true);
-                                    conn.setFixedLengthStreamingMode(message.getBytes().length);
-
-                                    //make some HTTP header nicety
-                                    conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-                                    conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-
-                                    //open
-                                    conn.connect();
-
-                                    //setup send
-                                    os = new BufferedOutputStream(conn.getOutputStream());
-                                    os.write(message.getBytes());
-                                    //clean up
-                                    os.flush();
-
-                                    //do somehting with response
-                                    is = conn.getInputStream();
-                                    //String contentAsString = readIt(is,len);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    //clean up
-                                    try {
-                                        os.close();
-                                        is.close();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+                            public void onFailure(Call call, IOException e) {
+                                call.cancel();
+                                Log.d(TAG, e.toString());
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(
+                                                getActivity(),
+                                                "Ocurrió un error, intente nuevamente",
+                                                Toast.LENGTH_SHORT
+                                        ).show();
                                     }
-                                    conn.disconnect();
-                                }
+                                });
                             }
-                        }).start();
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(
+                                                getActivity(),
+                                                "Vehicle added",
+                                                Toast.LENGTH_SHORT
+                                        ).show();
+                                    }
+                                });
+                            }
+                        });
                         dialog.dismiss();
                     }
                 });
