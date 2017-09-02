@@ -45,18 +45,14 @@
             android:layout_height="match_parent"
             android:id="@+id/strlayoutVehi">
 
-                <ListView
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/listViewV"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
 
-                </ListView>
+                </android.support.v7.widget.RecyclerView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-
-
-
         </LinearLayout>
-
 
 </LinearLayout>

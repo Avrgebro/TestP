@@ -22,6 +22,8 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -73,7 +75,7 @@ public class tus_vehiculos extends Fragment {
     private static final String _baseVehiculo = "http://200.16.7.170/api/vehiculos/obtener_vehiculos/" + MainActivity.user.getID().toString();
     private static String _baseDelVehi = "http://200.16.7.170/api/vehiculos/eliminar_vehiculo/";
     private ArrayList<Vehiculo> lstVehi;
-    private ListView listView;
+    private RecyclerView listView;
     private SwipeRefreshLayout swipeView;
     private int auxI;
 
@@ -102,13 +104,14 @@ public class tus_vehiculos extends Fragment {
     EditText txtColor;
     EditText txtNasientos;
     private OkHttpClient mHttpClient;
+    private vehiculo_adapter mVehicleAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         View view = inflater.inflate(R.layout.fragment_vehiculos,container,false);
-        listView = (ListView) view.findViewById(R.id.listViewV);
+        listView = (RecyclerView) view.findViewById(R.id.listViewV);
 
         swipeView = (SwipeRefreshLayout) view.findViewById(R.id.strlayoutVehi);
 
@@ -130,21 +133,30 @@ public class tus_vehiculos extends Fragment {
             }
         });
 
-        if(lstVehi == null || lstVehi.isEmpty()){
-            if(lstVehi == null) lstVehi = new ArrayList<Vehiculo>();
+        if(lstVehi == null) {
+            lstVehi = new ArrayList<>();
+        }
+        mVehicleAdapter = new vehiculo_adapter(getActivity(), lstVehi);
+        if(lstVehi.isEmpty()){
             //asyncTask para obtener pools
             VehiculosAT task = new VehiculosAT();
             task.execute();
-
         }
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        mVehicleAdapter.setOnItemLongClickListener(new vehiculo_adapter.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                createAndShowAlertDialog(i);
+            public boolean onItemLongClick(int position) {
+                createAndShowAlertDialog(position);
                 return false;
             }
         });
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
+                getActivity(),
+                LinearLayoutManager.VERTICAL,
+                false
+        );
+        listView.setLayoutManager(layoutManager);
+        listView.setAdapter(mVehicleAdapter);
 
         mHttpClient = new OkHttpClient();
         return view;
@@ -221,13 +233,9 @@ public class tus_vehiculos extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    private void UpdateUI(){
-        vehiculo_adapter cpAdptr = new vehiculo_adapter(getActivity(), lstVehi);
-
-        listView.setAdapter(cpAdptr);
+    private void UpdateUI() {
+        mVehicleAdapter.notifyDataSetChanged();
         swipeView.setRefreshing(false);
-
-        return;
     }
 
 

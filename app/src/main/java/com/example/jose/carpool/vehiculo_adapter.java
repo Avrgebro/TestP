@@ -3,70 +3,130 @@ package com.example.jose.carpool;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Johnny on 29/08/2017.
  */
 
-public class vehiculo_adapter extends ArrayAdapter<Vehiculo> {
+public class vehiculo_adapter extends RecyclerView.Adapter<vehiculo_adapter.VehicleViewHolder> {
 
-    public vehiculo_adapter (Context context, ArrayList<Vehiculo> vehiculos){
-        super(context, 0, vehiculos);
+    private Context mContext;
+    private List<Vehiculo> mVehicleList;
+    private OnItemLongClickListener mLongClickListener;
 
+    public vehiculo_adapter(Context context, List<Vehiculo> vehicles) {
+        mContext = context;
+        this.setVehicleList(vehicles);
     }
 
-    @NonNull
+    public interface OnItemLongClickListener {
+        boolean onItemLongClick(int position);
+    }
+
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public VehicleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(mContext).inflate(
+                R.layout.vehiculo_item,
+                parent,
+                false
+        );
+        return new VehicleViewHolder(itemView);
+    }
 
-        View listItem = convertView;
+    @Override
+    public void onBindViewHolder(VehicleViewHolder holder, int position) {
+        if (mVehicleList == null || mVehicleList.isEmpty()) {
+            return;
+        }
+        Vehiculo vehicle = mVehicleList.get(position);
+        holder.bind(vehicle, position);
+    }
 
-        if (listItem == null) {
-            listItem = LayoutInflater.from(getContext()).inflate(R.layout.vehiculo_item, parent, false);
+    @Override
+    public int getItemCount() {
+        if (mVehicleList == null) {
+            return 0;
+        }
+        return mVehicleList.size();
+    }
+
+    public List<Vehiculo> getVehicleList() {
+        return mVehicleList;
+    }
+
+    public void setVehicleList(List<Vehiculo> mVehicleList) {
+        this.mVehicleList = mVehicleList;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        mLongClickListener = listener;
+    }
+
+    public class VehicleViewHolder
+            extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+        private static final int DEFAULT_POSITION = -1;
+        ImageView carImage;
+        TextView brandText;
+        TextView modelText;
+        TextView plateText;
+
+        int mPosition;
+
+        public VehicleViewHolder(View itemView) {
+            super(itemView);
+            mPosition = DEFAULT_POSITION;
+
+            if (itemView != null) {
+                itemView.setOnLongClickListener(this);
+                carImage = itemView.findViewById(R.id.item_car_image);
+                brandText = itemView.findViewById(R.id.lblMarca);
+                modelText = itemView.findViewById(R.id.lblModelo);
+                plateText = itemView.findViewById(R.id.lblPlaca);
+            }
         }
 
-        Vehiculo curCP = getItem(position);
+        public void bind(Vehiculo vehicle, int position) {
+            mPosition = position;
 
-        TextView placa = (TextView) listItem.findViewById(R.id.lblPlaca);
-        placa.setText(curCP.getPlaca());
+            plateText.setText(vehicle.getPlaca());
 
-        TextView modelo = (TextView) listItem.findViewById(R.id.lblModelo);
-        modelo.setText(curCP.getModelo());
+            modelText.setText(vehicle.getModelo());
 
-        TextView marca = (TextView) listItem.findViewById(R.id.lblMarca);
-        marca.setText(curCP.getMarca());
+            brandText.setText(vehicle.getMarca());
 
-        ImageView carImage = listItem.findViewById(R.id.item_car_image);
-        String imageUrl = curCP.getImageUrl();
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            (new Picasso.Builder(getContext()))
-                    .listener(new Picasso.Listener() {
-                        @Override
-                        public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                            exception.printStackTrace();
-                            Log.e("vehiculo_adapter", uri.toString());
-                        }
-                    })
-                    .build()
-                    .load(imageUrl)
-                    .placeholder(R.drawable.pucp_logo)
-                    .fit()
-                    .into(carImage);
+            String imageUrl = vehicle.getImageUrl();
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                (new Picasso.Builder(mContext)).listener(new Picasso.Listener() {
+                    @Override
+                    public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                        exception.printStackTrace();
+                        Log.e("vehiculo_adapter", uri.toString());
+                    }
+                }).build()
+                        .load(imageUrl)
+                        .placeholder(R.drawable.pucp_logo)
+                        .fit()
+                        .into(carImage);
+            }
         }
 
-        return listItem;
+        @Override
+        public boolean onLongClick(View view) {
+            if (mLongClickListener == null || mPosition == DEFAULT_POSITION) {
+                return false;
+            }
+            return mLongClickListener.onItemLongClick(mPosition);
+        }
     }
 }
