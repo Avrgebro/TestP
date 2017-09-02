@@ -5,19 +5,19 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
-            android:title="OP1" />
+            android:title="Pools" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="OP2" />
+            android:title="Pendiente" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="OP3" />
+            android:title="Historial" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="OP4" />
+            android:title="Editar Perfil" />
     </group>
 
 </menu>

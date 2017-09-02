@@ -4,12 +4,31 @@
     android:layout_height="match_parent"
     android:id="@+id/strlayout">
 
-
-    <ListView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/pool_list">
+        android:layout_height="match_parent">
 
-    </ListView>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pool_list">
+
+        </ListView>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="30dp"
+            android:src="@drawable/ic_add"
+            android:clickable="true"
+            android:background="@color/btn"
+            android:id="@+id/NewPoolBtn"/>
+
+    </RelativeLayout>
+
 
 </android.support.v4.widget.SwipeRefreshLayout>

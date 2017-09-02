@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD_cCfO3657tosUzJXKaNQMSfILJn9vTCw" />
@@ -37,12 +36,23 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".PoolInfoScreen"
-            android:label="PoolInfo"
+            android:label="Datos Pool"
             android:parentActivityName=".MainActivity">
-                <!-- Parent activity meta-data to support 4.0 and lower -->
-                 <meta-data
-                        android:name="android.support.PARENT_ACTIVITY"
-                        android:value=".MainActivity"/>
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".RegistrarPool"
+            android:label="Crear Pool"
+            android:parentActivityName=".MainActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
     </application>
 

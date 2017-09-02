@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.app.Fragment;
@@ -69,6 +70,16 @@ public class pool_fragment extends Fragment {
 
                     }
                 }, 1000);
+            }
+        });
+
+        FloatingActionButton newPoolbtn = (FloatingActionButton) view.findViewById(R.id.NewPoolBtn);
+        newPoolbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //intent para nuevo pool
+                Intent intent = new Intent(getActivity(), RegistrarPool.class);
+                startActivity(intent);
             }
         });
 
