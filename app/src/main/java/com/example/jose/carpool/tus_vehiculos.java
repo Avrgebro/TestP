@@ -147,7 +147,7 @@ public class tus_vehiculos extends Fragment {
             @Override
             public boolean onItemLongClick(int position) {
                 createAndShowAlertDialog(position);
-                return false;
+                return true;
             }
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
