@@ -34,6 +34,7 @@ dependencies {
     compile 'com.sothree.slidinguppanel:library:3.3.1'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.squareup.okio:okio:1.13.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     testCompile 'junit:junit:4.12'
 }
