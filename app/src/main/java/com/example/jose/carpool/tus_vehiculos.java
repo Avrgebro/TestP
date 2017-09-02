@@ -545,6 +545,7 @@ public class tus_vehiculos extends Fragment {
                         }
 
                         String message = jsonObject.toString();
+                        final Vehiculo newVehicle = (new Gson()).fromJson(message, Vehiculo.class);
                         RequestBody body = RequestBody.create(
                                 MediaType.parse("application/json; charset=utf-8"),
                                 message
@@ -578,6 +579,10 @@ public class tus_vehiculos extends Fragment {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        if (photoURI != null) {
+                                            newVehicle.setImageUrl(photoURI.toString());
+                                        }
+                                        lstVehi.add(newVehicle);
                                         UpdateUI();
                                         Toast.makeText(
                                                 getActivity(),
