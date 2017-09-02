@@ -527,6 +527,8 @@ public class tus_vehiculos extends Fragment {
                             jsonObject.put("marca", txtMarca.getText());
                             jsonObject.put("color", txtColor.getText());
                             jsonObject.put("nasientos", Integer.parseInt(txtNasientos.getText().toString()));
+                            // This tends to take a long time
+                            // Should be sent as multipart
                             jsonObject.put("img", bitmapToBase64(bitmap));
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
