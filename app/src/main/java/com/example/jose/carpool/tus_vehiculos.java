@@ -139,7 +139,6 @@ public class tus_vehiculos extends Fragment {
 
         }
 
-
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -150,7 +149,6 @@ public class tus_vehiculos extends Fragment {
         });
 
         mHttpClient = new OkHttpClient();
-
         return view;
     }
 
@@ -226,7 +224,6 @@ public class tus_vehiculos extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     private void UpdateUI(){
@@ -240,10 +237,8 @@ public class tus_vehiculos extends Fragment {
 
 
     private class VehiculosAT extends AsyncTask<URL, Void, String> {
-
         @Override
         protected String doInBackground(URL... urls){
-
             URL CPurl = UrlUtils.createUrl(_baseVehiculo);
             Log.d(TAG, CPurl.toString());
             String jsonResponse = "";
@@ -261,7 +256,6 @@ public class tus_vehiculos extends Fragment {
 
         @Override
         protected void onPostExecute(String CPinfoJSON){
-
             //aca lo convierto a un objeto json y verifico el codigo
 
             if (TextUtils.isEmpty(CPinfoJSON)) {
@@ -304,8 +298,8 @@ public class tus_vehiculos extends Fragment {
             }
         }
     }
-    public static Bitmap RotateBitmap(Bitmap source, float angle)
-    {
+
+    public static Bitmap RotateBitmap(Bitmap source, float angle)  {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
@@ -335,8 +329,6 @@ public class tus_vehiculos extends Fragment {
         getActivity().sendBroadcast(mediaScanIntent);
     }*/
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -351,7 +343,6 @@ public class tus_vehiculos extends Fragment {
                 InputStream is = getActivity().getContentResolver().openInputStream(photoURI);
                 bitmap = BitmapFactory.decodeStream(is);
                 is.close();
-
 
                 int srcWidth = bitmap.getWidth();
                 int srcHeight = bitmap.getHeight();
@@ -397,11 +388,9 @@ public class tus_vehiculos extends Fragment {
             return "";
     }
 
-    public void launchCam(){
-
+    public void launchCamera() {
         Intent intent  = new Intent  (MediaStore.ACTION_IMAGE_CAPTURE);
-        if(intent.resolveActivity(getActivity().getPackageManager())!=null) {
-
+        if(intent.resolveActivity(getActivity().getPackageManager()) != null) {
 
             File photoFile = null;
             try {
@@ -411,17 +400,13 @@ public class tus_vehiculos extends Fragment {
                             , photoFile);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     startActivityForResult(intent, REQUEST_CAMERA);
-
                 }
             } catch (Exception ex) {
-
                 ex.printStackTrace();
             }
         }
 
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -432,7 +417,7 @@ public class tus_vehiculos extends Fragment {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                        launchCam();
+                        launchCamera();
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
 
@@ -462,31 +447,35 @@ public class tus_vehiculos extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Menu 1");
-        ImageView addCar = (ImageView) getView().findViewById(R.id.btnAgregarVehiculo);
+        ImageView addCar = (ImageView) view.findViewById(R.id.btnAgregarVehiculo);
         addCar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(getActivity());
                 dialog.setContentView(R.layout.dialog_addcar);
                 dialog.setTitle("Perfil");
                 dialog.show();
-                final AppCompatButton btnAdd= (AppCompatButton)dialog.findViewById(R.id.btn_AddCar);
+                final AppCompatButton btnAdd = (AppCompatButton)dialog.findViewById(R.id.btn_AddCar);
                 final ImageButton btnAddPhoto = (ImageButton)dialog.findViewById(R.id.btn_addPhoto);
+
                 /*Carga la imagen para mostrartla es una prueba*/
                 prueba = dialog.findViewById(R.id.imageView2);
+
                 /*To pick car image*/
-                final String [] items = { "Cámara","Galería"};
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>( getActivity()  , android.R.layout.select_dialog_item,items);
+                final String [] items = { "Cámara","Galería" };
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        getActivity(),
+                        android.R.layout.select_dialog_item,
+                        items
+                );
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Selecciona una imagen");
                 builder.setAdapter(adapter, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0){
-
                             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
                                     != PackageManager.PERMISSION_GRANTED) {
 
@@ -494,11 +483,10 @@ public class tus_vehiculos extends Fragment {
                                         new String[]{Manifest.permission.CAMERA},
                                         MY_PERMISSIONS_REQUEST_CAMERA);
                             }else {
-                                launchCam();
+                                launchCamera();
                             }
                         }
                         else{
-
                             Intent intent  = new Intent();
                             intent.setType("image/*");
                             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -520,7 +508,6 @@ public class tus_vehiculos extends Fragment {
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         textInputplaca = dialog.findViewById(R.id.txtInputPlaca);
                         textInputmodelo = dialog.findViewById(R.id.txtInputModelo);
                         textInputmarca = dialog.findViewById(R.id.txtInputMarca);
@@ -579,7 +566,7 @@ public class tus_vehiculos extends Fragment {
                                     public void run() {
                                         Toast.makeText(
                                                 getActivity(),
-                                                "Ocurrió un error, intente nuevamente",
+                                                "Ocurrió un error. Intente nuevamente",
                                                 Toast.LENGTH_SHORT
                                         ).show();
                                     }
@@ -606,7 +593,4 @@ public class tus_vehiculos extends Fragment {
             }
             });
     }
-
-
-
 }
