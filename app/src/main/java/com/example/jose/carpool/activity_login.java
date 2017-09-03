@@ -2,19 +2,25 @@ package com.example.jose.carpool;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.graphics.drawable.Drawable;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -39,12 +45,20 @@ public class activity_login extends AppCompatActivity {
     @Bind(R.id.input_password) EditText _passwordText;
     @Bind(R.id.btn_login) Button _loginButton;
     @Bind(R.id.link_signup) TextView _signupLink;
+    @Bind(R.id.imgBack) ImageView _imgbg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+
+        String mDrawableName = "login_back";
+        int imageID = getResources().getIdentifier(mDrawableName , "drawable-nodpi", getPackageName());
+
+        _imgbg.setBackground(resizeImage(imageID));
+
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -69,12 +83,55 @@ public class activity_login extends AppCompatActivity {
 
     }
 
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        // create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
+                matrix, false);
+
+        return resizedBitmap;
+    }
+    public Drawable resizeImage(int imageResource) {// R.drawable.icon
+        // Get device dimensions
+        Display display = getWindowManager().getDefaultDisplay();
+        double deviceWidth = display.getWidth();
+
+        BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(
+                imageResource);
+        double imageHeight = bd.getBitmap().getHeight();
+        double imageWidth = bd.getBitmap().getWidth();
+
+        double ratio = deviceWidth / imageWidth;
+        int newImageHeight = (int) (imageHeight * ratio);
+
+
+
+        Bitmap bMap = BitmapFactory.decodeResource(getResources(), imageResource);
+        Drawable drawable = new BitmapDrawable(this.getResources(),
+                getResizedBitmap(bMap, newImageHeight, (int) deviceWidth));
+
+        return drawable;
+    }
 
     public void login(){
         Log.d(TAG, "Login");
 
         ProgressBar PB = (ProgressBar) findViewById(R.id.logPB);
         PB.setVisibility(View.VISIBLE);
+
+
 
         if (!validate()) {
             onLoginFailed(2);
