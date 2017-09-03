@@ -52,11 +52,12 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "MainActivity";
     private static final int Editar_ACTIVITY_RESULT_CODE = 0;
-    ImageView img;
+
     final Context context = this;
 
     public static TextView _nomnavbar;
     public static TextView _cornavbar;
+    public static ImageView imgPerfil;
     private View header;
 
     @Override
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(loginintent);
         }
 
-        //displaySelectedScreen(R.id.idPedir_pool);
+        //displaySelectedScreen(R.id.idVehiculos);
 
     }
 
@@ -110,8 +111,10 @@ public class MainActivity extends AppCompatActivity
             Gson gson = new Gson();
             user = gson.fromJson(userJSON, User.class);
             Log.d(TAG, user.getNombre()+" "+user.getCorreo());
+
             _nomnavbar = (TextView) findViewById(R.id.nombre_navbar);
             _cornavbar = (TextView) findViewById(R.id.correo_navbar);
+            imgPerfil = (ImageView) findViewById(R.id.lblFOTOPERFIL);
             if(_nomnavbar!=null && _cornavbar!=null){
                 _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
                 _cornavbar.setText(user.getCorreo());
@@ -194,9 +197,7 @@ public class MainActivity extends AppCompatActivity
         //initializing the fragment object which is selected
         switch (itemId) {
             case R.id.idCrearPool:
-
                 fragment = new fragment_crearpool();
-
                 break;
             case R.id.idVehiculos:
                 fragment = new tus_vehiculos();
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity
                 //fragment = new Menu2();
                 break;
             case R.id.idVer_historial:
-                //fragment = new Menu3();
+                fragment = new historial_fragment();
                 break;
             case R.id.idEditarPerfil:
                 fragment = new editar_Perfil(user);
@@ -242,9 +243,7 @@ public class MainActivity extends AppCompatActivity
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_verperfil);
         dialog.setTitle("Perfil");
-
         cargarVerPerfil(dialog);
-
         dialog.show();
 
     }
@@ -253,10 +252,16 @@ public class MainActivity extends AppCompatActivity
         TextView nombre = (TextView) dialog.findViewById(R.id.txtNombre);
         TextView telefono = (TextView) dialog.findViewById(R.id.txtTelefono);
         TextView correo = (TextView) dialog.findViewById(R.id.txtCorreo);
+        ImageView foto = (ImageView) dialog.findViewById(R.id.lblFoto);
 
         nombre.setText(user.getNombre().toString() +" "+ user.getApellido().toString());
         telefono.setText(user.getTelefono());
         correo.setText(user.getCorreo().toString());
+
+        if(imgPerfil != null){
+            foto.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            foto.setImageDrawable(imgPerfil.getDrawable());
+        }
     }
 
 
