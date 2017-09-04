@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
+/*
         SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
         int SessionState = prefs.getInt("SessionState", 0);
         if(SessionState == 0){
@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity
             Intent loginintent = new Intent(this, activity_login.class);
             startActivity(loginintent);
         }
+*/
+
+        user=new User("24","ggmitre@pucp.pe","agg","tys","421312","ella");
 
         //displaySelectedScreen(R.id.idVehiculos);
 
@@ -190,8 +193,6 @@ public class MainActivity extends AppCompatActivity
 
         //creating fragment object
         Fragment fragment = null;
-
-
 
 
         //initializing the fragment object which is selected

@@ -40,7 +40,8 @@
         </activity>
         <activity
             android:name=".activity_login"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
         <activity
             android:name=".activity_signup"
             android:theme="@style/NoActionBar" />

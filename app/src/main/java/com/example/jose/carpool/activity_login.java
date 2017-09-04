@@ -2,6 +2,7 @@ package com.example.jose.carpool;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.drawable.Drawable;
 import com.google.gson.Gson;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,12 +55,12 @@ public class activity_login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-
-        String mDrawableName = "login_back";
-        int imageID = getResources().getIdentifier(mDrawableName , "drawable-nodpi", getPackageName());
-
+        //_imgbg.setVisibility(View.GONE);
+        String mDrawableName = "loginbg2";
+        int imageID = getResources().getIdentifier(mDrawableName, "drawable", getPackageName());
         _imgbg.setBackground(resizeImage(imageID));
 
+        //getWindow().setBackgroundDrawableResource(imageID) ;
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -179,6 +181,8 @@ public class activity_login extends AppCompatActivity {
 
         Gson gson = new Gson();
         String json = gson.toJson(userinfo);
+
+
 
         SharedPreferences.Editor editor = getSharedPreferences("SessionToken", MODE_PRIVATE).edit();
         editor.putString("SessionUser", json);

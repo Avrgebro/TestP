@@ -14,6 +14,7 @@
     <color name="gray">#A9A9A9</color>
     <color name="backPerfil">#f6dee4</color>
     <color name="transparente">#0D000000</color>
-    <color name="backEditPerfil">#c0ded9</color>
+    <color name="backEditPerfil">#a8f1f1</color>
     <color name="yellowLi">#656727</color>
+    <color name="backMenuLeft">#70b2ec</color>
 </resources>

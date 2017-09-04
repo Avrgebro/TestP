@@ -17,7 +17,7 @@
         android:background="@color/background"
 
 
-        android:scaleType="center" />
+        android:scaleType="matrix" />
 
     <ScrollView
         android:layout_width="match_parent"

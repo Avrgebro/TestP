@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    
+
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/idCrearPool"
             android:icon="@drawable/ic_pool"
-            android:title="Pedir pool" />
+            android:title="Pedir Pool" />
         <item
             android:id="@+id/idVehiculos"
             android:icon="@drawable/ic_tusvehiculos"
@@ -14,7 +14,9 @@
         <item
             android:id="@+id/idVer_pendiente"
             android:icon="@drawable/ic_pendiente"
-            android:title="Viaje pendiente" />
+            android:title="Viaje pendiente"
+
+            />
         <item
             android:id="@+id/idVer_historial"
             android:icon="@drawable/ic_historial"
@@ -27,7 +29,7 @@
             android:id="@+id/idAgregarVehiculo"
             android:icon="@drawable/ic_edit"
             android:title="Editar Perfil"
-            android:visible="false"/>
+            android:visible="false" />
     </group>
 
 </menu>
