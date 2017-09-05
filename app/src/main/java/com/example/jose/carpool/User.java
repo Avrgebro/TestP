@@ -69,4 +69,7 @@ public class User {
         return mPass;
     }
 
+    public String getFullName() {
+        return getNombre() + " " + getApellido();
+    }
 }
