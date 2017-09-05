@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/backMenuLeft"
+        android:background="@color/white"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer"
@@ -37,12 +37,21 @@
 
             <TextView
                 android:id="@+id/logout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_width="227dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Logout"
-                android:textColor="@color/secondary_text" />
+                android:text="¡Adiós!"
+                android:textColor="@color/background"
+                android:textStyle="bold"
+                android:paddingLeft="40dp"
+                android:paddingBottom="20dp"
+                android:textSize="55px"
+
+                />
+
         </LinearLayout>
+
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

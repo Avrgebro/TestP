@@ -58,7 +58,7 @@ public class activity_login extends AppCompatActivity {
         //_imgbg.setVisibility(View.GONE);
         String mDrawableName = "loginbg2";
         int imageID = getResources().getIdentifier(mDrawableName, "drawable", getPackageName());
-        _imgbg.setBackground(resizeImage(imageID));
+        //_imgbg.setBackground(resizeImage(imageID));
 
         //getWindow().setBackgroundDrawableResource(imageID) ;
 

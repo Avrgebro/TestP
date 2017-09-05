@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:background="@color/primary_dark"
             android:theme="@style/your_theme"
+            android:titleTextColor="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
