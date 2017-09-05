@@ -50,18 +50,32 @@
                     android:textStyle="bold"
                     style="@style/AppTheme.Text.Shadow.Black"/>
 
-                <TextView
-                    android:id="@+id/profile_phone_number"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="999999999"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    style="@style/AppTheme.Text.Shadow.Black" />
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_phone_black_24dp"
+                        android:tint="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/profile_phone_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="999999999"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        style="@style/AppTheme.Text.Shadow.Black" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
