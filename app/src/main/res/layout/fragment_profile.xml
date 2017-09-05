@@ -4,58 +4,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/main_profile">
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="250dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/lasemback" />
-
-            <android.support.v7.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+                android:src="@drawable/background_blue" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:gravity="center"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom"
                 android:orientation="vertical"
                 android:padding="16dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_img"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/lasem"
+                    android:src="@mipmap/ic_launcher_round"
                     app:civ_border_color="@android:color/white"
                     app:civ_border_width="4dp" />
 
                 <TextView
+                    android:id="@+id/profile_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Lasem Code"
+                    android:text="Soy yo"
                     android:textColor="@android:color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    style="@style/AppTheme.Text.Shadow.Black"/>
 
                 <TextView
+                    android:id="@+id/profile_phone_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="\@lasemcode"
+                    android:text="999999999"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    style="@style/AppTheme.Text.Shadow.Black" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -65,23 +67,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_place_black_24dp"
+                        android:src="@drawable/ic_mail_black_24dp"
                         android:tint="@android:color/white" />
 
                     <TextView
+                        android:id="@+id/profile_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="Lasem, Rembang, Indonesia"
+                        android:layout_marginStart="8dp"
+                        android:text="micorreo@pucp.pe"
                         android:textColor="@android:color/white"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        style="@style/AppTheme.Text.Shadow.Black" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </RelativeLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -154,28 +159,30 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/profile_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical"
-            app:layout_scrollFlags="scroll|enterAlways"
             android:background="#EEEEEE"
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/profile_summary_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lasem Code"
+                android:text="Soy yo"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/profile_summary_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#37474F"
-                android:text="\@lasemcode"/>
+                android:text="micorreo@pucp.pe"/>
 
             <TextView
+                android:id="@+id/profile_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -183,28 +190,23 @@
 
         </LinearLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    </LinearLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_edit_profile"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus mattis posuere quam, non finibus augue tempus id. Curabitur ut ultricies mi. Donec eget consectetur metus. Duis maximus lacinia orci, pellentesque commodo diam ultricies condimentum. Morbi consectetur rutrum vehicula. Nullam efficitur enim vel est varius, eu dictum sem sagittis. Pellentesque congue ante ac urna molestie vestibulum. Praesent tempus velit id diam rutrum efficitur eu vel lectus. Aliquam lacinia tortor dolor, eu porta purus bibendum ac. Maecenas gravida lorem sed orci varius vestibulum. In ac vestibulum quam, ac varius diam. Fusce consequat velit vel ipsum tempor, nec cursus nibh elementum. Sed volutpat, ipsum eu sollicitudin mollis, neque lacus malesuada lacus, quis porttitor erat turpis ac leo.
-
-"/>
-
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/ic_mode_edit_black_24px"
+            android:clickable="true"
+            android:background="@color/btn"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
