@@ -74,15 +74,13 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
         slidingLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
+                ImageView arrow = (ImageView) findViewById(R.id.arrow);
 
+                arrow.setRotation(180*slideOffset);
             }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-
-                ImageView arrow = (ImageView) findViewById(R.id.arrow);
-
-                arrow.setRotation(180);
 
             }
         });
