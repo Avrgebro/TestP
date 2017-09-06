@@ -12,9 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD_cCfO3657tosUzJXKaNQMSfILJn9vTCw" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="76d06d81535359540bf2c88ee218d0ec5672103c"/>
 
         <activity
             android:name=".MainActivity"

@@ -38,5 +38,21 @@
         <item name="android:backgroundTint">@color/accent</item>
     </style>
 
+    <style name="AppTheme.Text.Shadow" parent="TextAppearance.AppCompat">
+        <item name="android:shadowDx">5</item>
+        <item name="android:shadowDy">5</item>
+        <item name="android:shadowRadius">5</item>
+    </style>
+
+    <style name="AppTheme.Text.Shadow.Black" parent="AppTheme.Text.Shadow">
+        <item name="android:shadowColor">@android:color/black</item>
+    </style>
+
+    <style name="AppTheme.ProfileInput" parent="AppTheme">
+        <!--<item name="android:background">#66cccccc</item>-->
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="colorControlHighlight">@android:color/white</item>
+    </style>
 
 </resources>

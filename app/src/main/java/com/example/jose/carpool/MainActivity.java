@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -20,10 +21,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -175,25 +179,35 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        int itemId = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        Fragment fragment = null;
 
+        switch (itemId) {
+            case R.id.nav_camera: {
+                fragment = new pool_fragment();
+                break;
+            }
+            case R.id.nav_gallery: {
+                break;
+            }
+            case R.id.nav_slideshow: {
+                break;
+            }
+            case R.id.btn_edit_profile: {
+                fragment = new ProfileFragment();
+                break;
+            }
+            case R.id.logout: {
+                break;
+            }
+        }
+
+        if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            pool_fragment cpF = new pool_fragment();
-            fragmentTransaction.replace(R.id.MainFrameLayout, cpF);
+            fragmentTransaction.replace(R.id.MainFrameLayout, fragment);
             fragmentTransaction.commit();
-
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.logout){
-
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -213,5 +227,4 @@ public class MainActivity extends AppCompatActivity
         finish();
         startActivity(i);
     }
-
 }
