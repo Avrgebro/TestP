@@ -9,19 +9,12 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -53,9 +46,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.TimeZone;
 
 import butterknife.Bind;
@@ -139,7 +130,7 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                 _crearCPBTN.setEnabled(true);
                 _crearCP.setVisibility(View.VISIBLE);
                 for(Vehiculo v : vehiculos){
-                    if(v.getmPlaca().equals(auxplaca)){
+                    if(v.getPlaca().equals(auxplaca)){
                         finv = v;
                         break;
                     }
@@ -156,8 +147,8 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                 }else diapool = "" +_manana;
 
                 _myPool = new CarPool(_userid,
-                        finv.getmID(),
-                        finv.getmAsientos(),
+                        finv.getID(),
+                        finv.getAsientos(),
                         _precioET.getText().toString(),
                         _hoy,
                         diapool,
@@ -368,7 +359,7 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
 
         }else{
             for(Vehiculo v :vehiculos){
-                SpinnerPlacas.add(v.getmPlaca());
+                SpinnerPlacas.add(v.getPlaca());
             }
         }
 
@@ -432,7 +423,7 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
         String seats = seatsTV.getText().toString();
         int ns = Integer.parseInt(seats);
 
-        //if(ns == 1 || ns == vehiculos.getmAsientos()) return;
+        //if(ns == 1 || ns == vehiculos.getAsientos()) return;
 
         if(clicked == R.id.PlusSeats) ns++;
         else ns--;

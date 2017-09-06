@@ -37,8 +37,8 @@ public class activity_emailverification extends AppCompatActivity {
 
     private static final String TAG = "EmailVerActivity";
 
-    private final String _baseVCurl = "http://200.16.7.170/api/users/registro/verificacion/";
-    private final String _baseREurl = "http://200.16.7.170/api/users/registro/agregar_usuario/";
+    private static final String _baseVCurl = "http://200.16.7.170/api/users/registro/verificacion/";
+    private static final String _baseREurl = "http://200.16.7.170/api/users/registro/agregar_usuario/";
 
     private int _covv;
 
@@ -106,7 +106,6 @@ public class activity_emailverification extends AppCompatActivity {
                     Log.e(TAG, "Problem creating JsonObject", e);
                     e.printStackTrace();
                 }
-
 
                 String jsonResponse = "";
                 try {
@@ -213,12 +212,18 @@ public class activity_emailverification extends AppCompatActivity {
                 Log.e(TAG, "Problem making the HTTP request.", e);
             }
 
+            // Extract relevant fields from the JSON response and create an {@link Event} object
+
+            //TODO:PARSEAR RESPUESTA JSON A OBJETO USANDO GSON;
+            // Return the {@link Event} object as the result fo the {@link TsunamiAsyncTask}
+            //Gson gson = new Gson();
+            //User user = gson.fromJson(jsonResponse, User.class);
+
             return jsonResponse;
         }
 
         @Override
         protected void onPostExecute(String userinfoJSON){
-
             //aca lo convierto a un objeto json y verifico el codigo
 
             if (TextUtils.isEmpty(userinfoJSON)) {
@@ -246,10 +251,6 @@ public class activity_emailverification extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.e(TAG, "Problem parsing the earthquake JSON results", e);
             }
-
         }
-
     }
-
-
 }

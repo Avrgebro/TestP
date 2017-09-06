@@ -3,21 +3,30 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/btn_all_pools"
             android:icon="@drawable/ic_menu_camera"
             android:title="Pools" />
+        <!--<item-->
+            <!--android:id="@+id/idCrearPool"-->
+            <!--android:icon="@drawable/ic_pool"-->
+            <!--android:title="Pedir pool" />-->
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:id="@+id/idVehiculos"
+            android:icon="@drawable/ic_tusvehiculos"
+            android:title="Tus vehiculos" />
+        <item
+            android:id="@+id/idVer_pendiente"
+            android:icon="@drawable/ic_pendiente"
             android:title="Pendiente" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:id="@+id/idVer_historial"
+            android:icon="@drawable/ic_historial"
             android:title="Historial" />
         <item
-            android:id="@+id/btn_edit_profile"
+            android:id="@+id/btn_show_profile"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Editar Perfil" />
+            android:title="Editar Perfil"
+            android:visible="false"/>
     </group>
 
 </menu>

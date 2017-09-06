@@ -1,10 +1,12 @@
 package com.example.jose.carpool;
 
+import java.io.Serializable;
+
 /**
  * Created by jose on 7/27/17.
  */
 
-public class User {
+public class User implements Serializable {
 
     private String mID;
     private String mCorreo;
@@ -14,16 +16,14 @@ public class User {
     private String mPass;//solo usado en el envio de nuevo ususrio a base de datos
 
 
-    public User(String _id, String _correo, String _nombre, String _apellido, String _telefono, String _pass){
+    public User(String _id, String _correo, String _nombre, String _apellido, String _telefono, String _pass) {
         this.mID = _id;
         this.mCorreo = _correo;
         this.mNombre = _nombre;
         this.mApellido = _apellido;
         this.mTelefono = _telefono;
         this.mPass = _pass;
-
     }
-
 
     public String getID() {
         return mID;
@@ -65,7 +65,7 @@ public class User {
         this.mTelefono = mTelefono;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return mPass;
     }
 
