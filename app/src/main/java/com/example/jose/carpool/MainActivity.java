@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        ImageView navImage = header.findViewById(R.id.imageView);
+        ImageView navImage = header.findViewById(R.id.nav_profile_img);
         navImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
