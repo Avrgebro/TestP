@@ -86,6 +86,7 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
     @Bind(R.id.btn_crearCP) Button _crearCPBTN;
     @Bind(R.id.crearCPPB) ProgressBar _crearCP;
     @Bind(R.id.PrecioET) EditText _precioET;
+    @Bind(R.id.SeatsN) TextView _seatsN;
 
 
 
@@ -94,12 +95,13 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
     //variables del carpool
     private List<Vehiculo> vehiculos = new ArrayList<>();
     private Calendar fechaHoy = Calendar.getInstance(TimeZone.getTimeZone("GMT-5:00"));
-    private String finroute;
+    private String finroute = "";
     private Vehiculo finv;
     private String _userid;
     private CarPool _myPool;
     private String _hoy;
     private String _manana;
+    private List<String> _dists = new ArrayList<>();
 
     //auxiliare de mierda
     private String hoyaux;
@@ -125,6 +127,11 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
         _crearCPBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(!validate()){
+                    Toast.makeText(getBaseContext(), "Tienes Campos invalidos!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 String auxplaca = _spinnercarro.getSelectedItem().toString();
                 _crearCPBTN.setEnabled(true);
@@ -161,7 +168,7 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
 
                 //asyncTask con tokio
 
-                CrearCPAT task = new CrearCPAT();
+                GetDistritosAT task = new GetDistritosAT();
                 task.execute();
 
             }
@@ -289,6 +296,47 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
+    private boolean validate(){
+        boolean validation = true;
+
+
+        if(vehiculos.isEmpty()) return false;
+        if(_DestinoET.getText().toString().isEmpty()) return false;
+        if(_OrigenET.getText().toString().isEmpty()) return false;
+        if(_precioET.getText().toString().isEmpty()) return false;
+        if(timetxt.equals("--:--")) return false;
+        if(finroute.isEmpty()) return false;
+
+        String placaSelect = _spinnercarro.getSelectedItem().toString();
+        int asientosDisp = 0;
+        for(Vehiculo v : vehiculos){
+            if(v.getPlaca().equalsIgnoreCase(placaSelect)){
+                asientosDisp = v.getAsientos();
+            }
+        }
+
+        if(Integer.parseInt(_seatsN.getText().toString()) > asientosDisp ) return false;
+
+        if(finroute.isEmpty()) return false;
+
+        int h = fechaHoy.get(Calendar.HOUR_OF_DAY);
+        int m = fechaHoy.get(Calendar.MINUTE);
+
+        String[] info = timetxt.getText().toString().split(":");
+
+        if(Integer.parseInt(info[0]) < h){
+            Toast.makeText(getBaseContext(), "Hora invalida", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if((Integer.parseInt(info[0]) == h) && (Integer.parseInt(info[1]) < m)){
+            Toast.makeText(getBaseContext(), "Hora invalida", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+        return validation;
+    }
+
     private void PopulateSpinnerVehiculos(){
 
 
@@ -388,8 +436,8 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                 int mesm = fechaHoy.get(Calendar.MONTH);
                 int numm = fechaHoy.get(Calendar.DAY_OF_MONTH);
 
-                days.add(daysname[dia] + ", " + monthsname[mes] + " " + num);
-                days.add(daysname[diam] + ", " + monthsname[mesm] + " " + (numm-1));
+                days.add(daysname[dia-1] + ", " + monthsname[mes] + " " + num);
+                days.add(daysname[diam-1] + ", " + monthsname[mesm] + " " + (numm));
 
                 hoyaux = daysname[dia] + ", " + monthsname[mes] + " " + num;
                 mananaaux = daysname[diam] + ", " + monthsname[mesm] + " " + (numm-1);
@@ -783,8 +831,8 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                 jsonObject.put("hora_creacion",_myPool.getHcreacion());
                 jsonObject.put("fecha_salida",_myPool.getFsalida());
                 jsonObject.put("hora_salida",_myPool.getHsalida());
-                jsonObject.put("distrito_origen","placeholderorigen");
-                jsonObject.put("distrito_destino","placeholderdestino");
+                jsonObject.put("distrito_origen",_dists.get(0));
+                jsonObject.put("distrito_destino",_dists.get(_dists.size()-1));
                 jsonObject.put("nombre_origen",_myPool.getNomOrigen());
                 jsonObject.put("nombre_destino",_myPool.getNomDestino());
                 jsonObject.put("rutaMapa",_myPool.getmRoute());
@@ -854,6 +902,91 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
         }
 
     }
+
+    private class GetDistritosAT extends AsyncTask<Void, Void, List<String>> {
+
+        @Override
+        protected List<String> doInBackground(Void... voids) {
+
+            List<LatLng> cooraux= decodePolyLines(finroute);
+            final String geocode_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+
+            List<String> dists = new ArrayList<>();
+
+            int step = cooraux.size()/5;
+
+            for(int i=0; i<cooraux.size(); i+=step){
+
+                String jsonresponse = "";
+
+                try{
+                    jsonresponse = UrlUtils.makeHttpRequestGet(UrlUtils.createUrl(geocode_url + cooraux.get(i).latitude +","+cooraux.get(i).longitude));
+
+                }catch(IOException e){
+                    Log.e(TAG, "error formacion url");
+                    e.printStackTrace();
+                }
+
+                if(!jsonresponse.isEmpty()){
+                    //saco el distrito y lo meto al array
+                    dists.add(getDistrito(jsonresponse));
+                }
+
+            }
+
+            return dists;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> dists) {
+
+
+            if(dists.isEmpty()){
+                Toast.makeText(getBaseContext(), "Error obteniendo distritos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            for(String s : dists){
+                if(!_dists.contains(s)){
+                    _dists.add(s);
+                }
+            }
+
+            CrearCPAT task = new CrearCPAT();
+            task.execute();
+
+            return;
+
+        }
+
+
+
+
+        private String getDistrito(String json){
+            String distrito = "";
+
+            try{
+                JSONObject object = new JSONObject(json);
+
+                JSONArray results = object.getJSONArray("results");
+
+                JSONObject data = results.getJSONObject(2);
+                String address = data.getString("formatted_address");
+
+                distrito = address.substring(0, address.indexOf(","));
+
+
+            }catch (JSONException e){
+                Log.e(TAG, "Problem parsing the JSON results", e);
+            }
+
+            return distrito;
+
+
+        }
+    }
+
+
 
 
 
