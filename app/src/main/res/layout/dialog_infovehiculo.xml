@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="500dp"
+    android:layout_marginLeft="18dp">
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Placa: "
+                android:textSize="35dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modelo: "
+                android:textSize="35dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marca: "
+                android:textSize="35dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Color: "
+                android:textSize="35dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Asientos: "
+                android:textSize="35dp"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtVerplaca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="placa"
+                android:layout_marginLeft="15dp"
+                android:textSize="25dp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/txtVermodelo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="modelo"
+                android:layout_marginLeft="15dp"
+                android:textSize="25dp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/txtVermarca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="marca"
+                android:layout_marginLeft="15dp"
+                android:textSize="25dp"
+                android:layout_marginTop="22dp"/>
+
+            <EditText
+                android:id="@+id/txtVerColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="color"
+                android:layout_marginLeft="15dp"
+                android:textSize="25dp"
+                android:layout_marginTop="18dp"/>
+
+            <EditText
+                android:id="@+id/txtVerNasientos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:layout_marginLeft="15dp"
+                android:textSize="25dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_AddCar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+
+        android:padding="12dp"
+        android:backgroundTint="@color/accent"
+        android:textColor="@color/btn"
+        android:text="Aplicar cambios" />
+
+</LinearLayout>

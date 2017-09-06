@@ -67,6 +67,7 @@ public class tus_vehiculos extends Fragment {
     private static final String TAG = "VehiculoFragment";
     private static final String _baseVehiculo = "http://200.16.7.170/api/vehiculos/obtener_vehiculos/" + MainActivity.user.getID().toString();
     private static String _baseDelVehi = "http://200.16.7.170/api/vehiculos/eliminar_vehiculo/";
+    private static String _baseActualizarVehi = "http://200.16.7.170/api/vehículos/actualizar_vehiculo";
     private ArrayList<Vehiculo> lstVehi;
     private ListView listView;
     private SwipeRefreshLayout swipeView;
@@ -119,8 +120,6 @@ public class tus_vehiculos extends Fragment {
                         lstVehi.clear();
                         VehiculosAT task = new VehiculosAT();
                         task.execute();
-
-
                     }
                 }, 3000);
             }
@@ -143,8 +142,43 @@ public class tus_vehiculos extends Fragment {
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.dialog_infovehiculo);
+                dialog.setTitle("Informacion");
+                Vehiculo v = lstVehi.get(i);
+                cargarItem(dialog, v);
+                dialog.show();
+
+            }
+        });
+
         return view;
 
+    }
+
+    public static void cargarItem(Dialog dialog, Vehiculo v){
+        TextView placa = (TextView) dialog.findViewById(R.id.txtVerplaca);
+        TextView modelo = (TextView) dialog.findViewById(R.id.txtVermodelo);
+        TextView marca = (TextView) dialog.findViewById(R.id.txtVermarca);
+        EditText color = (EditText) dialog.findViewById(R.id.txtVerColor);
+        EditText nasientos = (EditText) dialog.findViewById(R.id.txtVerNasientos);
+
+        //ImageView foto = (ImageView) dialog.findViewById(R.id.lblFoto);
+
+        placa.setText(v.getPlaca());
+        modelo.setText(v.getModelo());
+        marca.setText(v.getMarca());
+        color.setText(v.getColor());
+        nasientos.setText(Integer.toString(v.getAsientos()));
+
+
+       /* if(imgPerfil != null){
+            foto.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            foto.setImageDrawable(imgPerfil.getDrawable());
+        }*/
     }
 
 
@@ -492,6 +526,7 @@ public class tus_vehiculos extends Fragment {
                     @Override
                     public void onClick (View v){
                         dialogPhoto.show();
+
                     }
 
                 });
@@ -512,6 +547,7 @@ public class tus_vehiculos extends Fragment {
                              txtMarca = textInputmarca.getEditText();
                              txtColor = textInputcolor.getEditText();
                              txtNasientos = textInputnasientos.getEditText();
+
                         if(validar()) {
 
                              new Thread(new Runnable() {
@@ -668,7 +704,7 @@ public class tus_vehiculos extends Fragment {
         }
 
         if(prueba==null){
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setMessage("Debes elegir una foto, nunca deberia salir este dialog");
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
