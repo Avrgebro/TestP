@@ -310,6 +310,7 @@
             android:src="@drawable/ic_save_black_24dp"
             android:clickable="true"
             android:background="@color/btn"
+            android:tint="@color/white"
             android:visibility="gone"
             android:layout_above="@+id/fab_edit_profile"
             android:layout_alignStart="@+id/fab_edit_profile"/>
@@ -323,6 +324,7 @@
             android:src="@drawable/ic_mode_edit_black_24px"
             android:clickable="true"
             android:background="@color/btn"
+            android:tint="@color/white"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true" />
 
