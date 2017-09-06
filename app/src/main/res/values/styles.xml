@@ -49,9 +49,10 @@
     </style>
 
     <style name="AppTheme.ProfileInput" parent="AppTheme">
-        <item name="colorControlNormal">#ffffff</item>
-        <item name="colorControlActivated">@color/accent</item>
-        <item name="colorControlHighlight">@color/accent</item>
+        <!--<item name="android:background">#66cccccc</item>-->
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="colorControlHighlight">@android:color/white</item>
     </style>
 
 </resources>
