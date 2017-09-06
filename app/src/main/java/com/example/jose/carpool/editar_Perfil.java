@@ -21,9 +21,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatButton;
 import android.text.Layout;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -99,56 +101,74 @@ public class editar_Perfil extends Fragment {
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Menu 1");
         ImageView perfil2 = (ImageView) MainActivity.imgPerfil;
-        /*if(perfil2!=null){
-            prueba.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        if(perfil2!=null){
+            prueba = getView().findViewById(R.id.lblFotoEditPerfil);
             prueba.setImageDrawable(perfil2.getDrawable());
-        }*/
+        }
 
         textinputNombre = (TextInputLayout) getView().findViewById(R.id.textNombre);
         textinputApellido = (TextInputLayout) getView().findViewById(R.id.textApellido);
         textinputTelefono = (TextInputLayout) getView().findViewById(R.id.textTelefono);
 
+        txtNombre = textinputNombre.getEditText();
+        txtApellido = textinputApellido.getEditText();
+        txtTelefono = textinputTelefono.getEditText();
 
-        textinputNombre.setHint(usuario.getNombre().toString());
+        txtNombre.setText(usuario.getNombre().toString());
+        txtApellido.setText(usuario.getApellido().toString());
+        txtTelefono.setText(usuario.getTelefono());
+
+        /*textinputNombre.setHint(usuario.getNombre().toString());
         textinputApellido.setHint(usuario.getApellido().toString());
-        textinputTelefono.setHint(usuario.getTelefono());
+        textinputTelefono.setHint(usuario.getTelefono());*/
 
-        ImageView editarAll = (ImageView) getView().findViewById(R.id.btnEditar);
+        final AppCompatButton editarAll= (AppCompatButton)getView().findViewById(R.id.btnEditar);
         editarAll.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 txtNombre = textinputNombre.getEditText();
                 txtApellido = textinputApellido.getEditText();
                 txtTelefono = textinputTelefono.getEditText();
-                if(txtNombre.length() != 0) {
-                    MainActivity.user.setNombre(txtNombre.getText().toString());
+                if(validar()){
+                    if(txtNombre.length() != 0) {
+                        MainActivity.user.setNombre(txtNombre.getText().toString());
+                    }
+
+                    if(txtApellido.length() != 0) {
+                        MainActivity.user.setApellido(txtApellido.getText().toString());
+                    }
+
+                    if(txtTelefono.length() != 0) {
+                        MainActivity.user.setTelefono(txtTelefono.getText().toString());
+                    }
+
+
+                    TextView nombreMain = (TextView) MainActivity._nomnavbar;
+                    nombreMain.setText(MainActivity.user.getNombre() + " " + MainActivity.user.getApellido());
+
+                    if(prueba != null){
+                        ImageView perfil = (ImageView) MainActivity.imgPerfil;
+                        perfil.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        perfil.setImageDrawable(prueba.getDrawable());
+                    }
+
+
+
+                    //LLamar a la funcion actualizar BD
+                    actualizarUsuario();
+                    modificarCache();
+
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+                    tus_vehiculos cpF = new tus_vehiculos();
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+                    fragmentTransaction.replace(R.id.MainFrameLayout, cpF);
+                    fragmentTransaction.commit();
                 }
 
-                if(txtApellido.length() != 0) {
-                    MainActivity.user.setApellido(txtApellido.getText().toString());
-                }
-
-                if(txtTelefono.length() != 0) {
-                    MainActivity.user.setTelefono(txtTelefono.getText().toString());
-                }
 
 
-                TextView nombreMain = (TextView) MainActivity._nomnavbar;
-                nombreMain.setText(MainActivity.user.getNombre() + " " + MainActivity.user.getApellido());
-
-                if(prueba != null){
-                    ImageView perfil = (ImageView) MainActivity.imgPerfil;
-                    perfil.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    perfil.setImageDrawable(prueba.getDrawable());
-                }
-
-
-
-                //LLamar a la funcion actualizar BD
-                actualizarUsuario();
-                modificarCache();
-
-               // FragmentTransaction ft = getFragmentManager().beginTransaction();
-               // ft.detach(getTargetFragment()).attach(getTargetFragment()).commit();
             }
         });
 
@@ -197,6 +217,61 @@ public class editar_Perfil extends Fragment {
 
     }
 
+    private boolean validar(){
+        boolean valid = true;
+
+        String nombre;
+        String apellido;
+        String telefono;
+
+        txtNombre = textinputNombre.getEditText();
+        txtApellido = textinputApellido.getEditText();
+        txtTelefono = textinputTelefono.getEditText();
+
+        if(txtNombre.length()==0){
+            txtNombre.setError("Ingrese un nombre");
+            valid = false;
+        }else{
+                txtNombre.setError(null);
+        }
+
+
+        if(txtApellido.length()==0){
+            txtApellido.setError("Ingrese un apellido");
+            valid = false;
+        }else{
+                txtApellido.setError(null);
+        }
+
+
+        if(txtTelefono.length()==0){
+            txtTelefono.setError("Ingrese un numero");
+            valid = false;
+        }else{
+            telefono = txtTelefono.getText().toString();
+            if (telefono.length()!=9) {
+                txtTelefono.setError("Numero invalido");
+                valid = false;
+            } else {
+                txtTelefono.setError(null);
+            }
+        }
+
+        if(prueba==null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Debes elegir una foto, nunca deberia salir este dialog");
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            valid=false;
+        }
+        return valid;
+    }
     private void modificarCache(){
 
         Gson gson = new Gson();

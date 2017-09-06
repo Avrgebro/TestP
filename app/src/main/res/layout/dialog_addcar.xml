@@ -4,150 +4,176 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.example.jose.carpool.frmEditarPerfil">
+    tools:context="com.example.jose.carpool.frmEditarPerfil"
+    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="30dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:id="@+id/loginview"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
 
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginLeft="90dp"
-                app:srcCompat="@drawable/ic_menu_gallery" />
-
-            <ImageButton
-                android:id="@+id/btn_addPhoto"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="30dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:id="@+id/loginview"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:background="@color/transparente"
-                app:srcCompat="@drawable/ic_menu_camera" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="90dp"
+                    app:srcCompat="@drawable/ic_menu_gallery" />
+
+                <ImageButton
+                    android:id="@+id/btn_addPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:background="@color/transparente"
+                    app:srcCompat="@drawable/ic_menu_camera" />
+
+            </LinearLayout>
+
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:scrollbarAlwaysDrawVerticalTrack="true">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txtInputPlaca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Ingresa la placa"
+                    android:layout_marginBottom="8dp">
+
+                    <EditText android:id="@+id/txtplaca"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/primary_dark"
+                        android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEFGHIJKLMNÑOPQRSTUVWXYZ,abcdefghijklmnñopqrstuvwxyz,-"
+                        android:textStyle="italic"
+
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txtInputModelo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingresa modelo del auto"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <EditText android:id="@+id/txtModelo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/primary_dark"
+                        android:textStyle="italic"
+                        android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEFGHIJKLMNÑOPQRSTUVWXYZ,abcdefghijklmnñopqrstuvwxyz,-"
+
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txtInputMarca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingresa marca del auto"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <EditText android:id="@+id/txtMarca"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/primary_dark"
+                        android:textStyle="italic"
+                        android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEFGHIJKLMNÑOPQRSTUVWXYZ,abcdefghijklmnñopqrstuvwxyz,-"
+
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txtInputColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingresa color del auto"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <EditText android:id="@+id/txtColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/primary_dark"
+                        android:textStyle="italic"
+                        android:digits="0,1,2,3,4,5,6,7,8,9,ABCDEFGHIJKLMNÑOPQRSTUVWXYZ,abcdefghijklmnñopqrstuvwxyz,-"
+
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txtInputNasientos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingresa numero de asientos"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <EditText android:id="@+id/txtNasientos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:textColor="@color/primary_dark"
+                        android:textStyle="italic"
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_AddCar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+
+                    android:padding="12dp"
+                    android:backgroundTint="@color/accent"
+                    android:textColor="@color/btn"
+                    android:text="Agregar" />
+
+            </LinearLayout>
+    </ScrollView>
+
+
 
         </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtInputPlaca"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Ingresa la placa"
-            android:layout_marginBottom="8dp">
-
-            <EditText android:id="@+id/txtplaca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:textColor="@color/primary_dark"
-                android:textStyle="italic"
-
-                />
-
-        </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtInputModelo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ingresa modelo del auto"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-
-            <EditText android:id="@+id/txtModelo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:textColor="@color/primary_dark"
-                android:textStyle="italic"
-                />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtInputMarca"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ingresa marca del auto"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-
-            <EditText android:id="@+id/txtMarca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:textColor="@color/primary_dark"
-                android:textStyle="italic"
-                />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtInputColor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ingresa color del auto"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-
-            <EditText android:id="@+id/txtColor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:textColor="@color/primary_dark"
-                android:textStyle="italic"
-                />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtInputNasientos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ingresa numero de asientos"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-
-            <EditText android:id="@+id/txtNasientos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:textColor="@color/primary_dark"
-                android:textStyle="italic"
-                />
-
-        </android.support.design.widget.TextInputLayout>
-
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_AddCar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-
-            android:padding="12dp"
-            android:backgroundTint="@color/accent"
-            android:textColor="@color/btn"
-            android:text="Agregar" />
-
-
-
-
-    </LinearLayout>
 
 
 </RelativeLayout>

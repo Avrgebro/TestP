@@ -48,6 +48,11 @@
             android:name=".activity_emailverification"
             android:theme="@style/NoActionBar" />
         <activity android:name=".frmEditarPerfil"></activity>
+        <dependency>
+            <groupId>com.squareup.picasso</groupId>
+            <artifactId>picasso</artifactId>
+            <version>2.5.2</version>
+        </dependency>
     </application>
 
 </manifest>

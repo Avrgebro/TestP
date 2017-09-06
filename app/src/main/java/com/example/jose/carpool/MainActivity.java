@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -47,7 +50,6 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-   // public static User usuario;
     public static User user;
 
     private static final String TAG = "MainActivity";
@@ -96,6 +98,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(loginintent);
         }
 
+
+
         //displaySelectedScreen(R.id.idVehiculos);
 
     }
@@ -120,6 +124,14 @@ public class MainActivity extends AppCompatActivity
                 _cornavbar.setText(user.getCorreo());
             }
 
+            if(imgPerfil == null){
+                try{
+                    Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(imgPerfil);
+                }catch (Exception ex){
+                    Log.e(TAG,"error carga imagen");
+                }
+
+            }
 
         }else{
             Log.e(TAG, "No se recibio el usuario");

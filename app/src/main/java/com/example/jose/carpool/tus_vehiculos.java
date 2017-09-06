@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -446,7 +447,8 @@ public class tus_vehiculos extends Fragment {
 
                     final Dialog dialog = new Dialog(getActivity());
                     dialog.setContentView(R.layout.dialog_addcar);
-                    dialog.setTitle("Perfil");
+                    //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                   // dialog.setTitle("Perfil");
                     dialog.show();
 
 
@@ -497,92 +499,187 @@ public class tus_vehiculos extends Fragment {
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //textinputNombre = (TextInputLayout) getView().findViewById(R.id.textNombre);
-                        //txtNombre = textinputNombre.getEditText();
-
-                        textInputplaca = dialog.findViewById(R.id.txtInputPlaca);
-                        textInputmodelo = dialog.findViewById(R.id.txtInputModelo);
-                        textInputmarca = dialog.findViewById(R.id.txtInputMarca);
-                        textInputcolor = dialog.findViewById(R.id.txtInputColor);
-                        textInputnasientos = dialog.findViewById(R.id.txtInputNasientos);
-
-                        txtPlaca = textInputplaca.getEditText();
-                        txtModelo = textInputmodelo.getEditText();
-                        txtMarca = textInputmarca.getEditText();
-                        txtColor = textInputcolor.getEditText();
-                        txtNasientos = textInputnasientos.getEditText();
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
 
 
-                                JSONObject jsonObject = new JSONObject();
-                                try {
-                                    jsonObject.put("idUsuario", Integer.parseInt(MainActivity.user.getID()));
-                                    jsonObject.put("placa", txtPlaca.getText());
-                                    jsonObject.put("modelo", txtModelo.getText());
-                                    jsonObject.put("marca", txtMarca.getText());
-                                    jsonObject.put("color", txtColor.getText());
-                                    jsonObject.put("nasientos", Integer.parseInt(txtNasientos.getText().toString()));
-                                    jsonObject.put("img", "0");
-                                } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
+                             textInputplaca = dialog.findViewById(R.id.txtInputPlaca);
+                             textInputmodelo = dialog.findViewById(R.id.txtInputModelo);
+                             textInputmarca = dialog.findViewById(R.id.txtInputMarca);
+                             textInputcolor = dialog.findViewById(R.id.txtInputColor);
+                             textInputnasientos = dialog.findViewById(R.id.txtInputNasientos);
 
-                                String BaseURL = "http://200.16.7.170/api/vehiculos/agregar_vehiculo";//solo se agrega "correo/pass"
-                                OutputStream os = null;
-                                InputStream is = null;
-                                HttpURLConnection conn = null;
-                                try {
-                                    //constants
-                                    URL url = new URL(BaseURL);
-                                    String message = jsonObject.toString();
-                                    conn = (HttpURLConnection) url.openConnection();
-                                    conn.setReadTimeout(10000 /*milliseconds*/);
-                                    conn.setConnectTimeout(15000 /* milliseconds */);
-                                    conn.setRequestMethod("POST");
-                                    conn.setDoInput(true);
-                                    conn.setDoOutput(true);
-                                    conn.setFixedLengthStreamingMode(message.getBytes().length);
+                             txtPlaca = textInputplaca.getEditText();
+                             txtModelo = textInputmodelo.getEditText();
+                             txtMarca = textInputmarca.getEditText();
+                             txtColor = textInputcolor.getEditText();
+                             txtNasientos = textInputnasientos.getEditText();
+                        if(validar()) {
 
-                                    //make some HTTP header nicety
-                                    conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-                                    conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+                             new Thread(new Runnable() {
+                                 @Override
+                                 public void run() {
 
-                                    //open
-                                    conn.connect();
 
-                                    //setup send
-                                    os = new BufferedOutputStream(conn.getOutputStream());
-                                    os.write(message.getBytes());
-                                    //clean up
-                                    os.flush();
+                                     JSONObject jsonObject = new JSONObject();
+                                     try {
+                                         jsonObject.put("idUsuario", Integer.parseInt(MainActivity.user.getID()));
+                                         jsonObject.put("placa", txtPlaca.getText());
+                                         jsonObject.put("modelo", txtModelo.getText());
+                                         jsonObject.put("marca", txtMarca.getText());
+                                         jsonObject.put("color", txtColor.getText());
+                                         jsonObject.put("nasientos", Integer.parseInt(txtNasientos.getText().toString()));
+                                         jsonObject.put("img", "0");
+                                     } catch (JSONException e) {
+                                         // TODO Auto-generated catch block
+                                         e.printStackTrace();
+                                     }
 
-                                    //do somehting with response
-                                    is = conn.getInputStream();
-                                    //String contentAsString = readIt(is,len);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    //clean up
-                                    try {
-                                        os.close();
-                                        is.close();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                     String BaseURL = "http://200.16.7.170/api/vehiculos/agregar_vehiculo";//solo se agrega "correo/pass"
+                                     OutputStream os = null;
+                                     InputStream is = null;
+                                     HttpURLConnection conn = null;
+                                     try {
+                                         //constants
+                                         URL url = new URL(BaseURL);
+                                         String message = jsonObject.toString();
+                                         conn = (HttpURLConnection) url.openConnection();
+                                         conn.setReadTimeout(10000 /*milliseconds*/);
+                                         conn.setConnectTimeout(15000 /* milliseconds */);
+                                         conn.setRequestMethod("POST");
+                                         conn.setDoInput(true);
+                                         conn.setDoOutput(true);
+                                         conn.setFixedLengthStreamingMode(message.getBytes().length);
 
-                                    conn.disconnect();
-                                }
-                            }
-                        }).start();
-                        dialog.dismiss();
+                                         //make some HTTP header nicety
+                                         conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+                                         conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+
+                                         //open
+                                         conn.connect();
+
+                                         //setup send
+                                         os = new BufferedOutputStream(conn.getOutputStream());
+                                         os.write(message.getBytes());
+                                         //clean up
+                                         os.flush();
+
+                                         //do somehting with response
+                                         is = conn.getInputStream();
+                                         //String contentAsString = readIt(is,len);
+                                     } catch (Exception e) {
+                                         e.printStackTrace();
+                                     } finally {
+                                         //clean up
+                                         try {
+                                             os.close();
+                                             is.close();
+                                         } catch (Exception e) {
+                                             e.printStackTrace();
+                                         }
+
+                                         conn.disconnect();
+                                     }
+                                 }
+                             }).start();
+                             dialog.dismiss();
+                             ////
+                         }
                     }
                 });
             }
             });
+    }
+
+    private boolean validar(){
+        boolean valid = true;
+
+        String placa;
+        String modelo;
+        String marca;
+        String color;
+        String nasientos;
+
+        if(txtPlaca.length()==0){
+            txtPlaca.setError("Ingrese una placa");
+            valid = false;
+        }else{
+            placa = txtPlaca.getText().toString();
+            if (placa.length()!=7 || placa.indexOf("-")!=3) {
+                txtPlaca.setError("Placa invalida");
+                valid = false;
+            } else {
+                txtPlaca.setError(null);
+            }
+        }
+
+
+        if(txtModelo.length()==0){
+            txtModelo.setError("Ingrese un modelo");
+            valid = false;
+        }else{
+            modelo = txtModelo.getText().toString();
+            if (modelo.isEmpty() || modelo.length() < 2 || modelo.length() > 15) {
+                txtModelo.setError("Modelo invalido");
+                valid = false;
+            } else {
+                txtModelo.setError(null);
+            }
+        }
+
+
+        if(txtMarca.length()==0){
+            txtMarca.setError("Ingrese un modelo");
+            valid = false;
+        }else{
+            marca = txtMarca.getText().toString();
+            if (marca.isEmpty() || marca.length() < 2 || marca.length() > 15) {
+                txtMarca.setError("Marca invalida");
+                valid = false;
+            } else {
+                txtMarca.setError(null);
+            }
+        }
+
+
+        if(txtColor.length()==0){
+            txtColor.setError("Ingrese un modelo");
+            valid = false;
+        }else{
+            color = txtColor.getText().toString();
+            if (color.isEmpty() || color.length() < 2 || color.length() > 15) {
+                txtColor.setError("Color invalido");
+                valid = false;
+            } else {
+                txtColor.setError(null);
+            }
+        }
+
+
+        if(txtNasientos.length()==0){
+            txtNasientos.setError("Ingrese un valor");
+            valid = false;
+        }else{
+            nasientos = txtNasientos.getText().toString();
+            if (nasientos.isEmpty()) {
+                txtNasientos.setError("Numero asientos invalido");
+                valid = false;
+            } else {
+                txtNasientos.setError(null);
+            }
+        }
+
+        if(prueba==null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Debes elegir una foto, nunca deberia salir este dialog");
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        return valid;
     }
 
 
