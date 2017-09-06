@@ -148,8 +148,8 @@ public class ProfileFragment extends Fragment {
                         return;
                     }
                 }
-
-                String userJson = new Gson().toJson(mUser, User.class);
+                Log.e(TAG, "User update success. Before serialization to shared preferences");
+                String userJson = (new Gson()).toJson(mUser);
                 SharedPreferences.Editor prefEditor = getActivity().getSharedPreferences(
                         "SessionToken",
                         MODE_PRIVATE
@@ -157,9 +157,14 @@ public class ProfileFragment extends Fragment {
 
                 prefEditor.putString("SessionUser", userJson);
                 prefEditor.apply();
-
-                bindUser();
-                disableProfileEdit();
+                Log.e(TAG, "After serialization to shared preferences");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        disableProfileEdit();
+                        bindUser();
+                    }
+                });
 
                 Snackbar.make(
                         fabEditToggle,
@@ -175,11 +180,11 @@ public class ProfileFragment extends Fragment {
     private String serializeUser(User user) {
         JSONObject jsonObject= new JSONObject();
         try {
-            jsonObject.put("_id", user.getID());
-            jsonObject.put("_nombre", user.getNombre());
-            jsonObject.put("_apellido", user.getApellido());
-            jsonObject.put("_telefono", user.getTelefono());
-            jsonObject.put("_imgPerfil", "");
+            jsonObject.put("idUsuario", user.getID());
+            jsonObject.put("nombre", user.getNombre());
+            jsonObject.put("apellido", user.getApellido());
+            jsonObject.put("telefono", user.getTelefono());
+            jsonObject.put("img", "");
         } catch (JSONException e) {
             Log.e(TAG, "Problem creating JsonObject", e);
             e.printStackTrace();
@@ -280,8 +285,10 @@ public class ProfileFragment extends Fragment {
         if(!userJSON.isEmpty()) {
             Gson gson = new Gson();
             User user = gson.fromJson(userJSON, User.class);
+            Log.d(TAG, "Before bindUser(User)");
             bindUser(user);
-        }else{
+            Log.d(TAG, "After bindUser(User)");
+        } else {
             Log.d(TAG, "No se recibio el usuario");
         }
     }

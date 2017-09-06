@@ -17,14 +17,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD_cCfO3657tosUzJXKaNQMSfILJn9vTCw" />
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD_cCfO3657tosUzJXKaNQMSfILJn9vTCw" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD_cCfO3657tosUzJXKaNQMSfILJn9vTCw" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="76d06d81535359540bf2c88ee218d0ec5672103c"/>
 
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.jose.carpool.fileprovider"
@@ -33,6 +37,7 @@
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
