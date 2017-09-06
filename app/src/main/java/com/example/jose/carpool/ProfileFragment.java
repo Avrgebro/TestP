@@ -13,6 +13,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ public class ProfileFragment extends Fragment {
 //    @Bind(R.id.profile_summary) TextView getProfileSummary;
     @Bind(R.id.fab_edit_profile) FloatingActionButton fabEditToggle;
     @Bind(R.id.fab_save_profile) FloatingActionButton fabSaveProfile;
+    @Bind(R.id.btn_profile_edit_picture) ImageButton selectImageButton;
 
     // Inputs
 //    @Bind(R.id.profile_input_email_wrapper) TextInputLayout emailWrapper;
@@ -252,6 +254,8 @@ public class ProfileFragment extends Fragment {
         phoneWrapper.setVisibility(View.GONE);
         firstNameWrapper.setVisibility(View.GONE);
         lastNameWrapper.setVisibility(View.GONE);
+        selectImageButton.setVisibility(View.GONE);
+
         profilePhone.setVisibility(View.VISIBLE);
 //        profileEmail.setVisibility(View.VISIBLE);
         profileName.setVisibility(View.VISIBLE);
@@ -270,6 +274,7 @@ public class ProfileFragment extends Fragment {
 
         firstNameWrapper.setVisibility(View.VISIBLE);
         lastNameWrapper.setVisibility(View.VISIBLE);
+        selectImageButton.setVisibility(View.VISIBLE);
 
         // Bind values to inputs
 //        emailWrapper.setHint(mUser.getCorreo());
