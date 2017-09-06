@@ -93,10 +93,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_CODE) {
-            if (resultCode == RESULT_OK) {
+        switch (requestCode) {
+            case RESULT_CODE: {
+                if (resultCode == RESULT_OK) {
+                    super.onActivityResult(requestCode, resultCode, data);
+                    mReturningWithResult = true;
+                }
+                break;
+            }
+            default: {
                 super.onActivityResult(requestCode, resultCode, data);
-                mReturningWithResult = true;
             }
         }
     }
