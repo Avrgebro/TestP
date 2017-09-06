@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -64,6 +66,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -72,7 +75,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class tus_vehiculos extends Fragment {
     private static final String TAG = "VehiculoFragment";
-    private static final String _baseVehiculo = "http://200.16.7.170/api/vehiculos/obtener_vehiculos/" + MainActivity.user.getID();
+    private static final String _baseVehiculo = "http://200.16.7.170/api/vehiculos/obtener_vehiculos/";
     private static String _baseDelVehi = "http://200.16.7.170/api/vehiculos/eliminar_vehiculo/";
     private ArrayList<Vehiculo> lstVehi;
     private RecyclerView listView;
@@ -84,7 +87,9 @@ public class tus_vehiculos extends Fragment {
     private static final int PICK_FROM_FILE = 2;
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1234;
-    private static final int MY_PERMISSIONS_REQUEST_FILE =4321;
+    private static final int MY_PERMISSIONS_REQUEST_FILE = 4321;
+
+    private User mUser;
 
     String mCurrentPhotoPath;
     TextView flagLoadImage;
@@ -109,7 +114,8 @@ public class tus_vehiculos extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //returning our layout file
+        // returning our layout file
+        // UI setup
         View view = inflater.inflate(R.layout.fragment_vehiculos, container, false);
         listView = (RecyclerView) view.findViewById(R.id.listViewV);
 
@@ -132,7 +138,9 @@ public class tus_vehiculos extends Fragment {
                 }, 3000);
             }
         });
+        bindUser();
 
+        // Data setup
         if(lstVehi == null) {
             lstVehi = new ArrayList<>();
         }
@@ -159,9 +167,21 @@ public class tus_vehiculos extends Fragment {
         listView.setAdapter(mVehicleAdapter);
 
         mHttpClient = new OkHttpClient();
+
         return view;
     }
 
+    private void bindUser() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("SessionToken", MODE_PRIVATE);
+        String userJSON = prefs.getString("SessionUser", "");
+        Log.e(TAG, userJSON);
+        if(!userJSON.isEmpty()) {
+            Gson gson = new Gson();
+            mUser = gson.fromJson(userJSON, User.class);
+        } else {
+            Log.d(TAG, "No se recibio el usuario");
+        }
+    }
 
     private void createAndShowAlertDialog(final int i) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -242,7 +262,8 @@ public class tus_vehiculos extends Fragment {
     private class VehiculosAT extends AsyncTask<URL, Void, String> {
         @Override
         protected String doInBackground(URL... urls){
-            URL CPurl = UrlUtils.createUrl(_baseVehiculo);
+            Log.e(TAG, "" + (mUser == null));
+            URL CPurl = UrlUtils.createUrl(_baseVehiculo + mUser.getID());
             Log.d(TAG, CPurl.toString());
             String jsonResponse = "";
             try {
@@ -529,7 +550,7 @@ public class tus_vehiculos extends Fragment {
 
                         JSONObject jsonObject = new JSONObject();
                         try {
-                            jsonObject.put("idUsuario", Integer.parseInt(MainActivity.user.getID()));
+                            jsonObject.put("idUsuario", Integer.parseInt(mUser.getID()));
                             jsonObject.put("placa", txtPlaca.getText());
                             jsonObject.put("modelo", txtModelo.getText());
                             jsonObject.put("marca", txtMarca.getText());

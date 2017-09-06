@@ -1,12 +1,9 @@
 package com.example.jose.carpool;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -68,10 +65,17 @@ public class MainActivity extends AppCompatActivity
 
         TextView _logout = (TextView) findViewById(R.id.logout);
         _logout.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 logout();
+            }
+        });
+
+        ImageView navImage = header.findViewById(R.id.imageView);
+        navImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                inflateFragment(new ProfileFragment());
             }
         });
 
@@ -185,10 +189,10 @@ public class MainActivity extends AppCompatActivity
                 fragment = new pool_fragment();
                 break;
             }
-            case R.id.idCrearPool: {
-                fragment = new fragment_crearpool();
-                break;
-            }
+//            case R.id.idCrearPool: {
+//                fragment = new fragment_crearpool();
+//                break;
+//            }
             case R.id.idVehiculos: {
                 fragment = new tus_vehiculos();
                 break;
@@ -201,13 +205,13 @@ public class MainActivity extends AppCompatActivity
                 //fragment = new Menu3();
                 break;
             }
-            case R.id.btn_edit_profile: {
-                fragment = new ProfileFragment();
-                break;
-            }
         }
 
         //replacing the fragment
+        inflateFragment(fragment);
+    }
+
+    private void inflateFragment(Fragment fragment) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.MainFrameLayout, fragment);
@@ -229,26 +233,5 @@ public class MainActivity extends AppCompatActivity
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
         startActivity(i);
-    }
-
-    public void Ver_Perfil(View view){
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog_verperfil);
-        dialog.setTitle("Perfil");
-
-        cargarVerPerfil(dialog);
-
-        dialog.show();
-
-    }
-
-    public static void cargarVerPerfil(Dialog dialog){
-        TextView nombre = (TextView) dialog.findViewById(R.id.txtNombre);
-        TextView telefono = (TextView) dialog.findViewById(R.id.txtTelefono);
-        TextView correo = (TextView) dialog.findViewById(R.id.txtCorreo);
-
-        nombre.setText(user.getNombre().toString() +" "+ user.getApellido().toString());
-        telefono.setText(user.getTelefono());
-        correo.setText(user.getCorreo().toString());
     }
 }
