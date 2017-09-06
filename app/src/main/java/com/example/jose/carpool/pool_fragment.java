@@ -106,8 +106,9 @@ public class pool_fragment extends Fragment {
 
     private void failmessage(int flag){
         if(flag == 1){
-            Toast.makeText(getActivity(), "Que fue kaoza!",
+            Toast.makeText(getContext(), "Error de conexion",
                     Toast.LENGTH_LONG).show();
+
         }
         else{
             Toast.makeText(getActivity(), "que else!",
@@ -199,16 +200,9 @@ public class pool_fragment extends Fragment {
                     String IDservicio = pool.getString("idServicio");
                     String Hcreacion = pool.getString("hora_creacion");
                     String Hsalida = pool.getString("hora_salida");
+                    String ruta = pool.getString("rutaMapa");
 
-                    JSONArray markers = pool.getJSONArray("puntos");
-                    ArrayList<MapPoints> points = new ArrayList<MapPoints>();
-                    for(int j=0; j<markers.length(); j++){
-                        JSONObject p = markers.getJSONObject(j);
-                        MapPoints aux = new MapPoints(p.getDouble("latitud"), p.getDouble("longitud"));
-                        points.add(aux);
-                    }
-
-                    CarPool auxPool = new CarPool(IDusuario, IDvehiculo, Nasientos, Costo, Fcreacion, Fsalida, NomOrigen, DistOrigen, DirOrigen, NomDestino, DistDestino, DirDestino, Estado, IDservicio, Hcreacion, Hsalida, points);
+                    CarPool auxPool = new CarPool(IDusuario, IDvehiculo, Nasientos, Costo, Fcreacion, Fsalida, NomOrigen, DistOrigen, DirOrigen, NomDestino, DistDestino, DirDestino, Estado, IDservicio, Hcreacion, Hsalida, ruta);
                     pools.add(auxPool);
                 }
 

@@ -1,6 +1,8 @@
 package com.example.jose.carpool;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -17,13 +19,19 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,6 +42,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONArray;
@@ -43,14 +52,20 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+
+
 public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallback {
 
-    private static final String TAG = "CPInfoActivity";
+    private static final String TAG = "RegistrarPool";
 
 
     private GoogleMap mMap;
@@ -64,10 +79,44 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
     private int voyovengo = 0; //flag para saber si va o viene a cato: 0 se va y 1 viene.
     private LatLng PUCP = new LatLng(-12.06902418, -77.07927883);
 
-    @Bind(R.id.spinner) Spinner _spinner;
+
+
+    //Butterknife injection
+    @Bind(R.id.spinner) Spinner _spinnerorigen;
     @Bind(R.id.floatinbtn) FloatingActionButton button;
     @Bind(R.id.delbtn) FloatingActionButton delbtn;
+    @Bind(R.id.arrow) ImageView _arrow;
+    @Bind(R.id.timetext) TextView timetxt;//de aca saco la hora
+    @Bind(R.id.time) ImageView clock;
+    @Bind(R.id.spinnerCarro) Spinner _spinnercarro;//de aca saco la placa cuando la necesite
+    @Bind(R.id.spinnerDia) Spinner _spinnerdia;//de aca saco el dia
+    @Bind(R.id.OrigenET) EditText _OrigenET;
+    @Bind(R.id.DestinoET) EditText _DestinoET;
+    @Bind(R.id.btn_crearCP) Button _crearCPBTN;
+    @Bind(R.id.crearCPPB) ProgressBar _crearCP;
+    @Bind(R.id.PrecioET) EditText _precioET;
 
+
+
+
+
+    //variables del carpool
+    private List<Vehiculo> vehiculos = new ArrayList<>();
+    private Calendar fechaHoy = Calendar.getInstance(TimeZone.getTimeZone("GMT-5:00"));
+    private String finroute;
+    private Vehiculo finv;
+    private String _userid;
+    private CarPool _myPool;
+    private String _hoy;
+    private String _manana;
+
+    //auxiliare de mierda
+    private String hoyaux;
+    private String mananaaux;
+
+    //traducciones meses
+    private String[] monthsname = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
+    private String[] daysname = {"Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"};
 
 
     @Override
@@ -79,6 +128,72 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //Log.d(TAG, fechaHoy);
+
+        _crearCPBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String auxplaca = _spinnercarro.getSelectedItem().toString();
+                _crearCPBTN.setEnabled(true);
+                _crearCP.setVisibility(View.VISIBLE);
+                for(Vehiculo v : vehiculos){
+                    if(v.getmPlaca().equals(auxplaca)){
+                        finv = v;
+                        break;
+                    }
+                }
+                //creo el objeto carpool
+                String aux = "%02d:%02d";
+
+                String horacrea = String.format(aux, fechaHoy.get(Calendar.HOUR_OF_DAY), fechaHoy.get(Calendar.MINUTE));
+
+                String diapool = "";
+
+                if(_spinnerdia.getSelectedItem().toString().equals(hoyaux)){
+                    diapool = ""+_hoy;
+                }else diapool = "" +_manana;
+
+                _myPool = new CarPool(_userid,
+                        finv.getmID(),
+                        finv.getmAsientos(),
+                        _precioET.getText().toString(),
+                        _hoy,
+                        diapool,
+                        _OrigenET.getText().toString(),
+                        _DestinoET.getText().toString(),
+                        horacrea,
+                        timetxt.getText().toString(),
+                        finroute);
+
+
+                //asyncTask con tokio
+
+                CrearCPAT task = new CrearCPAT();
+                task.execute();
+
+            }
+        });
+
+        clock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(RegistrarPool.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String timeset = String.format("%02d", selectedHour)+":"+String.format("%02d", selectedMinute);
+                        timetxt.setText(timeset);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.show();
+
+            }
+        });
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +208,11 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                     button.setEnabled(true);
                     return;
                 }else{
+                    //mMap.clear();
+                    //coords.clear();
+                    //mRouteHash.clear();
+                    mMap.addMarker(new MarkerOptions().position(PUCP).title("PUCP"));
+
                     Log.d("lala", "entre al boton");
                     PolylinesAT task = new PolylinesAT();
                     task.execute();
@@ -121,29 +241,39 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
         slidingLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
-
+                _arrow.setRotation(180*slideOffset);
             }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
 
-                ImageView arrow = (ImageView) findViewById(R.id.arrow);
-
-                arrow.setRotation(180);
-
             }
+
         });
 
 
-        _spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        _spinnerorigen.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
 
                 if(item.equalsIgnoreCase("PUCP")){
                     voyovengo = 0;
+
+                    _OrigenET.setText("PUCP");
+                    _OrigenET.setEnabled(false);
+                    _DestinoET.getText().clear();
+                    _DestinoET.setHint("Destino");
+                    _DestinoET.setEnabled(true);
+
                 }else{
                     voyovengo = 1;
+
+                    _DestinoET.setText("PUCP");
+                    _DestinoET.setEnabled(false);
+                    _OrigenET.getText().clear();
+                    _OrigenET.setHint("Origen");
+                    _OrigenET.setEnabled(true);
                 }
 
             }
@@ -155,12 +285,159 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
         });
 
 
+        PopulateSpinnerVehiculos();
+        PopulateSpinnerDia();
+
+
         updateui();
 
 
     }
 
     private void updateui() {
+
+    }
+
+    private void PopulateSpinnerVehiculos(){
+
+
+        SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
+        String userJSON = prefs.getString("SessionUser", "");
+
+        Gson gson = new Gson();
+        User user = gson.fromJson(userJSON, User.class);
+
+        _userid = user.getID();
+
+        final String urlvehiculos = "http://200.16.7.170/api/vehiculos/obtener_vehiculos/"+_userid;
+        Log.d(TAG, urlvehiculos);
+
+        Thread task = new Thread(){
+            @Override
+            public void run(){
+
+
+                URL url = UrlUtils.createUrl(urlvehiculos);
+
+                String jsonResponse = "";
+                try {
+                    jsonResponse = UrlUtils.makeHttpRequestGet(url);
+                } catch (IOException e) {
+                    Log.e(TAG, "Problem making the HTTP request.", e);
+                }
+
+
+                try{
+                    JSONArray carros = new JSONArray(jsonResponse);
+
+                    for(int i=0; i<carros.length(); i++){
+                        JSONObject carro = carros.getJSONObject(i);
+
+                        String placa = carro.getString("placa");
+                        int asientos = carro.getInt("numAsientos");
+                        String id = carro.getString("idVehiculo");
+
+                        vehiculos.add(new Vehiculo(placa, asientos, id));
+                    }
+
+                }catch (JSONException e){
+                    Log.e(TAG, "Problem parsing the cars Json", e);
+                }
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        setSpinnerVADPTR();
+                    }
+                });
+
+            }
+        };
+
+        task.start();
+
+    }
+
+    public void setSpinnerVADPTR(){
+
+        List<String> SpinnerPlacas = new ArrayList<>();
+
+        if(vehiculos.size() == 0){
+            SpinnerPlacas.add("---");
+
+        }else{
+            for(Vehiculo v :vehiculos){
+                SpinnerPlacas.add(v.getmPlaca());
+            }
+        }
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, SpinnerPlacas); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        _spinnercarro.setAdapter(spinnerArrayAdapter);
+    }
+
+    private void PopulateSpinnerDia(){
+
+        Thread task = new Thread(){
+            @Override
+            public void run(){
+
+                List<String> days = new ArrayList<>();
+
+                int dia = fechaHoy.get(Calendar.DAY_OF_WEEK);
+                int ano = fechaHoy.get(Calendar.YEAR);
+                int mes = fechaHoy.get(Calendar.MONTH);
+                int num = fechaHoy.get(Calendar.DAY_OF_MONTH);
+
+                fechaHoy.add(Calendar.DAY_OF_YEAR, 1);
+
+                int diam = fechaHoy.get(Calendar.DAY_OF_WEEK);
+                int anom = fechaHoy.get(Calendar.YEAR);
+                int mesm = fechaHoy.get(Calendar.MONTH);
+                int numm = fechaHoy.get(Calendar.DAY_OF_MONTH);
+
+                days.add(daysname[dia] + ", " + monthsname[mes] + " " + num);
+                days.add(daysname[diam] + ", " + monthsname[mesm] + " " + (numm-1));
+
+                hoyaux = daysname[dia] + ", " + monthsname[mes] + " " + num;
+                mananaaux = daysname[diam] + ", " + monthsname[mesm] + " " + (numm-1);
+
+                String aux = "%04d-%02d-%02d";
+                _hoy = String.format(aux, ano, mes, num);
+                _manana = String.format(aux, anom, mesm, numm);
+
+                setSpinnerDADPTR(days);
+
+            }
+        };
+
+        task.start();
+
+    }
+
+    public void setSpinnerDADPTR(List<String> days){
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, days); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        _spinnerdia.setAdapter(spinnerArrayAdapter);
+
+    }
+
+    public void UpdateSeats(View view){
+
+        int clicked = view.getId();
+
+        TextView seatsTV = (TextView) findViewById(R.id.SeatsN);
+        String seats = seatsTV.getText().toString();
+        int ns = Integer.parseInt(seats);
+
+        //if(ns == 1 || ns == vehiculos.getmAsientos()) return;
+
+        if(clicked == R.id.PlusSeats) ns++;
+        else ns--;
+
+        seatsTV.setText(""+ns);
 
     }
 
@@ -217,6 +494,7 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                     }
                     PolylineOptions lineOptions = GetPolyOptions(mRouteHash.get(polyclickflag).HashR);
                     lineOptions.color(Color.RED);
+                    finroute = mRouteHash.get(polyclickflag).HashR;
 
                     mMap.addPolyline(lineOptions);
 
@@ -313,7 +591,10 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
 
             PolylineOptions lineOptions = GetPolyOptions(polylines.get(i));
 
-            if(i == 0) lineOptions.color(Color.RED);
+            if(i == 0){
+                lineOptions.color(Color.RED);
+                finroute = polylines.get(i);
+            }
 
             mMap.addPolyline(lineOptions);
 
@@ -334,7 +615,7 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
         PolylineOptions lineOptions = new PolylineOptions();
         lineOptions.addAll(coordenadas);
         lineOptions.width(15);
-        lineOptions.color(Color.DKGRAY);
+        lineOptions.color(Color.GRAY);
         lineOptions.geodesic(true);
 
         return lineOptions;
@@ -478,6 +759,10 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
 
                 }else{
 
+                    Toast.makeText(getBaseContext(), "Error Google Maps", Toast.LENGTH_SHORT).show();
+                    button.setEnabled(true);
+
+
                     return;
                 }
             } catch (JSONException e) {
@@ -487,5 +772,98 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
         }
 
     }
+
+
+    private class CrearCPAT extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected String doInBackground(URL... urls){
+            //creacion del Json con los datos
+
+
+            JSONObject jsonObject= new JSONObject();
+            try {
+
+                jsonObject.put("idConductor", _myPool.getIDusuario());
+                jsonObject.put("idVehiculo",_myPool.getIDvehiculo());
+                jsonObject.put("costo",_myPool.getCosto());
+                jsonObject.put("num_asientos",_myPool.getNasientos());
+                jsonObject.put("fecha_creacion",_myPool.getFcreacion());
+                jsonObject.put("hora_creacion",_myPool.getHcreacion());
+                jsonObject.put("fecha_salida",_myPool.getFsalida());
+                jsonObject.put("hora_salida",_myPool.getHsalida());
+                jsonObject.put("distrito_origen","placeholderorigen");
+                jsonObject.put("distrito_destino","placeholderdestino");
+                jsonObject.put("nombre_origen",_myPool.getNomOrigen());
+                jsonObject.put("nombre_destino",_myPool.getNomDestino());
+                jsonObject.put("rutaMapa",_myPool.getmRoute());
+
+                System.out.println(jsonObject.toString());
+
+
+            } catch (JSONException e) {
+                Log.e(TAG, "Problem creating JsonObject", e);
+                e.printStackTrace();
+            }
+
+
+
+            String jsonResponse = "";
+            try {
+                jsonResponse = UrlUtils.makeHttpRequestPost("http://200.16.7.170/api/pools/crear_pool", jsonObject);
+            } catch (IOException e) {
+                Log.e(TAG, "Problem making the HTTP request.", e);
+            }
+
+            try {
+                JSONObject baseJsonResponse = new JSONObject(jsonResponse);
+                int codigo = baseJsonResponse.getInt("codigo");
+
+                if (codigo == 1) {//enviocorrecto
+                    Log.d(TAG, "creacion de CarPool correcta");
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Problem parsing the JSON code results", e);
+            }
+
+            return jsonResponse;
+        }
+
+        @Override
+        protected void onPostExecute(String userinfoJSON){
+
+            //aca lo convierto a un objeto json y verifico el codigo
+
+            if (TextUtils.isEmpty(userinfoJSON)) {
+
+                Log.d(TAG, "Json vacio");
+                return;
+            }
+
+            try {
+                JSONObject baseJsonResponse = new JSONObject(userinfoJSON);
+                int codigo = baseJsonResponse.getInt("codigo");
+
+                if (codigo == 1) {
+
+                    finish();
+
+                    return;
+
+                }else{
+                    Toast.makeText(getBaseContext(), "Error de cracion de pool", Toast.LENGTH_SHORT).show();
+                    _crearCPBTN.setEnabled(true);
+                    _crearCP.setVisibility(View.INVISIBLE);
+                    return;
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Problem parsing the JSON results", e);
+            }
+
+        }
+
+    }
+
+
 
 }
