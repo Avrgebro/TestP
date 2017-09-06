@@ -1,0 +1,58 @@
+{
+  "project_info": {
+    "project_number": "784109687240",
+    "firebase_url": "https://colectigo-c51bd.firebaseio.com",
+    "project_id": "colectigo-c51bd",
+    "storage_bucket": "colectigo-c51bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784109687240:android:68f0471a3c5f6fc1",
+        "android_client_info": {
+          "package_name": "com.example.jose.carpool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784109687240-057n278kujr2dgs2odgttecq3rkpqig4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jose.carpool",
+            "certificate_hash": "1d1417ca7144b0ddedccc5b60751d22f67b3d14e"
+          }
+        },
+        {
+          "client_id": "784109687240-2if0r2ho6s60ork2kmt5ahgbq0v305iu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOh93t-Xx7DU-ZAynkmgE9MQIGCq7GCpg"
+        },
+        {
+          "current_key": "AIzaSyASdIRlYOkXwrIfoTAHCc2K5qwIYS9yQdU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784109687240-2if0r2ho6s60ork2kmt5ahgbq0v305iu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
