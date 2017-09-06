@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -116,7 +114,6 @@ public class activity_login extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-
     public void onLoginSuccess(User userinfo) {
         Log.d(TAG, "login success");
 
@@ -132,7 +129,6 @@ public class activity_login extends AppCompatActivity {
 
         ProgressBar PB = (ProgressBar) findViewById(R.id.logPB);
         PB.setVisibility(View.INVISIBLE);
-
 
         setResult(RESULT_OK, null);
         finish();

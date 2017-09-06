@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.example.jose.carpool.frmEditarPerfil">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:background="@color/transparente">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/primary">
+
+            <ImageView
+                android:id="@+id/lblFoto"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@android:drawable/sym_def_app_icon"
+                android:layout_marginRight="5dp" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Perfil"
+                android:textAlignment="textStart"
+                android:textSize="20dp"
+                android:textColor="@color/primary_text"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@drawable/ic_person"
+                android:layout_marginRight="5dp" />
+            <TextView
+                android:id="@+id/txtNombre"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre Usuario"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="50dp"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_marginLeft="85dp"
+            android:layout_width="300dp"
+            android:layout_height="4dp"
+            android:background="@color/primary_light"
+
+            />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:layout_height="100dp">
+
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@drawable/ic_telefono"
+                android:layout_marginRight="5dp" />
+
+            <TextView
+                android:id="@+id/txtTelefono"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Telefono Usuario"
+                android:layout_marginTop="40dp"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_marginLeft="85dp"
+            android:layout_width="300dp"
+            android:layout_height="4dp"
+            android:background="@color/primary_light"
+
+            />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:layout_height="100dp">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@drawable/ic_email"
+                android:layout_marginRight="5dp" />
+
+            <TextView
+                android:id="@+id/txtCorreo"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Correo Usuario"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="50dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

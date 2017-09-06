@@ -1,5 +1,7 @@
 package com.example.jose.carpool;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,28 +21,34 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static User user;
 
     private static final String TAG = "MainActivity";
     private View header;
     private static final int RESULT_CODE = 0;
     private boolean mReturningWithResult;
+
+    private static final int Editar_ACTIVITY_RESULT_CODE = 0;
+    ImageView img;
+    final Context context = this;
+
+    public static TextView _nomnavbar;
+    public static TextView _cornavbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,11 +59,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.setCheckedItem(R.id.nav_camera);
+        navigationView.setCheckedItem(R.id.btn_all_pools);
 
-        header=navigationView.getHeaderView(0);
-
-
+        header = navigationView.getHeaderView(0);
 
         TextView _logout = (TextView) findViewById(R.id.logout);
         _logout.setOnClickListener(new View.OnClickListener() {
@@ -72,17 +78,10 @@ public class MainActivity extends AppCompatActivity
             Log.d(TAG, "No session active");
             Intent loginintent = new Intent(this, activity_login.class);
             startActivityForResult(loginintent, RESULT_CODE);
-        }else{
-
+        } else {
             //inflate first fragment
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            pool_fragment cpF = new pool_fragment();
-            fragmentTransaction.replace(R.id.MainFrameLayout, cpF);
-            fragmentTransaction.commit();
+            displaySelectedScreen(R.id.btn_all_pools);
         }
-
-
     }
 
     @Override
@@ -91,8 +90,6 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 super.onActivityResult(requestCode, resultCode, data);
                 mReturningWithResult = true;
-
-
             }
         }
     }
@@ -135,7 +132,6 @@ public class MainActivity extends AppCompatActivity
         }else{
             Log.d(TAG, "No se recibio el usuario");
         }
-
     }
 
     @Override
@@ -153,7 +149,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-
         return true;
     }
 
@@ -172,44 +167,52 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int itemId = item.getItemId();
+        displaySelectedScreen(item.getItemId());
+        return true;
+    }
 
+    private void displaySelectedScreen(int itemId) {
+        //creating fragment object
         Fragment fragment = null;
 
+        //initializing the fragment object which is selected
         switch (itemId) {
-            case R.id.nav_camera: {
+            case R.id.btn_all_pools: {
                 fragment = new pool_fragment();
                 break;
             }
-            case R.id.nav_gallery: {
+            case R.id.idCrearPool: {
+                fragment = new fragment_crearpool();
                 break;
             }
-            case R.id.nav_slideshow: {
+            case R.id.idVehiculos: {
+                fragment = new tus_vehiculos();
+                break;
+            }
+            case R.id.idVer_pendiente: {
+                //fragment = new Menu2();fragment_crearpool
+                break;
+            }
+            case R.id.idVer_historial: {
+                //fragment = new Menu3();
                 break;
             }
             case R.id.btn_edit_profile: {
                 fragment = new ProfileFragment();
                 break;
             }
-            case R.id.logout: {
-                break;
-            }
         }
 
+        //replacing the fragment
         if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.MainFrameLayout, fragment);
-            fragmentTransaction.commit();
-        }
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.MainFrameLayout, fragment);
+            ft.commit();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
     }
 
     public void logout(){
@@ -223,5 +226,26 @@ public class MainActivity extends AppCompatActivity
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
         startActivity(i);
+    }
+
+    public void Ver_Perfil(View view){
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_verperfil);
+        dialog.setTitle("Perfil");
+
+        cargarVerPerfil(dialog);
+
+        dialog.show();
+
+    }
+
+    public static void cargarVerPerfil(Dialog dialog){
+        TextView nombre = (TextView) dialog.findViewById(R.id.txtNombre);
+        TextView telefono = (TextView) dialog.findViewById(R.id.txtTelefono);
+        TextView correo = (TextView) dialog.findViewById(R.id.txtCorreo);
+
+        nombre.setText(user.getNombre().toString() +" "+ user.getApellido().toString());
+        telefono.setText(user.getTelefono());
+        correo.setText(user.getCorreo().toString());
     }
 }

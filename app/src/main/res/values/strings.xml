@@ -1,20 +1,17 @@
 <resources>
-    <string name="app_name">CarPool</string>
+    <string name="app_name">CarPoolConductor</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
 
-
     <string name="place_holder">Lugar de partida</string>
-
 
     <string-array name="spinner_array">
         <item>PUCP</item>
         <item>Otro</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
