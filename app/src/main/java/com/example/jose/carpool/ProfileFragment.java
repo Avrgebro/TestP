@@ -158,12 +158,13 @@ public class ProfileFragment extends Fragment {
                 prefEditor.putString("SessionUser", userJson);
                 prefEditor.apply();
                 Log.e(TAG, "After serialization to shared preferences");
-                Log.e(TAG, "Before disableProfileEdit");
-                disableProfileEdit();
-                Log.e(TAG, "After disableProfileEdit");
-                Log.e(TAG, "Before bindUser");
-                bindUser();
-                Log.e(TAG, "After bindUser");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        disableProfileEdit();
+                        bindUser();
+                    }
+                });
 
                 Snackbar.make(
                         fabEditToggle,
@@ -294,13 +295,10 @@ public class ProfileFragment extends Fragment {
 
     private void bindUser(@NonNull User user) {
         mUser = user;
-        Log.e(TAG, mUser.getNombre() + " " + mUser.getCorreo());
+        Log.d(TAG, mUser.getNombre() + " " + mUser.getCorreo());
 
-        Log.e(TAG, "Set name text: profileName " + (mUser.getFullName()));
         profileName.setText(mUser.getFullName());
-        Log.e(TAG, "Set phone text: profilePhone " + (profilePhone == null));
         profilePhone.setText(mUser.getTelefono());
-        Log.e(TAG, "Set email text: profileEmail " + (profileEmail == null));
         profileEmail.setText(mUser.getCorreo());
     }
 
