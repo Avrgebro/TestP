@@ -9,160 +9,229 @@
     sothree:umanoPanelHeight="34dp"
     sothree:umanoShadowHeight="4dp">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="56dp"
-            android:layout_height="17dp"
-            android:text="Origen"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            sothree:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="39dp"
-            sothree:layout_constraintHorizontal_bias="0.182" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="47dp"
-            android:layout_height="17dp"
-            android:text="Destino"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            sothree:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="39dp"
-            sothree:layout_constraintHorizontal_bias="0.672" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary_light"
+                android:id="@+id/topHalf">
 
-        <TextView
-            android:id="@+id/nom_org"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="25dp"
+                    android:paddingBottom="25dp"
+                    android:paddingLeft="56dp">
+
+                    <TextView
+                        android:id="@+id/nom_org"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PUCP"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="34sp"/>
+                    <TextView
+                        android:id="@+id/dist_org"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="San Miguel"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bottomHalf"
+                android:layout_below="@id/topHalf">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="25dp"
+                    android:paddingBottom="25dp"
+                    android:paddingLeft="56dp">
+
+                    <TextView
+                        android:id="@+id/nom_dest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Monterrico"
+                        android:textStyle="bold"
+                        android:textSize="34sp"/>
+                    <TextView
+                        android:id="@+id/dist_dest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Santiago de Surco"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_fast_forward_black"
+                android:layout_centerVertical="true"
+                android:rotation="90"
+                android:tint="@color/accent"/>
+
+            <TextView
+                android:id="@+id/precio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S/ 3.50"
+                android:textSize="34sp"
+                android:textColor="@color/white"
+                android:layout_alignParentRight="true"
+                android:padding="25dp"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            sothree:layout_constraintLeft_toLeftOf="@+id/guideline"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            sothree:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="80dp"
-            sothree:layout_constraintHorizontal_bias="0.127" />
+            android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/dist_org"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textSize="17sp"
+                    android:text="Mar, Sep 5" />
+                <TextView
+                    android:id="@+id/hsal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textSize="17sp"
+                    android:text="21:00" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="@+id/guideline"
-            sothree:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="119dp"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            sothree:layout_constraintHorizontal_bias="0.127" />
+            android:padding="16dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/nom_dest"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:src="@drawable/ic_sentiment_satisfied_black_24dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Josue"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TyS"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_weight="2"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:paddingRight="16dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_sentiment_satisfied_black_24dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Murcielago, Lamborghini"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TO-6149"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            sothree:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="parent"
-            sothree:layout_constraintHorizontal_bias="0.696" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/dist_dest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            sothree:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="119dp"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="@+id/guideline"
-            sothree:layout_constraintHorizontal_bias="0.675" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ASIENTOS"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            sothree:layout_constraintHorizontal_bias="0.188"
-            sothree:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="236dp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp">
 
-        <TextView
-            android:id="@+id/nasien"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            sothree:layout_constraintHorizontal_bias="0.183"
-            sothree:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="183dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Asientos Libres:"/>
+                <TextView
+                    android:id="@+id/nasien"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="16dp"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/precio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="@+id/guideline"
-            sothree:layout_constraintHorizontal_bias="0.744"
-            sothree:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="219dp" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="parent"
-            sothree:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="61dp" />
 
-        <TextView
-            android:id="@+id/hsal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginRight="8dp"
-            sothree:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="8dp"
-            sothree:layout_constraintLeft_toLeftOf="parent"
-            sothree:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="188dp" />
 
-        <android.support.constraint.Guideline
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/guideline"
-            sothree:layout_constraintGuide_begin="20dp"
-            android:orientation="vertical" />
-    </android.support.constraint.ConstraintLayout>
-
+    </LinearLayout>
 
 
     <LinearLayout
@@ -175,12 +244,14 @@
             android:layout_height="34dp"
             android:id="@+id/dragzone"
             android:orientation="horizontal"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:background="@color/accent">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/arrow"/>
+                android:id="@+id/arrow"
+                android:src="@drawable/ic_arrow"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

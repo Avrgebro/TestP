@@ -1,8 +1,5 @@
 package com.example.jose.carpool;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by jose on 7/27/17.
  */
@@ -24,11 +21,12 @@ public class CarPool {
     private String mIDservicio;
     private String mHcreacion;
     private String mHsalida;
-    private ArrayList<MapPoints> mCoords;
+    //private ArrayList<MapPoints> mCoords;
+    private String mRoute;
 
 
 
-    public CarPool(String mIDusuario, String mIDvehiculo, int mNasientos, String mCosto, String mFcreacion, String mFsalida, String mNomOrigen, String mDistOrigen, String mDirOrigen, String mNomDestino, String mDistDestino, String mDirDestino, int mEstado, String mIDservicio, String mHcreacion, String mHsalida, ArrayList<MapPoints> mCoords) {
+    public CarPool(String mIDusuario, String mIDvehiculo, int mNasientos, String mCosto, String mFcreacion, String mFsalida, String mNomOrigen, String mDistOrigen, String mDirOrigen, String mNomDestino, String mDistDestino, String mDirDestino, int mEstado, String mIDservicio, String mHcreacion, String mHsalida, String  mRoute) {
         this.mIDusuario = mIDusuario;
         this.mIDvehiculo = mIDvehiculo;
         this.mNasientos = mNasientos;
@@ -45,7 +43,26 @@ public class CarPool {
         this.mIDservicio = mIDservicio;
         this.mHcreacion = mHcreacion;
         this.mHsalida = mHsalida;
-        this.mCoords = mCoords;
+        this.setmRoute(mRoute);
+    }
+
+    public CarPool(String mIDusuario, String mIDvehiculo, int mNasientos, String mCosto, String mFcreacion, String mFsalida, String mNomOrigen, String mNomDestino, String mHcreacion, String mHsalida, String mRoute) {
+        this.mIDusuario = mIDusuario;
+        this.mIDvehiculo = mIDvehiculo;
+        this.mNasientos = mNasientos;
+        this.mCosto = mCosto;
+        this.mFcreacion = mFcreacion;
+        this.mFsalida = mFsalida;
+        this.mNomOrigen = mNomOrigen;
+        this.mDistOrigen = "";
+        this.mDirOrigen = "";
+        this.mNomDestino = mNomDestino;
+        this.mDistDestino = "";
+        this.mDirDestino = "";
+        this.mEstado = 1;
+        this.mHcreacion = mHcreacion;
+        this.mHsalida = mHsalida;
+        this.setmRoute(mRoute);
     }
 
     public String getIDusuario() {
@@ -176,11 +193,12 @@ public class CarPool {
         this.mHsalida = mHsalida;
     }
 
-    public ArrayList<MapPoints> getCoords() {
-        return mCoords;
+
+    public String getmRoute() {
+        return mRoute;
     }
 
-    public void setCoords(ArrayList<MapPoints> mCoords) {
-        this.mCoords = mCoords;
+    public void setmRoute(String mRoute) {
+        this.mRoute = mRoute;
     }
 }

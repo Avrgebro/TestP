@@ -41,6 +41,7 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
     private static final String TAG = "CPInfoActivity";
     private GoogleMap mMap;
     private SlidingUpPanelLayout slidingLayout;
+    private LatLng PUCP = new LatLng(-12.06902418, -77.07927883);
     private CarPool _CP;
 
     @Bind(R.id.nom_org) TextView _nom_org;
@@ -57,9 +58,13 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_pool_info_screen);
         ButterKnife.bind(this);
 
+        Gson gson = new Gson();
+        _CP = gson.fromJson(getIntent().getStringExtra("CarPoolInfo"), CarPool.class);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
 
 
         slidingLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
@@ -69,22 +74,17 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
         slidingLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
+                ImageView arrow = (ImageView) findViewById(R.id.arrow);
 
+                arrow.setRotation(180*slideOffset);
             }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
 
-                ImageView arrow = (ImageView) findViewById(R.id.arrow);
-
-                arrow.setRotation(180);
-
             }
         });
 
-
-        Gson gson = new Gson();
-        _CP = gson.fromJson(getIntent().getStringExtra("CarPoolInfo"), CarPool.class);
 
         updateui();
 
@@ -102,6 +102,23 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
         int asientos = _CP.getNasientos();
         _nasien.setText(String.valueOf(asientos));
 
+
+
+
+    }
+
+    public void setRoute(){
+
+        String ruta = _CP.getmRoute();
+
+
+        PolylineOptions lineOptions = new PolylineOptions();
+        lineOptions.addAll(decodePolyLines(ruta));
+        lineOptions.width(15);
+        lineOptions.color(Color.BLUE);
+        lineOptions.geodesic(true);
+
+        mMap.addPolyline(lineOptions);
 
     }
 
@@ -127,20 +144,13 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
         }
 
 
-        List<LatLng> coords = decodePolyLines("reshAlb|uM~@dAP?x@SqA_ElAYLCMc@cAeDYsAEUQY]W_@Is@CcDP}@B[C_@Q[[wBiCmEkF}@yAmBoFo@cBgAwBm@oAs@aAcAiAuCaC}EqDcAo@kKgGcAk@a@IkEcCs@a@@SC}DDCLIRIVIZC\\Cf@QXOZo@Fi@C}@I]S]MIo@Ma@AYB]HWPQVQn@A^Bb@?`AAXK\\oAnCoFeDeBgBs@gAk@iAu@eBk@wB}@aDu@eCcAyDoA{EgEyO[{Bi@wBm@{B]_AUk@u@oDq@mC}@sCIUK@cCHgKd@cRv@mA?{@CAsBAu@Dk@b@_DZkArD{NbAeEP{@VcEn@uNXmFJu@bCuMr@iEjBmLl@{DJuBCuBKaB}AuT[aFUeC_AkFq@kDA[EaB@mBCe@GUQ@k@DYF_@PiEPq@?q@CoAOaEBsBFcBN_F`AeCh@yCfAsSdIwNtFwEhB_GpCcIpDwChAo@HyBViAd@aAp@CXDTPL\\F~@QjAi@rCwBVOn@SrAk@hDyAhD_BrI}DvDuAzKgEdCcAlOcGhBo@|@WnBa@|A[rASxBMx@?`AFfBRjAFt@Ct@ItAUx@SjEUtAEz@M|@ClKe@~K_@pJc@bEM`AGvFER@RCjIMrDWtDY~BUpJe@dJ_@jHc@dN_@tDMjFF`C@T@BEAIACwCCqFI?KEw@UeDYoGw@mPw@qR]cIIkBOaBOeC?WCeADWHs@E_Bc@wFSwA@oA[qCk@sDI_AE}@Je@JSNOv@e@pE{@xAQjEw@|B]rBUdE_@lDQfEI`DA`@Bb@RTNH^A^INIF`@@");
+        //List<LatLng> coords = decodePolyLines("reshAlb|uM~@dAP?x@SqA_ElAYLCMc@cAeDYsAEUQY]W_@Is@CcDP}@B[C_@Q[[wBiCmEkF}@yAmBoFo@cBgAwBm@oAs@aAcAiAuCaC}EqDcAo@kKgGcAk@a@IkEcCs@a@@SC}DDCLIRIVIZC\\Cf@QXOZo@Fi@C}@I]S]MIo@Ma@AYB]HWPQVQn@A^Bb@?`AAXK\\oAnCoFeDeBgBs@gAk@iAu@eBk@wB}@aDu@eCcAyDoA{EgEyO[{Bi@wBm@{B]_AUk@u@oDq@mC}@sCIUK@cCHgKd@cRv@mA?{@CAsBAu@Dk@b@_DZkArD{NbAeEP{@VcEn@uNXmFJu@bCuMr@iEjBmLl@{DJuBCuBKaB}AuT[aFUeC_AkFq@kDA[EaB@mBCe@GUQ@k@DYF_@PiEPq@?q@CoAOaEBsBFcBN_F`AeCh@yCfAsSdIwNtFwEhB_GpCcIpDwChAo@HyBViAd@aAp@CXDTPL\\F~@QjAi@rCwBVOn@SrAk@hDyAhD_BrI}DvDuAzKgEdCcAlOcGhBo@|@WnBa@|A[rASxBMx@?`AFfBRjAFt@Ct@ItAUx@SjEUtAEz@M|@ClKe@~K_@pJc@bEM`AGvFER@RCjIMrDWtDY~BUpJe@dJ_@jHc@dN_@tDMjFF`C@T@BEAIACwCCqFI?KEw@UeDYoGw@mPw@qR]cIIkBOaBOeC?WCeADWHs@E_Bc@wFSwA@oA[qCk@sDI_AE}@Je@JSNOv@e@pE{@xAQjEw@|B]rBUdE_@lDQfEI`DA`@Bb@RTNH^A^INIF`@@");
 
-
-        PolylineOptions lineOptions = new PolylineOptions();
-        lineOptions.addAll(coords);
-        lineOptions.width(10);
-        lineOptions.color(Color.BLUE);
-        lineOptions.geodesic(true);
-
-        mMap.addPolyline(lineOptions);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(coords.get(0)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(PUCP));
         googleMap.animateCamera(CameraUpdateFactory.zoomIn());
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+
+        setRoute();
 
 
     }

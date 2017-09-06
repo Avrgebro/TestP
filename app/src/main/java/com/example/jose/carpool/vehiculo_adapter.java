@@ -105,7 +105,7 @@ public class vehiculo_adapter extends RecyclerView.Adapter<vehiculo_adapter.Vehi
 
             brandText.setText(vehicle.getMarca());
 
-            String imageUrl = vehicle.getImageUrl();
+            String imageUrl = vehicle.getUrlPic();
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 (new Picasso.Builder(mContext)).listener(new Picasso.Listener() {
                     @Override

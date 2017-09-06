@@ -209,7 +209,7 @@ public class tus_vehiculos extends Fragment {
     private class EliminarVehiculo extends   AsyncTask<URL, Void, String> {
         @Override
         protected String doInBackground(URL... urls){
-            _baseDelVehi = _baseDelVehi + lstVehi.get(auxI).getIdVehiculo();
+            _baseDelVehi = _baseDelVehi + lstVehi.get(auxI).getID();
 
             String formedurl = _baseDelVehi;
 
@@ -309,10 +309,11 @@ public class tus_vehiculos extends Fragment {
 
                     Vehiculo auxVehiculo = new Vehiculo(
                             Integer.toString(IDvehiculo),
-                            Placa,Modelo,
+                            Placa,
+                            Modelo,
                             Marca,
                             Color,
-                            Integer.toString(Numasientos),
+                            Numasientos,
                             imageUrl
                     );
                     Log.d(TAG, imageUrl);
@@ -611,7 +612,7 @@ public class tus_vehiculos extends Fragment {
                                     @Override
                                     public void run() {
                                         if (photoURI != null) {
-                                            newVehicle.setImageUrl(photoURI.toString());
+                                            newVehicle.setUrlPic(photoURI.toString());
                                         }
                                         lstVehi.add(newVehicle);
                                         UpdateUI();
