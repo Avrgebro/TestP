@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setCheckedItem(R.id.btn_all_pools);
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity
         navImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                navigationView.setCheckedItem(R.id.menu_none);
                 inflateFragment(new ProfileFragment());
             }
         });
