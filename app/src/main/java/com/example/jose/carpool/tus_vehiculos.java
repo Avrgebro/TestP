@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -32,12 +31,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -486,11 +483,11 @@ public class tus_vehiculos extends Fragment {
                 dialog.setContentView(R.layout.dialog_addcar);
                 dialog.setTitle("Perfil");
                 dialog.show();
-                final AppCompatButton btnAdd = (AppCompatButton)dialog.findViewById(R.id.btn_AddCar);
-                final ImageButton btnAddPhoto = (ImageButton)dialog.findViewById(R.id.btn_addPhoto);
+                final AppCompatButton btnAdd = (AppCompatButton)dialog.findViewById(R.id.btn_add_car);
+                final ImageButton btnAddPhoto = (ImageButton)dialog.findViewById(R.id.btn_vehicle_select_photo);
 
                 /*Carga la imagen para mostrartla es una prueba*/
-                prueba = dialog.findViewById(R.id.imageView2);
+                prueba = dialog.findViewById(R.id.vehicle_img_preview);
 
                 /*To pick car image*/
                 final String [] items = { "Cámara","Galería" };
@@ -537,11 +534,11 @@ public class tus_vehiculos extends Fragment {
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        textInputplaca = dialog.findViewById(R.id.txtInputPlaca);
-                        textInputmodelo = dialog.findViewById(R.id.txtInputModelo);
-                        textInputmarca = dialog.findViewById(R.id.txtInputMarca);
-                        textInputcolor = dialog.findViewById(R.id.txtInputColor);
-                        textInputnasientos = dialog.findViewById(R.id.txtInputNasientos);
+                        textInputplaca = dialog.findViewById(R.id.txt_input_plate);
+                        textInputmodelo = dialog.findViewById(R.id.txt_input_model);
+                        textInputmarca = dialog.findViewById(R.id.txt_input_brand);
+                        textInputcolor = dialog.findViewById(R.id.txt_input_color);
+                        textInputnasientos = dialog.findViewById(R.id.txt_input_seat_number);
 
                         txtPlaca = textInputplaca.getEditText();
                         txtModelo = textInputmodelo.getEditText();
