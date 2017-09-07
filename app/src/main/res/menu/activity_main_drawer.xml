@@ -27,6 +27,9 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Editar Perfil"
             android:visible="false"/>
+        <item
+            android:id="@+id/menu_none"
+            android:visible="false"/>
     </group>
 
 </menu>
