@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 protected void onPostExecute(Bitmap bitmap) {
                     super.onPostExecute(bitmap);
-                    if (bitmap == null) {
+                    if (bitmap == null && user.getPicUri() != null) {
                         Picasso.with(MainActivity.this)
                                 .load(user.getPicUri())
                                 .into(customProfileImgTarget);
