@@ -246,11 +246,12 @@
                 <GridLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:columnCount="3"
+                    android:columnCount="1"
                     android:padding="16dp"
                     android:rowCount="2">
 
                     <TextView
+                        android:id="@+id/profile_carpool_count"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
@@ -258,48 +259,48 @@
                         android:textColor="@android:color/white"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:text="250"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold" />
+                    <!--<TextView-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginLeft="8dp"-->
+                        <!--android:layout_marginRight="8dp"-->
+                        <!--android:text="250"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:textStyle="bold" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginLeft="8dp"-->
+                        <!--android:layout_marginRight="8dp"-->
+                        <!--android:text="500"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:textStyle="bold" />-->
 
                     <TextView
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
-                        android:text="500"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:text="Following"
+                        android:text="Carpools"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:text="Followers"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                    <!--<TextView-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginLeft="8dp"-->
+                        <!--android:layout_marginRight="8dp"-->
+                        <!--android:text="Followers"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:textSize="20sp"-->
+                        <!--android:textStyle="bold" />-->
 
-                    <TextView
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:text="Likes"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                    <!--<TextView-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginLeft="8dp"-->
+                        <!--android:layout_marginRight="8dp"-->
+                        <!--android:text="Likes"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:textSize="20sp"-->
+                        <!--android:textStyle="bold" />-->
 
                 </GridLayout>
 

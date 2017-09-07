@@ -417,6 +417,11 @@ public class ProfileFragment extends Fragment {
             phone = mUser.getTelefono();
         }
 
+        if (phone.length() < 8) {
+            phoneWrapper.setError("Numero Invalido");
+            valid = false;
+        }
+
 //        if (!Patterns.PHONE.matcher(phone).matches()) {
 //            phoneInput.setError("Teléfono inválido");
 //            valid = false;
