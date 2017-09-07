@@ -106,7 +106,7 @@ public class pool_fragment extends Fragment {
 
     private void failmessage(int flag){
         if(flag == 1){
-            Toast.makeText(getContext(), "Error de conexion",
+            Toast.makeText(getActivity(), "Error de conexion",
                     Toast.LENGTH_LONG).show();
 
         }
