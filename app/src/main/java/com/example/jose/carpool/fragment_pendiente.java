@@ -98,7 +98,7 @@ public class fragment_pendiente extends Fragment{
             _hsal.setText(_myObj.getString("hora_salida").substring(0, _myObj.getString("hora_salida").length()-3));
             _nombre.setText(_myObj.getString("nombre"));
             _apellido.setText(_myObj.getString("apellido"));
-            _modelo.setText(_myObj.getString("modelo") + ", ");//_myObj.getString("marca"));
+            _modelo.setText(_myObj.getString("modelo") + ", "+_myObj.getString("marca"));
             _placa.setText(_myObj.getString("placa"));
             _fsal.setText(formatDate(_myObj.getString("fecha_salida")));
             _telefcond.setText(_myObj.getString("telefono"));
