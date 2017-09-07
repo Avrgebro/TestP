@@ -396,23 +396,6 @@ public class tus_vehiculos extends Fragment {
         }
     }
 
-
-    public static Bitmap decodeBase64(String input)
-    {
-        byte[] decodedBytes = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-    }
-
-    private String bitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        if (bitmap != null){
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
-            return Base64.encodeToString(byteArray, Base64.DEFAULT);
-        }else
-            return "";
-    }
-
     public void launchCamera() {
         Intent intent  = new Intent  (MediaStore.ACTION_IMAGE_CAPTURE);
         if(intent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -663,7 +646,7 @@ public class tus_vehiculos extends Fragment {
             jsonObject.put("color", txtColor.getText());
             jsonObject.put("nasientos", Integer.parseInt(txtNasientos.getText().toString()));
             // This tends to take a long time
-            jsonObject.put("img", bitmapToBase64(bitmap));
+            jsonObject.put("img", BitmapUtils.bitmapToBase64(bitmap));
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

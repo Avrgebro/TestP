@@ -78,8 +78,6 @@
                 android:value=".MainActivity" />
         </activity>
 
-        <activity android:name=".frmEditarPerfil"></activity>
-
     </application>
 
 </manifest>

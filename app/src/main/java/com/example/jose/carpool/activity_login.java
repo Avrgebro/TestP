@@ -253,14 +253,17 @@ public class activity_login extends AppCompatActivity {
                     String apellido = baseJsonResponse.getString("apellido");
                     String telefono = baseJsonResponse.getString("telefono");
                     String correo = baseJsonResponse.getString("correo");
-
-                    User loguser = new User(id, correo, nombre, apellido, telefono, "xxxxxx");
+                    String imageUrl = baseJsonResponse.getString("imgPerfil");
+                    if (!imageUrl.startsWith("http://")) { // Really hardcoded, should use Uri checks
+                        imageUrl = "http://".concat(imageUrl);
+                    }
+                    User loguser = new User(id, correo, nombre, apellido, telefono, "xxxxxx", imageUrl);
                     //Log.d(TAG, loguser.getNombre()+" "+loguser.getCorreo());
                     Log.d(TAG, "creacion de usuario correcta");
                     onLoginSuccess(loguser);
                     return;
 
-                }else{
+                } else {
                     onLoginFailed(codigo);
                     return;
                 }
