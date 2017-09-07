@@ -1,8 +1,10 @@
 package com.example.jose.carpool;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -34,6 +36,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,6 +70,7 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
     @Bind(R.id.infoplaca) TextView _placa;
     @Bind(R.id.infoconductorpic) ImageView _condpic;
     @Bind(R.id.infocarropic) ImageView _carpic;
+    @Bind(R.id.insbtn) Button _insbtn;
 
 
     private String[] monthsname = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
@@ -103,6 +107,16 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
 
+            }
+        });
+
+        _insbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _insbtn.setEnabled(false);
+
+                InscribirAT task = new InscribirAT();
+                task.execute();
             }
         });
 
@@ -255,5 +269,84 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
         }
         return decoded;
     }
+
+
+    private class InscribirAT extends AsyncTask<Void, Void, String>{
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            JSONObject jsonObject = new JSONObject();
+            SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
+            String userJSON = prefs.getString("SessionUser", "");
+
+            Gson gson = new Gson();
+            User user = gson.fromJson(userJSON, User.class);
+
+            String userid = user.getID();
+            Log.d(TAG, userid);
+
+            String service = "";
+            try{
+                service = _CP.getmJson().getString("idServicio");
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            Log.d(TAG, service);
+            service = service.substring(0, service.length()-2);
+
+            try{
+                jsonObject.put("idServicio", service);
+                jsonObject.put("idUsuario", userid);
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            System.out.println(jsonObject.toString());
+
+            String jsonresponse = "";
+            try{
+                jsonresponse = UrlUtils.makeHttpRequestPost("http://200.16.7.170/api/pools/agregar_pasajero", jsonObject);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            return jsonresponse;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s.isEmpty()){
+                Log.d(TAG, "json vacio");
+                Toast.makeText(getBaseContext(), "Error de conexion", Toast.LENGTH_SHORT).show();
+                _insbtn.setEnabled(true);
+                return;
+            }
+
+
+            try{
+                JSONObject jsonObject = new JSONObject(s);
+
+                int codigo = jsonObject.getInt("codigo");
+
+                if(codigo == 1){
+                    Toast.makeText(getBaseContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    Toast.makeText(getBaseContext(), "Error de Registro :c", Toast.LENGTH_SHORT).show();
+                    _insbtn.setEnabled(true);
+                    return;
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+           return;
+
+        }
+    }
+
+
 
 }
