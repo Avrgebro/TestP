@@ -95,7 +95,7 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
     //variables del carpool
     private List<Vehiculo> vehiculos = new ArrayList<>();
     private Calendar fechaHoy = Calendar.getInstance(TimeZone.getTimeZone("GMT-5:00"));
-    private String finroute = "";
+    private String finroute = "-";
     private Vehiculo finv;
     private String _userid;
     private CarPool _myPool;
@@ -206,12 +206,14 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                     return;
                 }else{
 
-                    /*if(!finroute.isEmpty()){
-                        mMap.clear();
-                        coords.clear();
-                        mRouteHash.clear();
-                        mMap.addMarker(new MarkerOptions().position(PUCP).title("PUCP"));
-                    }*/
+                    if(finroute.length() > 1){
+                        Toast.makeText(getBaseContext(), "Limpia el mapa para generar una nueva ruta",
+                                Toast.LENGTH_LONG).show();
+
+                        button.setEnabled(true);
+
+                        return;
+                    }
 
                     Log.d("lala", "entre al boton");
                     PolylinesAT task = new PolylinesAT();
@@ -228,6 +230,7 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                 mMap.clear();
                 coords.clear();
                 mRouteHash.clear();
+                finroute = "";
                 mMap.addMarker(new MarkerOptions().position(PUCP).title("PUCP"));
 
                 return;

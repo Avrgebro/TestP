@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="invisible"
+    android:id="@+id/rootlinear">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_light"
+            android:id="@+id/topHalf">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="25dp"
+                android:paddingBottom="25dp"
+                android:paddingLeft="56dp">
+
+                <TextView
+                    android:id="@+id/nom_org"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PUCP"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="34sp"/>
+                <TextView
+                    android:id="@+id/dist_org"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="San Miguel"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottomHalf"
+            android:layout_below="@id/topHalf">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="25dp"
+                android:paddingBottom="25dp"
+                android:paddingLeft="56dp">
+
+                <TextView
+                    android:id="@+id/nom_dest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monterrico"
+                    android:textStyle="bold"
+                    android:textSize="34sp"/>
+                <TextView
+                    android:id="@+id/dist_dest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Santiago de Surco"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_fast_forward_black"
+            android:layout_centerVertical="true"
+            android:rotation="90"
+            android:tint="@color/accent"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="25dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S/"
+                android:textSize="24dp"
+                android:textColor="@color/white"/>
+
+
+            <TextView
+                android:id="@+id/precio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3.50"
+                android:textSize="34sp"
+                android:textColor="@color/white"
+                />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/infofecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="24sp"
+                android:text="Mar, Sep 5" />
+            <TextView
+                android:id="@+id/infohora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="24sp"
+                android:text="21:00" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/infoconductorpic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="16dp"
+                android:src="@drawable/ic_menu_foto_56dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/infonombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Josue"/>
+
+                <TextView
+                    android:id="@+id/infoapellido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TyS"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/infocarropic"
+                android:layout_width="wrap_content"
+                android:paddingRight="16dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sentiment_satisfied_black_24dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/infomodelo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Murcielago, Lamborghini"/>
+
+                <TextView
+                    android:id="@+id/infoplaca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TO-6149"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:src="@drawable/ic_phone_forwarded_black_56dp"/>
+
+        <TextView
+            android:id="@+id/telefCond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="999999999"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:textSize="24sp"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
