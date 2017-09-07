@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.idVer_pendiente: {
-                //fragment = new Menu2();fragment_crearpool
+                fragment = new fragment_pendiente();
                 break;
             }
             case R.id.idVer_historial: {
