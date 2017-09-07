@@ -171,7 +171,7 @@ public class tus_vehiculos extends Fragment {
     private void bindUser() {
         SharedPreferences prefs = getActivity().getSharedPreferences("SessionToken", MODE_PRIVATE);
         String userJSON = prefs.getString("SessionUser", "");
-        Log.e(TAG, userJSON);
+
         if(!userJSON.isEmpty()) {
             Gson gson = new Gson();
             mUser = gson.fromJson(userJSON, User.class);
@@ -259,7 +259,6 @@ public class tus_vehiculos extends Fragment {
     private class VehiculosAT extends AsyncTask<URL, Void, String> {
         @Override
         protected String doInBackground(URL... urls){
-            Log.e(TAG, "" + (mUser == null));
             URL CPurl = UrlUtils.createUrl(_baseVehiculo + mUser.getID());
             Log.d(TAG, CPurl.toString());
             String jsonResponse = "";
@@ -546,86 +545,227 @@ public class tus_vehiculos extends Fragment {
                         txtColor = textInputcolor.getEditText();
                         txtNasientos = textInputnasientos.getEditText();
 
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("idUsuario", Integer.parseInt(mUser.getID()));
-                            jsonObject.put("placa", txtPlaca.getText());
-                            jsonObject.put("modelo", txtModelo.getText());
-                            jsonObject.put("marca", txtMarca.getText());
-                            jsonObject.put("color", txtColor.getText());
-                            jsonObject.put("nasientos", Integer.parseInt(txtNasientos.getText().toString()));
-                            // This tends to take a long time
-                            // Should be sent as multipart
-                            jsonObject.put("img", bitmapToBase64(bitmap));
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                        if (validate()) {
+                            AsyncTask<Void, Void, Void> addVehicle = new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected Void doInBackground(Void... voids) {
+                                    saveVehicle();
+                                    return null;
+                                }
+                            };
+                            addVehicle.execute();
+                            dialog.dismiss();
                         }
-
-                        String BaseURL = "http://200.16.7.170/api/vehiculos/agregar_vehiculo";
-                        URL url = null;
-                        try {
-                            url = new URL(BaseURL);
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                        }
-                        if (url == null) {
-                            return;
-                        }
-
-                        String message = jsonObject.toString();
-                        final Vehiculo newVehicle = (new Gson()).fromJson(message, Vehiculo.class);
-                        RequestBody body = RequestBody.create(
-                                MediaType.parse("application/json; charset=utf-8"),
-                                message
-                        );
-                        Request request = new Request.Builder()
-                                .url(url)
-                                .post(body)
-                                .addHeader("X-Requested-With", "XMLHttpRequest")
-                                .build();
-
-                        mHttpClient.newCall(request).enqueue(new Callback() {
-                            @Override
-                            public void onFailure(Call call, IOException e) {
-                                call.cancel();
-                                Log.d(TAG, e.toString());
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(
-                                                getActivity(),
-                                                "Ocurrió un error. Intente nuevamente",
-                                                Toast.LENGTH_SHORT
-                                        ).show();
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-                                Log.e(TAG, response.body().string());
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (photoURI != null) {
-                                            newVehicle.setUrlPic(photoURI.toString());
-                                        }
-                                        lstVehi.add(newVehicle);
-                                        UpdateUI();
-                                        Toast.makeText(
-                                                getActivity(),
-                                                "Vehicle added",
-                                                Toast.LENGTH_SHORT
-                                        ).show();
-                                    }
-                                });
-                            }
-                        });
-                        dialog.dismiss();
                     }
                 });
             }
             });
+    }
+
+    private boolean validate() {
+        boolean valid = true;
+
+        String placa;
+        String modelo;
+        String marca;
+        String color;
+        String nasientos;
+
+        if (txtPlaca.length() == 0) {
+            txtPlaca.setError("Ingrese una placa");
+            valid = false;
+        } else {
+            placa = txtPlaca.getText().toString();
+            if (placa.length() != 7 || placa.indexOf("-") != 3) {
+                txtPlaca.setError("Placa invalida");
+                valid = false;
+            } else {
+                txtPlaca.setError(null);
+            }
+        }
+
+        if (txtModelo.length() == 0) {
+            txtModelo.setError("Ingrese un modelo");
+            valid = false;
+        } else {
+            modelo = txtModelo.getText().toString();
+            if (modelo.isEmpty() || modelo.length() < 2 || modelo.length() > 15) {
+                txtModelo.setError("Modelo invalido");
+                valid = false;
+            } else {
+                txtModelo.setError(null);
+            }
+        }
+
+        if (txtMarca.length() == 0) {
+            txtMarca.setError("Ingrese un modelo");
+            valid = false;
+        } else {
+            marca = txtMarca.getText().toString();
+            if (marca.isEmpty() || marca.length() < 2 || marca.length() > 15) {
+                txtMarca.setError("Marca invalida");
+                valid = false;
+            } else {
+                txtMarca.setError(null);
+            }
+        }
+
+
+        if (txtColor.length() == 0) {
+            txtColor.setError("Ingrese un modelo");
+            valid = false;
+        } else {
+            color = txtColor.getText().toString();
+            if (color.isEmpty() || color.length() < 2 || color.length() > 15) {
+                txtColor.setError("Color invalido");
+                valid = false;
+            } else {
+                txtColor.setError(null);
+            }
+        }
+
+
+        if (txtNasientos.length() == 0) {
+            txtNasientos.setError("Ingrese un valor");
+            valid = false;
+        } else {
+            nasientos = txtNasientos.getText().toString();
+            if (nasientos.isEmpty()) {
+                txtNasientos.setError("Numero asientos invalido");
+                valid = false;
+            } else {
+                txtNasientos.setError(null);
+            }
+        }
+
+        if (prueba == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Debes elegir una foto, nunca deberia salir este dialog");
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        return valid;
+    }
+
+    private void saveVehicle() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("idUsuario", Integer.parseInt(mUser.getID()));
+            jsonObject.put("placa", txtPlaca.getText());
+            jsonObject.put("modelo", txtModelo.getText());
+            jsonObject.put("marca", txtMarca.getText());
+            jsonObject.put("color", txtColor.getText());
+            jsonObject.put("nasientos", Integer.parseInt(txtNasientos.getText().toString()));
+            // This tends to take a long time
+            jsonObject.put("img", bitmapToBase64(bitmap));
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        String BaseURL = "http://200.16.7.170/api/vehiculos/agregar_vehiculo";
+        URL url = null;
+        try {
+            url = new URL(BaseURL);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        if (url == null) {
+            return;
+        }
+
+        final Vehiculo newVehicle = deserializeVehicle(jsonObject);
+        if (newVehicle == null) {
+            // Esto no debería pasar
+            Log.e(TAG, "Error al procesar el nuevo vehículo");
+            return;
+        }
+        String message = jsonObject.toString();
+        RequestBody body = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                message
+        );
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .build();
+
+        mHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                call.cancel();
+                Log.d(TAG, e.toString());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(
+                                getActivity(),
+                                "Ocurrió un error. Intente nuevamente",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.e(TAG, response.body().string());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (photoURI != null) {
+                            newVehicle.setUrlPic(photoURI.toString());
+                        }
+                        lstVehi.add(newVehicle);
+                        UpdateUI();
+                        Toast.makeText(
+                                getActivity(),
+                                "Vehículo agregado con éxito",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private Vehiculo deserializeVehicle(JSONObject vehicleData) {
+        try {
+            String Placa = vehicleData.getString("placa");
+            String Modelo = vehicleData.getString("modelo");
+            String Marca = vehicleData.getString("marca");
+            String Color = vehicleData.getString("color");
+            int Numasientos = vehicleData.getInt("nasientos");
+            String imageUrl = vehicleData.getString("img");
+
+            if (!imageUrl.startsWith("http://")) { // Really hardcoded, should use Uri checks
+                imageUrl = "http://".concat(imageUrl);
+            }
+            int IDvehiculo = -1;
+            if (vehicleData.has("idVehiculo")) {
+                IDvehiculo = vehicleData.getInt("idVehiculo");
+            }
+
+            Vehiculo vehicle = new Vehiculo(
+                    Integer.toString(IDvehiculo),
+                    Placa,
+                    Modelo,
+                    Marca,
+                    Color,
+                    Numasientos,
+                    imageUrl
+            );
+            return vehicle;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
