@@ -576,7 +576,7 @@ public class tus_vehiculos extends Fragment {
             valid = false;
         } else {
             placa = txtPlaca.getText().toString();
-            if (placa.length() != 7 || placa.indexOf("-") != 3) {
+            if (placa.length() != 7){// || placa.indexOf("-") != 3) { // a veces el - no esta en el 3
                 txtPlaca.setError("Placa invalida");
                 valid = false;
             } else {

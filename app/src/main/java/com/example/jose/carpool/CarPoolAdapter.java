@@ -35,8 +35,12 @@ public class CarPoolAdapter extends ArrayAdapter<CarPool> {
 
         CarPool curCP = getItem(position);
 
+
+        String aux = "S/ %.2f";
+        String auxCost = String.format(aux, Float.parseFloat(curCP.getCosto()));
+
         TextView costTV = (TextView) listItem.findViewById(R.id.Costo);
-        costTV.setText("S/ "+curCP.getCosto());
+        costTV.setText(auxCost);
 
         TextView origTV = (TextView) listItem.findViewById(R.id.Origen);
         origTV.setText(curCP.getNomOrigen()+", "+curCP.getDistOrigen());

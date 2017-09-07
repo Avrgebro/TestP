@@ -118,7 +118,11 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
         _dist_org.setText(_CP.getDistOrigen());
         _dist_dest.setText(_CP.getDistDestino());
         _hsal.setText(_CP.getHsalida().substring(0, _CP.getHsalida().length()-3));
-        _precio.setText("S/ "+_CP.getCosto());
+
+
+        String aux = "%.2f";
+        String auxCost = String.format(aux, Float.parseFloat(_CP.getCosto()));
+        _precio.setText(auxCost);
         int asientos = _CP.getNasientos();
         _nasien.setText(String.valueOf(asientos));
 

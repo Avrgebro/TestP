@@ -463,8 +463,8 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                 mananaaux = daysname[diam-1] + ", " + monthsname[mesm] + " " + (numm);
 
                 String aux = "%04d-%02d-%02d";
-                _hoy = String.format(aux, ano, mes+1, num);
-                _manana = String.format(aux, anom, mesm+1, numm);
+                _hoy = String.format(aux, ano, mes, num);
+                _manana = String.format(aux, anom, mesm, numm);
 
                 setSpinnerDADPTR(days);
 
