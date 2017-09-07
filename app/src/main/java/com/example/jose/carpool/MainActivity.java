@@ -71,16 +71,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        ImageView navImage = header.findViewById(R.id.imageView);
+        ImageView navImage = header.findViewById(R.id.nav_profile_img);
         navImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                int size = navigationView.getMenu().size();
-                for (int i = 0; i < size; i++) {
-                    navigationView.getMenu().getItem(i).setChecked(false);
-                }
-
+                navigationView.setCheckedItem(R.id.menu_none);
                 inflateFragment(new ProfileFragment());
             }
         });
@@ -99,10 +94,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_CODE) {
-            if (resultCode == RESULT_OK) {
+        switch (requestCode) {
+            case RESULT_CODE: {
+                if (resultCode == RESULT_OK) {
+                    super.onActivityResult(requestCode, resultCode, data);
+                    mReturningWithResult = true;
+                }
+                break;
+            }
+            default: {
                 super.onActivityResult(requestCode, resultCode, data);
-                mReturningWithResult = true;
             }
         }
     }
