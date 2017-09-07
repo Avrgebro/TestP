@@ -129,7 +129,6 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
             public void onClick(View view) {
 
                 if(!validate()){
-                    Toast.makeText(getBaseContext(), "Tienes Campos invalidos!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -206,10 +205,13 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                     button.setEnabled(true);
                     return;
                 }else{
-                    //mMap.clear();
-                    //coords.clear();
-                    //mRouteHash.clear();
-                    mMap.addMarker(new MarkerOptions().position(PUCP).title("PUCP"));
+
+                    /*if(!finroute.isEmpty()){
+                        mMap.clear();
+                        coords.clear();
+                        mRouteHash.clear();
+                        mMap.addMarker(new MarkerOptions().position(PUCP).title("PUCP"));
+                    }*/
 
                     Log.d("lala", "entre al boton");
                     PolylinesAT task = new PolylinesAT();
@@ -286,26 +288,34 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
         PopulateSpinnerVehiculos();
         PopulateSpinnerDia();
 
-
-        updateui();
-
-
     }
 
-    private void updateui() {
 
-    }
 
     private boolean validate(){
         boolean validation = true;
 
 
-        if(vehiculos.isEmpty()) return false;
-        if(_DestinoET.getText().toString().isEmpty()) return false;
-        if(_OrigenET.getText().toString().isEmpty()) return false;
-        if(_precioET.getText().toString().isEmpty()) return false;
-        if(timetxt.equals("--:--")) return false;
-        if(finroute.isEmpty()) return false;
+        if(vehiculos.isEmpty()){
+            Toast.makeText(getBaseContext(), "No cuentas con carros registrados!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(_DestinoET.getText().toString().isEmpty()){
+            Toast.makeText(getBaseContext(), "Ingresa el nombre del destino!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(_OrigenET.getText().toString().isEmpty()){
+            Toast.makeText(getBaseContext(), "Ingresa el nombre del Origen!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(_precioET.getText().toString().isEmpty()){
+            Toast.makeText(getBaseContext(), "Ingresa el precio del servicio!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(timetxt.equals("--:--")){
+            Toast.makeText(getBaseContext(), "Selecciona la hora salida!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         String placaSelect = _spinnercarro.getSelectedItem().toString();
         int asientosDisp = 0;
@@ -315,22 +325,32 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
             }
         }
 
-        if(Integer.parseInt(_seatsN.getText().toString()) > asientosDisp ) return false;
+        if(Integer.parseInt(_seatsN.getText().toString()) > asientosDisp ){
+            Toast.makeText(getBaseContext(), "No cuentas con tantos asientos!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
-        if(finroute.isEmpty()) return false;
+        if(finroute.isEmpty()){
+            Toast.makeText(getBaseContext(), "Debes seleccionar tu ruta!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         int h = fechaHoy.get(Calendar.HOUR_OF_DAY);
         int m = fechaHoy.get(Calendar.MINUTE);
 
         String[] info = timetxt.getText().toString().split(":");
 
-        if(Integer.parseInt(info[0]) < h){
-            Toast.makeText(getBaseContext(), "Hora invalida", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        else if((Integer.parseInt(info[0]) == h) && (Integer.parseInt(info[1]) < m)){
-            Toast.makeText(getBaseContext(), "Hora invalida", Toast.LENGTH_SHORT).show();
-            return false;
+        if(_spinnerdia.getSelectedItem().toString().equals(hoyaux)){
+
+            if(Integer.parseInt(info[0]) < h){
+                Toast.makeText(getBaseContext(), "Hora invalida", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            else if((Integer.parseInt(info[0]) == h) && (Integer.parseInt(info[1]) < m)){
+                Toast.makeText(getBaseContext(), "Hora invalida", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
         }
 
 
@@ -439,12 +459,12 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                 days.add(daysname[dia-1] + ", " + monthsname[mes] + " " + num);
                 days.add(daysname[diam-1] + ", " + monthsname[mesm] + " " + (numm));
 
-                hoyaux = daysname[dia] + ", " + monthsname[mes] + " " + num;
-                mananaaux = daysname[diam] + ", " + monthsname[mesm] + " " + (numm-1);
+                hoyaux = daysname[dia-1] + ", " + monthsname[mes] + " " + num;
+                mananaaux = daysname[diam-1] + ", " + monthsname[mesm] + " " + (numm);
 
                 String aux = "%04d-%02d-%02d";
-                _hoy = String.format(aux, ano, mes, num);
-                _manana = String.format(aux, anom, mesm, numm);
+                _hoy = String.format(aux, ano, mes+1, num);
+                _manana = String.format(aux, anom, mesm+1, numm);
 
                 setSpinnerDADPTR(days);
 
@@ -836,6 +856,10 @@ public class RegistrarPool extends AppCompatActivity implements OnMapReadyCallba
                 jsonObject.put("nombre_origen",_myPool.getNomOrigen());
                 jsonObject.put("nombre_destino",_myPool.getNomDestino());
                 jsonObject.put("rutaMapa",_myPool.getmRoute());
+
+                JSONArray distritos = new JSONArray(_dists);
+
+                jsonObject.put("distritos", distritos);
 
                 System.out.println(jsonObject.toString());
 

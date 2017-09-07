@@ -1,5 +1,7 @@
 package com.example.jose.carpool;
 
+import org.json.JSONObject;
+
 /**
  * Created by jose on 7/27/17.
  */
@@ -23,6 +25,7 @@ public class CarPool {
     private String mHsalida;
     //private ArrayList<MapPoints> mCoords;
     private String mRoute;
+    private JSONObject mJson;
 
 
 
@@ -200,5 +203,13 @@ public class CarPool {
 
     public void setmRoute(String mRoute) {
         this.mRoute = mRoute;
+    }
+
+    public JSONObject getmJson() {
+        return mJson;
+    }
+
+    public void setmJson(JSONObject mJson) {
+        this.mJson = mJson;
     }
 }

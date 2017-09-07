@@ -113,13 +113,14 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/infofecha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:textSize="17sp"
                     android:text="Mar, Sep 5" />
                 <TextView
-                    android:id="@+id/hsal"
+                    android:id="@+id/infohora"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
@@ -142,10 +143,11 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/infoconductorpic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="16dp"
-                    android:src="@drawable/ic_sentiment_satisfied_black_24dp"/>
+                    android:src="@drawable/ic_menu_foto_56dp"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -154,11 +156,13 @@
                     android:layout_gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/infonombre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Josue"/>
 
                     <TextView
+                        android:id="@+id/infoapellido"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TyS"/>
@@ -172,6 +176,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/infocarropic"
                     android:layout_width="wrap_content"
                     android:paddingRight="16dp"
                     android:layout_height="wrap_content"
@@ -184,11 +189,13 @@
                     android:layout_gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/infomodelo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Murcielago, Lamborghini"/>
 
                     <TextView
+                        android:id="@+id/infoplaca"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TO-6149"/>
@@ -203,7 +210,7 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
@@ -226,6 +233,15 @@
                     android:paddingLeft="16dp"
                     android:layout_gravity="center_vertical"/>
             </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inscribirse"
+                android:backgroundTint="@color/accent"
+                android:textColor="@color/btn"
+                android:layout_marginLeft="80dp"
+                android:clickable="true"/>
 
         </LinearLayout>
 
@@ -251,11 +267,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/arrow"
+                android:tint="@color/primary_text"
                 android:src="@drawable/ic_arrow"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="RUTA"/>
+                android:text="RUTA"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/primary_text"
+                />
 
         </LinearLayout>
 

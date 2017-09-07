@@ -478,7 +478,7 @@ public class tus_vehiculos extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Menu 1");
+        //getActivity().setTitle("Menu 1");   <----Johnny bien huevon eres no?
         ImageView addCar = (ImageView) view.findViewById(R.id.btnAgregarVehiculo);
         addCar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

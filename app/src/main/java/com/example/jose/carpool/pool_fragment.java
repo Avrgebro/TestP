@@ -203,6 +203,7 @@ public class pool_fragment extends Fragment {
                     String ruta = pool.getString("rutaMapa");
 
                     CarPool auxPool = new CarPool(IDusuario, IDvehiculo, Nasientos, Costo, Fcreacion, Fsalida, NomOrigen, DistOrigen, DirOrigen, NomDestino, DistDestino, DirDestino, Estado, IDservicio, Hcreacion, Hsalida, ruta);
+                    auxPool.setmJson(pool);
                     pools.add(auxPool);
                 }
 

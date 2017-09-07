@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,8 +31,15 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,14 +51,26 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
     private SlidingUpPanelLayout slidingLayout;
     private LatLng PUCP = new LatLng(-12.06902418, -77.07927883);
     private CarPool _CP;
+    private JSONObject _myObj;
 
     @Bind(R.id.nom_org) TextView _nom_org;
     @Bind(R.id.nom_dest) TextView _nom_dest;
     @Bind(R.id.dist_org) TextView _dist_org;
     @Bind(R.id.dist_dest) TextView _dist_dest;
-    @Bind(R.id.hsal) TextView _hsal;
+    @Bind(R.id.infohora) TextView _hsal;
+    @Bind(R.id.infofecha) TextView _fsal;
     @Bind(R.id.nasien) TextView _nasien;
     @Bind(R.id.precio) TextView _precio;
+    @Bind(R.id.infonombre) TextView _nombre;
+    @Bind(R.id.infoapellido) TextView _apellido;
+    @Bind(R.id.infomodelo) TextView _modelo;
+    @Bind(R.id.infoplaca) TextView _placa;
+    @Bind(R.id.infoconductorpic) ImageView _condpic;
+    @Bind(R.id.infocarropic) ImageView _carpic;
+
+
+    private String[] monthsname = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
+    private String[] daysname = {"Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +80,7 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
 
         Gson gson = new Gson();
         _CP = gson.fromJson(getIntent().getStringExtra("CarPoolInfo"), CarPool.class);
+        _myObj = _CP.getmJson();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -97,13 +118,46 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
         _dist_org.setText(_CP.getDistOrigen());
         _dist_dest.setText(_CP.getDistDestino());
         _hsal.setText(_CP.getHsalida());
-        _precio.setText("S/"+_CP.getCosto());
-
+        _precio.setText("S/ "+_CP.getCosto());
         int asientos = _CP.getNasientos();
         _nasien.setText(String.valueOf(asientos));
 
 
+        try{
 
+            _nombre.setText(_myObj.getString("nombre"));
+            _apellido.setText(_myObj.getString("apellido"));
+            _modelo.setText(_myObj.getString("modelo") + ", ");//_myObj.getString("marca"));
+            _placa.setText(_myObj.getString("placa"));
+            _fsal.setText(formatDate(_myObj.getString("fecha_salida")));
+
+            Glide.with(this)
+                    .load(_myObj.getString("imgPerfil"))
+                    .placeholder(R.drawable.ic_menu_foto_56dp)
+                    .error(R.drawable.ic_menu_foto_56dp)
+                    .into(_condpic);
+
+
+
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public String formatDate(String fecha){
+        String[] tokens = fecha.split("-");
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        try{
+            cal.setTime(sdf.parse(fecha));
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+
+        return daysname[cal.get(Calendar.DAY_OF_WEEK)-1] + ", " + monthsname[cal.get(Calendar.MONTH)+1] + " " + cal.get(Calendar.DAY_OF_MONTH);
 
     }
 
