@@ -36,7 +36,7 @@ public class CarPoolAdapter extends ArrayAdapter<CarPool> {
         CarPool curCP = getItem(position);
 
         TextView costTV = (TextView) listItem.findViewById(R.id.Costo);
-        costTV.setText("S/"+curCP.getCosto());
+        costTV.setText("S/ "+curCP.getCosto());
 
         TextView origTV = (TextView) listItem.findViewById(R.id.Origen);
         origTV.setText(curCP.getNomOrigen()+", "+curCP.getDistOrigen());
@@ -45,7 +45,7 @@ public class CarPoolAdapter extends ArrayAdapter<CarPool> {
         destTV.setText(curCP.getNomDestino()+", "+curCP.getDistDestino());
 
         TextView horaTV = (TextView) listItem.findViewById(R.id.Hora);
-        horaTV.setText(curCP.getHsalida());
+        horaTV.setText(curCP.getHsalida().substring(0, curCP.getHsalida().length()-3));
 
 
         return listItem;

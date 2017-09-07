@@ -117,7 +117,7 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
         _nom_org.setText(_CP.getNomOrigen());
         _dist_org.setText(_CP.getDistOrigen());
         _dist_dest.setText(_CP.getDistDestino());
-        _hsal.setText(_CP.getHsalida());
+        _hsal.setText(_CP.getHsalida().substring(0, _CP.getHsalida().length()-3));
         _precio.setText("S/ "+_CP.getCosto());
         int asientos = _CP.getNasientos();
         _nasien.setText(String.valueOf(asientos));
@@ -136,6 +136,12 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
                     .placeholder(R.drawable.ic_menu_foto_56dp)
                     .error(R.drawable.ic_menu_foto_56dp)
                     .into(_condpic);
+
+            Glide.with(this)
+                    .load(_myObj.getString("imgAuto"))
+                    .placeholder(R.drawable.ic_sentiment_satisfied_black_24dp)
+                    .error(R.drawable.ic_sentiment_satisfied_black_24dp)
+                    .into(_carpic);
 
 
 

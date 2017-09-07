@@ -117,14 +117,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:textSize="17sp"
+                    android:textSize="24sp"
                     android:text="Mar, Sep 5" />
                 <TextView
                     android:id="@+id/infohora"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:textSize="17sp"
+                    android:textSize="24sp"
                     android:text="21:00" />
 
             </LinearLayout>
@@ -260,18 +260,18 @@
             android:layout_height="34dp"
             android:id="@+id/dragzone"
             android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
             android:background="@color/accent">
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/arrow"
+                android:layout_gravity="center"
                 android:tint="@color/primary_text"
                 android:src="@drawable/ic_arrow"/>
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="RUTA"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/primary_text"
