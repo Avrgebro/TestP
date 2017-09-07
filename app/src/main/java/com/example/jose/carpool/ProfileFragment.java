@@ -40,6 +40,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -62,22 +64,22 @@ public class ProfileFragment extends Fragment {
     private static final int REQUEST_CAMERA = 52322;
     private static final int MY_PERMISSIONS_REQUEST_FILE = 12312;
     private static String TAG = ProfileFragment.class.getSimpleName();
-    private static String USER_UPDATE_URL = "http://200.16.7.170/api/users/actualizar_perfil";
+    private static final String USER_UPDATE_URL = "http://200.16.7.170/api/users/actualizar_perfil";
+    private static final String BASE_CARPOOL_URL = "http://200.16.7.170/api/pools/";
+    private static final String DRIVER_CARPOOL_URL = BASE_CARPOOL_URL + "obtener_pools_conductor/";
+    private static final String PASSENGER_CARPOOL_URL = BASE_CARPOOL_URL + "obtener_pools_pasajero/";
 
     @Bind(R.id.profile_img) ImageView profileImg;
     @Bind(R.id.profile_name) TextView profileName;
     @Bind(R.id.profile_email) TextView profileEmail;
     @Bind(R.id.profile_phone_number) TextView profilePhone;
-//    @Bind(R.id.profile_summary_name) TextView profileSummaryName;
-//    @Bind(R.id.profile_summary_email) TextView profileSummaryEmail;
-//    @Bind(R.id.profile_summary) TextView getProfileSummary;
+    @Bind(R.id.profile_carpool_driver_count) TextView profileDriverCarpools;
+    @Bind(R.id.profile_carpool_passenger_count) TextView profilePassangerCarpools;
     @Bind(R.id.fab_edit_profile) FloatingActionButton fabEditToggle;
     @Bind(R.id.fab_save_profile) FloatingActionButton fabSaveProfile;
     @Bind(R.id.btn_profile_edit_picture) ImageButton selectImageButton;
 
     // Inputs
-//    @Bind(R.id.profile_input_email_wrapper) TextInputLayout emailWrapper;
-//    @Bind(R.id.profile_input_email) TextInputEditText emailInput;
     @Bind(R.id.profile_input_phone_wrapper) TextInputLayout phoneWrapper;
     @Bind(R.id.profile_input_phone) TextInputEditText phoneInput;
     @Bind(R.id.profile_input_first_name_wrapper) TextInputLayout firstNameWrapper;
@@ -515,6 +517,55 @@ public class ProfileFragment extends Fragment {
         profileName.setText(mUser.getFullName());
         profilePhone.setText(mUser.getTelefono());
         profileEmail.setText(mUser.getCorreo());
+
+        final AsyncTask<User, Void, String[]> carpoolCount = new AsyncTask<User, Void, String[]>() {
+            @Override
+            protected String[] doInBackground(User... users) {
+                if (users == null || users.length == 0) {
+                    return null;
+                }
+                User user = users[0];
+                final int requestedCarpoolState = 1; // En camino
+                try {
+                    String driverPoolResponse = UrlUtils.makeHttpRequestGet(new URL(
+                            DRIVER_CARPOOL_URL + user.getID() + "/" + requestedCarpoolState
+                    ));
+                    String passengerPoolResponse = UrlUtils.makeHttpRequestGet(new URL(
+                            PASSENGER_CARPOOL_URL + user.getID() + "/" + requestedCarpoolState
+                    ));
+
+                    String[] results = new String[] { driverPoolResponse, passengerPoolResponse };
+                    return results;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String[] strings) {
+                super.onPostExecute(strings);
+                if (strings == null) {
+                    return;
+                }
+                Gson gson = new Gson();
+                CarPool[] driverCarpools = gson.fromJson(strings[0], CarPool[].class);
+                CarPool[] passengerCarpools = gson.fromJson(strings[1], CarPool[].class);
+
+                if (driverCarpools == null) {
+                    profileDriverCarpools.setText("0");
+                } else {
+                    profileDriverCarpools.setText("" + driverCarpools.length);
+                }
+
+                if (passengerCarpools == null) {
+                    profilePassangerCarpools.setText("0");
+                } else {
+                    profilePassangerCarpools.setText("" + passengerCarpools.length);
+                }
+            }
+        };
+        carpoolCount.execute(user);
     }
 
     public boolean isEditEnabled() {

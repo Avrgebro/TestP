@@ -239,33 +239,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#455A64"
-                android:gravity="center"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 app:layout_scrollFlags="scroll|enterAlways">
 
-                <GridLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:columnCount="1"
+                    android:text="Carpools:"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="12dp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
                     android:padding="16dp"
                     android:rowCount="2">
 
                     <TextView
-                        android:id="@+id/profile_carpool_count"
+                        android:id="@+id/profile_carpool_driver_count"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
-                        android:text="300"
+                        android:text="0"
                         android:textColor="@android:color/white"
                         android:textStyle="bold" />
 
-                    <!--<TextView-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:layout_marginLeft="8dp"-->
-                        <!--android:layout_marginRight="8dp"-->
-                        <!--android:text="250"-->
-                        <!--android:textColor="@android:color/white"-->
-                        <!--android:textStyle="bold" />-->
+                    <TextView
+                        android:id="@+id/profile_carpool_passenger_count"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="0"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
 
                     <!--<TextView-->
                         <!--android:layout_gravity="center"-->
@@ -279,19 +289,19 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
-                        android:text="Carpools"
+                        android:text="Conductor"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-                    <!--<TextView-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:layout_marginLeft="8dp"-->
-                        <!--android:layout_marginRight="8dp"-->
-                        <!--android:text="Followers"-->
-                        <!--android:textColor="@android:color/white"-->
-                        <!--android:textSize="20sp"-->
-                        <!--android:textStyle="bold" />-->
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="Pasajero"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
                     <!--<TextView-->
                         <!--android:layout_gravity="center"-->
