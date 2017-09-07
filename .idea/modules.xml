@@ -3,10 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CarPool.iml" filepath="$PROJECT_DIR$/CarPool.iml" />
-      <module fileurl="file:///run/media/pmvb/Data/Projets/Android/ColectiGo/ColectiGo.iml" filepath="/run/media/pmvb/Data/Projets/Android/ColectiGo/ColectiGo.iml" />
-      <module fileurl="file:///run/media/pmvb/Data/Projets/Android/ColectiGo/ColectiGo.iml" filepath="/run/media/pmvb/Data/Projets/Android/ColectiGo/ColectiGo.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestP.iml" filepath="$PROJECT_DIR$/TestP.iml" />
-      <module fileurl="file:///run/media/pmvb/Data/Projets/Android/ColectiGo/app/app.iml" filepath="/run/media/pmvb/Data/Projets/Android/ColectiGo/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
