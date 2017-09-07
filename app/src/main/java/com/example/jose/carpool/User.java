@@ -23,6 +23,7 @@ public class User implements Serializable {
         this.mApellido = _apellido;
         this.mTelefono = _telefono;
         this.mPass = _pass;
+        this.mPicUri = "";
     }
 
     public User(

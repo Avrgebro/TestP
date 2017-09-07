@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity
                 _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
                 _cornavbar.setText(user.getCorreo());
             }
-            Log.e(TAG, user.getPicUri());
 
             AsyncTask<String, Void, Bitmap> getProfileImg = new AsyncTask<String, Void, Bitmap>() {
                 @Override

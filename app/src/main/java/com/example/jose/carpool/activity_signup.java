@@ -81,7 +81,7 @@ public class activity_signup extends AppCompatActivity {
         }
 
         //populate new user
-        User usuarioRegistro = new User("-1", email, nombre, ap, telf, passw);
+        usuarioRegistro = new User("-1", email, nombre, ap, telf, passw);
 
         //aca hago la llamada al asynctask.
         String[] correoparam = {email};
