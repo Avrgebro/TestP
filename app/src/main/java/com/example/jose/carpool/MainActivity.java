@@ -3,10 +3,15 @@ package com.example.jose.carpool;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,20 +20,25 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.ByteArrayOutputStream;
 
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ProfileFragment.ProfileImgListener {
 
     public static User user;
+    public static Bitmap profilePictureBitmap;
 
     private static final String TAG = "MainActivity";
     private View header;
@@ -41,6 +51,7 @@ public class MainActivity extends AppCompatActivity
 
     public static TextView _nomnavbar;
     public static TextView _cornavbar;
+    private Target customProfileImgTarget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +82,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        ImageView navImage = header.findViewById(R.id.nav_profile_img);
+        final ImageView navImage = header.findViewById(R.id.nav_profile_img);
         navImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +90,22 @@ public class MainActivity extends AppCompatActivity
                 inflateFragment(new ProfileFragment());
             }
         });
+
+        customProfileImgTarget = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                profilePictureBitmap = bitmap;
+                navImage.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                Log.e(TAG, "onBitmapFailed");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {}
+        };
 
         SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
         int SessionState = prefs.getInt("SessionState", 0);
@@ -129,10 +156,11 @@ public class MainActivity extends AppCompatActivity
 
         SharedPreferences prefs = getSharedPreferences("SessionToken", MODE_PRIVATE);
         String userJSON = prefs.getString("SessionUser", "");
-
+        String bitmapBase64 = prefs.getString("SessionProfileImg", "");
+        Log.e(TAG, userJSON);
         if(!userJSON.isEmpty()) {
             Gson gson = new Gson();
-            User user = gson.fromJson(userJSON, User.class);
+            user = gson.fromJson(userJSON, User.class);
             Log.d(TAG, user.getNombre()+" "+user.getCorreo());
             TextView _nomnavbar = (TextView) header.findViewById(R.id.nombre_navbar);
             TextView _cornavbar = (TextView) header.findViewById(R.id.correo_navbar);
@@ -141,9 +169,32 @@ public class MainActivity extends AppCompatActivity
                 _nomnavbar.setText(user.getNombre() + " " + user.getApellido());
                 _cornavbar.setText(user.getCorreo());
             }
+            Log.e(TAG, user.getPicUri());
 
+            AsyncTask<String, Void, Bitmap> getProfileImg = new AsyncTask<String, Void, Bitmap>() {
+                @Override
+                protected Bitmap doInBackground(String... strings) {
+                    if (strings == null || strings.length == 0) {
+                        return null;
+                    }
+                    Bitmap bitmap = BitmapUtils.decodeBase64(strings[0]);
+                    return bitmap;
+                }
 
-        }else{
+                @Override
+                protected void onPostExecute(Bitmap bitmap) {
+                    super.onPostExecute(bitmap);
+                    if (bitmap == null) {
+                        Picasso.with(MainActivity.this)
+                                .load(user.getPicUri())
+                                .into(customProfileImgTarget);
+                    } else {
+                        updateProfileImg(bitmap);
+                    }
+                }
+            };
+            getProfileImg.execute(bitmapBase64);
+        } else {
             Log.d(TAG, "No se recibio el usuario");
         }
     }
@@ -240,5 +291,40 @@ public class MainActivity extends AppCompatActivity
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
         startActivity(i);
+    }
+
+    @Override
+    public void updateProfileImg(final Bitmap bitmap, boolean serializeImg) {
+        profilePictureBitmap = bitmap;
+        final ImageView navImage = header.findViewById(R.id.nav_profile_img);
+        navImage.setImageBitmap(bitmap);
+
+        if (serializeImg) {
+            // Update user image url
+            AsyncTask<User, Void, String> updateImgUrl = new AsyncTask<User, Void, String>() {
+                @Override
+                protected String doInBackground(User... users) {
+                    if (users == null || users.length == 0) {
+                        return null;
+                    }
+                    String bitmapBase64 = BitmapUtils.bitmapToBase64(bitmap);
+                    return bitmapBase64;
+                }
+
+                @Override
+                protected void onPostExecute(String profileImgBas64) {
+                    super.onPostExecute(profileImgBas64);
+                    SharedPreferences.Editor editor = getSharedPreferences("SessionToken", MODE_PRIVATE).edit();
+                    editor.putString("SessionProfileImg", profileImgBas64);
+                    editor.apply();
+                }
+            };
+            updateImgUrl.execute(user);
+        }
+    }
+
+    @Override
+    public void updateProfileImg(Bitmap bitmap) {
+        updateProfileImg(bitmap, false);
     }
 }

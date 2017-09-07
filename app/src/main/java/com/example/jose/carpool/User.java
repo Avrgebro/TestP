@@ -14,7 +14,7 @@ public class User implements Serializable {
     private String mApellido;
     private String mTelefono;
     private String mPass;//solo usado en el envio de nuevo ususrio a base de datos
-
+    private String mPicUri;
 
     public User(String _id, String _correo, String _nombre, String _apellido, String _telefono, String _pass) {
         this.mID = _id;
@@ -23,6 +23,19 @@ public class User implements Serializable {
         this.mApellido = _apellido;
         this.mTelefono = _telefono;
         this.mPass = _pass;
+    }
+
+    public User(
+            String _id,
+            String _correo,
+            String _nombre,
+            String _apellido,
+            String _telefono,
+            String _pass,
+            String picUri
+    ) {
+        this(_id, _correo, _nombre, _apellido, _telefono, _pass);
+        setPicUri(picUri);
     }
 
     public String getID() {
@@ -71,5 +84,13 @@ public class User implements Serializable {
 
     public String getFullName() {
         return getNombre() + " " + getApellido();
+    }
+
+    public String getPicUri() {
+        return mPicUri;
+    }
+
+    public void setPicUri(String mPicUri) {
+        this.mPicUri = mPicUri;
     }
 }

@@ -7,12 +7,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
@@ -32,6 +35,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,9 +99,27 @@ public class ProfileFragment extends Fragment {
     private String mCurrentPhotoPath;
     private Uri mCurrentPhotoUri;
     private Bitmap mProfileBitmap;
+    private Target mCustomTarget;
+    private ProfileImgListener mProfileImgListener;
+
+    public interface ProfileImgListener {
+        void updateProfileImg(Bitmap bitmap);
+        void updateProfileImg(Bitmap bitmap, boolean serializeImg);
+    }
 
     public ProfileFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        try {
+            mProfileImgListener = (ProfileImgListener) getActivity();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -124,6 +147,27 @@ public class ProfileFragment extends Fragment {
             }
         });
         mPhotoDialog = buildPhotoSelectionDialog();
+        if (MainActivity.profilePictureBitmap != null) {
+            profileImg.setImageBitmap(MainActivity.profilePictureBitmap);
+        }
+
+        mCustomTarget = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                if (mProfileImgListener != null) {
+                    mProfileImgListener.updateProfileImg(bitmap, true);
+                }
+                profileImg.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                Log.e(TAG, "onBitmapFailed");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {}
+        };
 
         bindUser();
         mHttpClient = new OkHttpClient();
@@ -200,16 +244,6 @@ public class ProfileFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private String bitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        if (bitmap == null) {
-            return "";
-        }
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     private File createImageFile() throws IOException {
@@ -370,6 +404,7 @@ public class ProfileFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Picasso.with(getActivity()).load(mCurrentPhotoUri).into(mCustomTarget);
                         disableProfileEdit();
                         bindUser();
                     }
@@ -393,7 +428,7 @@ public class ProfileFragment extends Fragment {
             jsonObject.put("nombre", user.getNombre());
             jsonObject.put("apellido", user.getApellido());
             jsonObject.put("telefono", user.getTelefono());
-            jsonObject.put("img", bitmapToBase64(mProfileBitmap));
+            jsonObject.put("img", BitmapUtils.bitmapToBase64(mProfileBitmap));
         } catch (JSONException e) {
             Log.e(TAG, "Problem creating JsonObject", e);
             e.printStackTrace();
@@ -403,16 +438,6 @@ public class ProfileFragment extends Fragment {
 
     private boolean validateInput() {
         boolean valid = true;
-//        String emailText = emailInput.getText().toString();
-//        if (emailText.isEmpty()) {
-//            emailText = mUser.getCorreo();
-//        }
-
-//        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailText).matches()
-//                || !emailUtils.correoPucp(emailText)) {
-//            emailInput.setError("Correo inválido");
-//            valid = false;
-//        }
 
         String phone = phoneInput.getText().toString();
         if (phone.isEmpty()) {
@@ -444,7 +469,6 @@ public class ProfileFragment extends Fragment {
         firstNameInput.setText(firstName);
         lastNameInput.setText(lastName);
         phoneInput.setText(phone);
-//        emailInput.setText(emailText);
 
         return valid;
     }
@@ -462,14 +486,12 @@ public class ProfileFragment extends Fragment {
         fabEditToggle.setImageResource(R.drawable.ic_mode_edit_black_24px);
         fabSaveProfile.setVisibility(View.GONE);
 
-//        emailWrapper.setVisibility(View.GONE);
         phoneWrapper.setVisibility(View.GONE);
         firstNameWrapper.setVisibility(View.GONE);
         lastNameWrapper.setVisibility(View.GONE);
         selectImageButton.setVisibility(View.GONE);
 
         profilePhone.setVisibility(View.VISIBLE);
-//        profileEmail.setVisibility(View.VISIBLE);
         profileName.setVisibility(View.VISIBLE);
     }
 
@@ -479,8 +501,6 @@ public class ProfileFragment extends Fragment {
         fabSaveProfile.setVisibility(View.VISIBLE);
 
         phoneWrapper.setVisibility(View.VISIBLE);
-//        emailWrapper.setVisibility(View.VISIBLE);
-//        profileEmail.setVisibility(View.GONE);
         profilePhone.setVisibility(View.GONE);
         profileName.setVisibility(View.GONE);
 
@@ -489,7 +509,6 @@ public class ProfileFragment extends Fragment {
         selectImageButton.setVisibility(View.VISIBLE);
 
         // Bind values to inputs
-//        emailWrapper.setHint(mUser.getCorreo());
         phoneWrapper.setHint(mUser.getTelefono());
         firstNameWrapper.setHint(mUser.getNombre());
         lastNameWrapper.setHint(mUser.getApellido());
