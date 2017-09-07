@@ -181,7 +181,7 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
             e.printStackTrace();
         }
 
-        return daysname[cal.get(Calendar.DAY_OF_WEEK)-1] + ", " + monthsname[cal.get(Calendar.MONTH)+1] + " " + cal.get(Calendar.DAY_OF_MONTH);
+        return daysname[cal.get(Calendar.DAY_OF_WEEK)-1] + ", " + monthsname[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.DAY_OF_MONTH);
 
     }
 
@@ -334,9 +334,17 @@ public class PoolInfoScreen extends AppCompatActivity implements OnMapReadyCallb
                     Toast.makeText(getBaseContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
                     finish();
                 }else{
-                    Toast.makeText(getBaseContext(), "Error de Registro :c", Toast.LENGTH_SHORT).show();
-                    _insbtn.setEnabled(true);
-                    return;
+                    if(codigo == 0){
+                        Toast.makeText(getBaseContext(), "No hay asientos libres:c", Toast.LENGTH_SHORT).show();
+                        _insbtn.setEnabled(true);
+                        return;
+                    }else{
+                        Toast.makeText(getBaseContext(), "Error de conexion:c", Toast.LENGTH_SHORT).show();
+                        _insbtn.setEnabled(true);
+                        return;
+
+                    }
+
                 }
             }catch (JSONException e){
                 e.printStackTrace();
